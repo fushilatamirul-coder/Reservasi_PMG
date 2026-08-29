@@ -31,15 +31,15 @@
         /* ===== HALAMAN A4 ===== */
         .a4-page {
             width: 210mm;
-            height: 297mm; /* Ubah dari min-height menjadi height agar tetap proporsional */
+            height: 297mm;
             background: #fffefc;
             margin: 0 auto 20px;
-            padding: 8mm 6mm; /* Kurangi sedikit padding agar konten muat */
+            padding: 8mm 6mm;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10);
             border-radius: 8px;
             border: 1px solid #d8c5b0;
             position: relative;
-            overflow: hidden; /* Pastikan tidak ada konten yang keluar */
+            overflow: hidden;
             display: flex;
             flex-direction: column;
         }
@@ -55,7 +55,7 @@
             flex-shrink: 0;
         }
         .brand-title {
-            font-size: 1.8rem; /* Sedikit dikecilkan */
+            font-size: 1.8rem;
             font-weight: 700;
             letter-spacing: 1px;
             color: #8b3e1b;
@@ -80,52 +80,12 @@
             color: #8b3e1b;
         }
 
-        /* ===== TANGGAL BESAR DENGAN IKON ===== */
-        .tanggal-besar {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            padding: 4px 0 6px 0; /* Kurangi padding */
-            margin-bottom: 4px;
-            border-bottom: 1px dashed #d9bfa6;
-            background: #fef7f0;
-            border-radius: 6px;
-            flex-wrap: wrap;
-        }
-        .tanggal-besar .icon-hari {
-            font-size: 1.8rem; /* Dikecilkan */
-            line-height: 1;
-            background: #8b3e1b;
-            color: #fff;
-            padding: 2px 12px;
-            border-radius: 40px;
-            box-shadow: 0 2px 8px rgba(139, 62, 27, 0.2);
-            font-weight: 600;
-            letter-spacing: 1px;
-        }
-        .tanggal-besar .icon-tanggal {
-            font-size: 1.5rem; /* Dikecilkan */
-            font-weight: 700;
-            color: #6b3f1f;
-            background: #fff3e6;
-            padding: 0 14px;
-            border-radius: 30px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-            letter-spacing: 1px;
-        }
-        .tanggal-besar .icon-cal {
-            font-size: 1.5rem;
-            line-height: 1;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
-        }
-
         /* ===== GRID 2x2 ===== */
         .grid-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
             grid-template-rows: auto auto;
-            gap: 6px; /* Kurangi gap */
+            gap: 6px;
             flex: 1;
         }
 
@@ -134,14 +94,14 @@
             background: #fffdf9;
             border: 1.5px solid #d9b99b;
             border-radius: 10px;
-            padding: 8px 10px; /* Kurangi padding */
+            padding: 8px 10px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
             display: flex;
             flex-direction: column;
             background: linear-gradient(145deg, #fffcf8, #fef7f0);
         }
         .card-title {
-            font-size: 1rem; /* Dikecilkan */
+            font-size: 1rem;
             font-weight: 600;
             margin-bottom: 4px;
             padding-bottom: 3px;
@@ -154,29 +114,44 @@
         .waiters-title { color: #c96e2e; }
         .security-title { color: #a14f1e; }
 
+        /* Tanggal di dalam kartu - UKURAN DIPERBESAR */
+        .card-date {
+            font-size: 0.95rem;          /* sebelumnya 0.7rem */
+            font-weight: 600;
+            color: #4a2e1a;
+            background: #fdf3e7;
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-bottom: 8px;
+            display: inline-block;
+            text-align: center;
+            border: 1px solid #e5cbb0;
+            letter-spacing: 0.3px;
+        }
+
         /* ===== FIELD ===== */
         .field-group {
             display: flex;
             flex-wrap: wrap;
-            gap: 2px 6px;
-            margin-bottom: 3px;
+            gap: 4px 8px;
+            margin-bottom: 8px;
             align-items: center;
         }
         .field-label {
-            font-size: 0.6rem;
+            font-size: 0.8rem;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.3px;
             color: #7a5c42;
-            min-width: 40px;
+            min-width: 50px;
         }
         .input-text {
             flex: 1;
-            min-width: 50px;
-            padding: 2px 5px;
+            min-width: 80px;
+            padding: 6px 8px;
             border: 1px solid #d0b39a;
             border-radius: 4px;
-            font-size: 0.7rem;
+            font-size: 0.9rem;
             color: #3e2b1c;
             background: #fffefb;
             outline: none;
@@ -186,7 +161,7 @@
             border-color: #b55a2a;
             box-shadow: 0 0 0 2px rgba(181, 90, 42, 0.12);
         }
-        .input-text-sm { max-width: 50px; text-align: center; }
+        .input-text-sm { max-width: 70px; text-align: center; }
         input[type="number"].input-text {
             -moz-appearance: textfield;
         }
@@ -195,63 +170,63 @@
             -webkit-appearance: none;
             margin: 0;
         }
-        input[type="time"].input-text { max-width: 90px; }
+        input[type="time"].input-text { max-width: 110px; }
 
         /* ===== DIVIDER ===== */
         .section-divider {
             border-top: 1px dashed #d9bfa6;
-            margin: 3px 0;
+            margin: 6px 0;
         }
 
         /* ===== SUB TITLE ===== */
         .sub-title {
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             font-weight: 600;
             color: #6b3f1f;
-            margin-bottom: 3px;
+            margin-bottom: 4px;
         }
 
         /* ===== CHECKBOX GRID ===== */
         .checkbox-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 2px 6px;
-            font-size: 0.68rem;
+            gap: 3px 8px;
+            font-size: 0.72rem;
         }
         .checkbox-item {
             display: flex;
             align-items: center;
-            gap: 3px;
+            gap: 4px;
             cursor: pointer;
             color: #4a3321;
         }
         .checkbox-item input[type="checkbox"] {
             accent-color: #b55a2a;
-            width: 12px;
-            height: 12px;
+            width: 14px;
+            height: 14px;
             cursor: pointer;
             flex-shrink: 0;
         }
-        .hidden-input { margin-top: 3px; }
+        .hidden-input { margin-top: 4px; }
 
         /* ===== RADIO ===== */
         .radio-group {
             display: flex;
             flex-wrap: wrap;
-            gap: 2px 10px;
-            font-size: 0.68rem;
+            gap: 4px 12px;
+            font-size: 0.72rem;
         }
         .radio-item {
             display: flex;
             align-items: center;
-            gap: 3px;
+            gap: 4px;
             cursor: pointer;
             color: #4a3321;
         }
         .radio-item input[type="radio"] {
             accent-color: #b55a2a;
-            width: 12px;
-            height: 12px;
+            width: 14px;
+            height: 14px;
             cursor: pointer;
             flex-shrink: 0;
         }
@@ -261,26 +236,26 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 2px 4px;
-            margin-top: 2px;
+            margin-top: 4px;
         }
         .paket-item {
             display: flex;
             align-items: center;
-            gap: 2px;
-            font-size: 0.65rem;
+            gap: 3px;
+            font-size: 0.68rem;
         }
         .item-number {
             font-weight: 600;
             color: #8b3e1b;
-            min-width: 14px;
+            min-width: 16px;
             text-align: right;
-            font-size: 0.6rem;
+            font-size: 0.65rem;
         }
         .paket-input {
             flex: 1;
-            min-width: 35px;
-            padding: 1px 3px;
-            font-size: 0.65rem;
+            min-width: 40px;
+            padding: 2px 4px;
+            font-size: 0.7rem;
             border: 1px solid #d0b39a;
             border-radius: 3px;
             background: #fffefb;
@@ -288,12 +263,12 @@
         }
         .paket-input:focus { border-color: #b55a2a; }
         .input-qty {
-            width: 28px;
-            padding: 1px 2px;
+            width: 30px;
+            padding: 2px 3px;
             text-align: center;
             border: 1px solid #d0b39a;
             border-radius: 3px;
-            font-size: 0.65rem;
+            font-size: 0.7rem;
             background: #fffefb;
             outline: none;
             -moz-appearance: textfield;
@@ -305,22 +280,22 @@
         }
 
         /* ===== WAITERS ===== */
-        .waiters-auto-info { font-size: 0.7rem; margin-bottom: 3px; }
-        .waiters-field { display: flex; gap: 3px; margin-bottom: 1px; }
-        .waiters-label { font-weight: 600; color: #7a5c42; min-width: 50px; }
+        .waiters-auto-info { font-size: 0.75rem; margin-bottom: 6px; }
+        .waiters-field { display: flex; gap: 4px; margin-bottom: 2px; }
+        .waiters-label { font-weight: 600; color: #7a5c42; min-width: 60px; }
         .waiters-value { font-weight: 500; color: #3e2b1c; }
         .waiters-section-label {
-            font-size: 0.62rem;
+            font-size: 0.68rem;
             font-weight: 600;
             color: #8b3e1b;
-            margin-top: 3px;
-            margin-bottom: 1px;
+            margin-top: 5px;
+            margin-bottom: 2px;
             text-transform: uppercase;
         }
         .waiters-list {
-            font-size: 0.65rem;
+            font-size: 0.7rem;
             color: #4a3321;
-            margin-bottom: 3px;
+            margin-bottom: 4px;
             min-height: 14px;
             white-space: pre-line;
         }
@@ -329,14 +304,14 @@
         /* ===== STATUS TOGGLE ===== */
         .status-toggle {
             display: flex;
-            gap: 3px;
-            margin-top: 2px;
+            gap: 4px;
+            margin-top: 4px;
         }
         .status-btn {
-            padding: 3px 5px;
+            padding: 4px 6px;
             border: none;
             border-radius: 4px;
-            font-size: 0.55rem;
+            font-size: 0.6rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
@@ -372,9 +347,11 @@
             appearance: none;
             background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238b3e1b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
             background-repeat: no-repeat;
-            background-position: right 5px center;
-            background-size: 10px;
-            padding-right: 18px;
+            background-position: right 8px center;
+            background-size: 14px;
+            padding-right: 30px;
+            font-size: 0.9rem;
+            padding: 6px 30px 6px 8px;
         }
 
         /* ===== CONTROLS ===== */
@@ -476,10 +453,6 @@
             .controls { flex-direction: column; align-items: stretch; }
             .paket-items-grid { grid-template-columns: 1fr; }
             .brand-title { font-size: 1.4rem; }
-            .tanggal-besar { flex-direction: column; gap: 4px; padding: 4px 0; }
-            .tanggal-besar .icon-hari { font-size: 1.3rem; padding: 1px 10px; }
-            .tanggal-besar .icon-tanggal { font-size: 1.2rem; padding: 0 10px; }
-            .tanggal-besar .icon-cal { font-size: 1.2rem; }
         }
 
         /* ===== PRINT STYLES ===== */
@@ -533,8 +506,8 @@
             input[type="radio"] {
                 -webkit-appearance: checkbox !important;
                 appearance: checkbox !important;
-                width: 11px !important;
-                height: 11px !important;
+                width: 12px !important;
+                height: 12px !important;
                 border: 1px solid #333 !important;
                 background: white !important;
             }
@@ -551,25 +524,9 @@
                 border-color: #555 !important;
                 background: #eee !important;
             }
-            .tanggal-besar {
-                background: #fef7f0 !important;
-                border-bottom: 1px dashed #d9bfa6 !important;
-                padding: 3px 0 5px 0;
-            }
-            .tanggal-besar .icon-hari {
-                background: #8b3e1b !important;
-                color: #fff !important;
-                padding: 1px 10px !important;
-                border-radius: 40px !important;
-            }
-            .tanggal-besar .icon-tanggal {
-                background: #fff3e6 !important;
-                color: #6b3f1f !important;
-                padding: 0 12px !important;
-                border-radius: 30px !important;
-            }
-            .tanggal-besar .icon-cal {
-                filter: none !important;
+            .card-date {
+                background: #fdf3e7 !important;
+                color: #4a2e1a !important;
             }
         }
     </style>
@@ -590,19 +547,13 @@
             </div>
         </div>
 
-        <!-- TANGGAL BESAR DENGAN IKON HARI & TANGGAL TERPISAH -->
-        <div class="tanggal-besar">
-            <div class="icon-hari" id="hariDisplay">KAMIS</div>
-            <div class="icon-cal">📅</div>
-            <div class="icon-tanggal" id="tanggalDisplay">29 Agustus 2026</div>
-        </div>
-
         <!-- GRID 2x2 -->
         <div class="grid-container" id="gridContainer">
 
             <!-- ===== BARISTA ===== -->
             <div class="card barista-card" id="cardBarista">
                 <h2 class="card-title barista-title">☕ BARISTA</h2>
+                <div class="card-date">📅 <span class="card-date-value" id="dateBarista">-</span></div>
 
                 <div class="field-group">
                     <span class="field-label">Nama</span>
@@ -612,7 +563,7 @@
                     <span class="field-label">Px</span>
                     <input type="number" id="baristaPx" placeholder="10" class="input-text input-text-sm" min="1" autocomplete="off">
                     <span class="field-label" style="min-width:30px;">Jam</span>
-                    <input type="time" id="baristaJam" class="input-text" autocomplete="off" style="max-width:85px;">
+                    <input type="time" id="baristaJam" class="input-text" autocomplete="off">
                 </div>
 
                 <div class="section-divider"></div>
@@ -633,6 +584,7 @@
             <!-- ===== KITCHEN ===== -->
             <div class="card kitchen-card" id="cardKitchen">
                 <h2 class="card-title kitchen-title">🍳 KITCHEN</h2>
+                <div class="card-date">📅 <span class="card-date-value" id="dateKitchen">-</span></div>
 
                 <div class="field-group">
                     <span class="field-label">Nama</span>
@@ -642,7 +594,7 @@
                     <span class="field-label">Px</span>
                     <input type="number" id="kitchenPx" placeholder="10" class="input-text input-text-sm" min="1" autocomplete="off">
                     <span class="field-label" style="min-width:30px;">Jam</span>
-                    <input type="time" id="kitchenJam" class="input-text" autocomplete="off" style="max-width:85px;">
+                    <input type="time" id="kitchenJam" class="input-text" autocomplete="off">
                 </div>
 
                 <div class="section-divider"></div>
@@ -666,6 +618,7 @@
             <!-- ===== WAITERS ===== -->
             <div class="card waiters-card" id="cardWaiters">
                 <h2 class="card-title waiters-title">👨‍🍳 WAITERS</h2>
+                <div class="card-date">📅 <span class="card-date-value" id="dateWaiters">-</span></div>
 
                 <div class="waiters-auto-info">
                     <div class="waiters-field"><span class="waiters-label">Nama :</span><span id="waitersNama" class="waiters-value">-</span></div>
@@ -695,6 +648,7 @@
             <!-- ===== SECURITY ===== -->
             <div class="card security-card" id="cardSecurity">
                 <h2 class="card-title security-title">🛡 SECURITY</h2>
+                <div class="card-date">📅 <span class="card-date-value" id="dateSecurity">-</span></div>
 
                 <div class="field-group">
                     <span class="field-label">Nama</span>
@@ -704,7 +658,7 @@
                     <span class="field-label">Px</span>
                     <input type="number" id="securityPx" placeholder="10" class="input-text input-text-sm" min="1" autocomplete="off">
                     <span class="field-label" style="min-width:30px;">Jam</span>
-                    <input type="time" id="securityJam" class="input-text" autocomplete="off" style="max-width:85px;">
+                    <input type="time" id="securityJam" class="input-text" autocomplete="off">
                 </div>
 
                 <div class="section-divider"></div>
@@ -719,7 +673,7 @@
                     <option value="Motor">Motor</option>
                     <option value="Lainnya">Lainnya</option>
                 </select>
-                <div id="securityLainnyaWrap" class="hidden-input" style="display:none; margin-top:3px;">
+                <div id="securityLainnyaWrap" class="hidden-input" style="display:none; margin-top:4px;">
                     <input type="text" id="securityKendaraanLainnya" placeholder="Tulis kendaraan" class="input-text" style="width:100%;" autocomplete="off">
                 </div>
             </div>
@@ -795,9 +749,10 @@
 
             // Nomor & tanggal
             const resNumberDisplay = document.getElementById('reservationNumberDisplay');
-            const hariDisplay = document.getElementById('hariDisplay');
-            const tanggalDisplay = document.getElementById('tanggalDisplay');
             let reservationNumber = 1;
+
+            // Elemen tanggal di setiap kartu
+            const dateElements = document.querySelectorAll('.card-date-value');
 
             // Notifikasi
             const notif = document.getElementById('notification');
@@ -850,9 +805,11 @@
                 const now = new Date();
                 const optionsDate = { day: 'numeric', month: 'long', year: 'numeric' };
                 const dateStr = now.toLocaleDateString('id-ID', optionsDate);
-                const hariStr = now.toLocaleDateString('id-ID', { weekday: 'long' }).toUpperCase();
-                hariDisplay.textContent = hariStr;
-                tanggalDisplay.textContent = dateStr;
+                const hariStr = now.toLocaleDateString('id-ID', { weekday: 'long' });
+                const fullText = hariStr + ', ' + dateStr;
+                dateElements.forEach(el => {
+                    el.textContent = fullText;
+                });
             }
             updateDateDisplay();
 
@@ -1140,7 +1097,6 @@
                     return;
                 }
 
-                // Cek apakah html2pdf tersedia
                 if (typeof html2pdf === 'undefined') {
                     showNotif('Library html2pdf gagal dimuat. Gunakan tombol Print sebagai alternatif.');
                     return;
@@ -1150,15 +1106,14 @@
                 controlsEl.style.display = 'none';
 
                 const element = document.getElementById('a4Page');
-                // Pastikan elemen memiliki tinggi tetap untuk rendering
-                element.style.height = '297mm'; // set ulang untuk memastikan
+                element.style.height = '297mm';
                 element.style.overflow = 'hidden';
 
                 const opt = {
                     margin: 0,
                     filename: 'Reservasi-Pawon-Mbah-Gito-' +
                         (bNama.value.trim() || kNama.value.trim() || 'TanpaNama') +
-                        '-' + tanggalDisplay.textContent.replace(/\s+/g, '-') + '.pdf',
+                        '-' + new Date().toISOString().slice(0,10) + '.pdf',
                     image: { type: 'jpeg', quality: 1 },
                     html2canvas: {
                         scale: 2,
