@@ -9,7 +9,585 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" defer>
     </script>
 
-    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f9f1e7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 10px;
+            min-height: 100vh;
+            color: #3e2b1c;
+        }
+
+        /* ===== HALAMAN A4 ===== */
+        .a4-page {
+            width: 210mm;
+            min-height: 297mm;
+            background: #fffefc;
+            margin: 0 auto 20px;
+            padding: 12mm 10mm;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+            border-radius: 8px;
+            border: 1px solid #d8c5b0;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== HEADER HALAMAN ===== */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+            border-bottom: 3px double #b55a2a;
+            flex-shrink: 0;
+        }
+
+        .brand-title {
+            font-size: 2.4rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #8b3e1b;
+            line-height: 1.1;
+        }
+
+        .brand-subtitle {
+            font-size: 0.9rem;
+            letter-spacing: 3px;
+            color: #b55a2a;
+            font-weight: 500;
+            margin-top: 2px;
+        }
+
+        .reservation-meta {
+            text-align: right;
+            font-size: 0.85rem;
+            color: #5a3e2b;
+        }
+
+        .reservation-number {
+            display: block;
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 2px;
+            color: #8b3e1b;
+        }
+
+        .reservation-date {
+            font-style: italic;
+            color: #8a6d5a;
+        }
+
+        /* ===== GRID 2x2 ===== */
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto auto;
+            gap: 10px;
+            flex: 1;
+        }
+
+        /* ===== CARD UMUM ===== */
+        .card {
+            background: #fffdf9;
+            border: 1.5px solid #d9b99b;
+            border-radius: 14px;
+            padding: 12px 14px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            display: flex;
+            flex-direction: column;
+            transition: all 0.2s;
+            background: linear-gradient(145deg, #fffcf8, #fef7f0);
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #e0c9b0;
+            color: #6b3f1f;
+            letter-spacing: 0.5px;
+        }
+
+        .barista-title { color: #b0572c; }
+        .kitchen-title { color: #8b4513; }
+        .waiters-title { color: #c96e2e; }
+        .security-title { color: #a14f1e; }
+
+        /* ===== INPUT & LABEL ===== */
+        .reservation-info {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-bottom: 8px;
+        }
+
+        .field-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #7a5c42;
+            margin-top: 4px;
+        }
+
+        .input-text {
+            width: 100%;
+            padding: 6px 8px;
+            border: 1px solid #d0b39a;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            color: #3e2b1c;
+            background: #fffefb;
+            outline: none;
+            transition: border 0.2s;
+        }
+
+        .input-text:focus {
+            border-color: #b55a2a;
+            box-shadow: 0 0 0 2px rgba(181, 90, 42, 0.15);
+        }
+
+        input[type="number"].input-text {
+            -moz-appearance: textfield;
+        }
+
+        input[type="number"].input-text::-webkit-outer-spin-button,
+        input[type="number"].input-text::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* ===== DIVIDER ===== */
+        .section-divider {
+            border-top: 1px dashed #d9bfa6;
+            margin: 8px 0;
+        }
+
+        /* ===== SUB TITLE ===== */
+        .sub-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #6b3f1f;
+            margin-bottom: 5px;
+        }
+
+        /* ===== CHECKBOX GRID BARISTA ===== */
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5px 10px;
+            font-size: 0.85rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            color: #4a3321;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            accent-color: #b55a2a;
+            width: 15px;
+            height: 15px;
+            cursor: pointer;
+        }
+
+        /* ===== INPUT LAINNYA BARISTA ===== */
+        .hidden-input {
+            margin-top: 5px;
+        }
+
+        /* ===== RADIO GROUP KITCHEN ===== */
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-bottom: 5px;
+            font-size: 0.85rem;
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            color: #4a3321;
+        }
+
+        .radio-item input[type="radio"] {
+            accent-color: #b55a2a;
+            width: 15px;
+            height: 15px;
+            cursor: pointer;
+        }
+
+        /* ===== ISI PAKET DENGAN QUANTITY ===== */
+        .paket-items-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-top: 5px;
+        }
+
+        .paket-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.8rem;
+        }
+
+        .item-number {
+            font-weight: 600;
+            color: #8b3e1b;
+            min-width: 18px;
+            text-align: right;
+        }
+
+        .paket-input {
+            flex: 1;
+            padding: 4px 6px;
+            font-size: 0.8rem;
+        }
+
+        .input-qty {
+            width: 40px;
+            padding: 4px 2px;
+            text-align: center;
+            border: 1px solid #d0b39a;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            background: #fffefb;
+            outline: none;
+            -moz-appearance: textfield;
+        }
+
+        .input-qty::-webkit-outer-spin-button,
+        .input-qty::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* ===== WAITERS ===== */
+        .waiters-auto-info {
+            font-size: 0.85rem;
+            margin-bottom: 5px;
+        }
+
+        .waiters-field {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 3px;
+        }
+
+        .waiters-label {
+            font-weight: 600;
+            color: #7a5c42;
+            min-width: 70px;
+        }
+
+        .waiters-value {
+            font-weight: 500;
+            color: #3e2b1c;
+        }
+
+        .waiters-section-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #8b3e1b;
+            margin-top: 5px;
+            margin-bottom: 3px;
+            text-transform: uppercase;
+        }
+
+        .waiters-list {
+            font-size: 0.8rem;
+            color: #4a3321;
+            margin-bottom: 6px;
+            min-height: 18px;
+            white-space: pre-line;
+        }
+
+        .waiters-empty {
+            color: #a99584;
+            font-style: italic;
+        }
+
+        /* ===== STATUS TOGGLE ===== */
+        .status-toggle {
+            display: flex;
+            gap: 5px;
+            margin-top: 5px;
+        }
+
+        .status-btn {
+            padding: 5px 8px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex: 1;
+            text-align: center;
+        }
+
+        .status-prepare {
+            background: #fde8d7;
+            color: #c0541e;
+            border: 1px solid #eaa474;
+        }
+
+        .status-selesai {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #a5d6a7;
+        }
+
+        .status-btn.active {
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .status-prepare.active {
+            background: #fcd4b6;
+            border-color: #d2691e;
+        }
+
+        .status-selesai.active {
+            background: #c8e6c9;
+            border-color: #4caf50;
+        }
+
+        /* ===== SECURITY ===== */
+        .select-input {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238b3e1b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            background-size: 14px;
+        }
+
+        /* ===== KONTROL DI BAWAH ===== */
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .btn {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 0.3px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            color: white;
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-simpan { background: #a8562c; }
+        .btn-muat { background: #8b6e4b; }
+        .btn-print { background: #b55a2a; }
+        .btn-pdf { background: #c75b39; }
+        .btn-reset { background: #6b3f1f; }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        /* ===== NOTIFIKASI ===== */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: #4a2e1a;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ===== KONFIRMASI OVERLAY ===== */
+        .confirm-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .confirm-dialog {
+            background: #fffdf9;
+            padding: 25px;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .confirm-dialog h3 {
+            color: #6b3f1f;
+            margin-bottom: 10px;
+        }
+
+        .confirm-dialog p {
+            color: #4a3321;
+            margin-bottom: 20px;
+        }
+
+        .confirm-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        /* ===== RESPONSIVE (Smartphone) ===== */
+        @media (max-width: 768px) {
+            .a4-page {
+                width: 100%;
+                min-height: auto;
+                padding: 8px 6px;
+                box-shadow: none;
+                border-radius: 8px;
+            }
+
+            .grid-container {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto;
+            }
+
+            .page-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .reservation-meta {
+                text-align: center;
+                margin-top: 5px;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+
+        /* ===== PRINT STYLES ===== */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+                margin: 0;
+            }
+
+            .a4-page {
+                width: 210mm;
+                min-height: 297mm;
+                padding: 12mm 10mm;
+                margin: 0;
+                box-shadow: none;
+                border-radius: 0;
+                border: none;
+            }
+
+            .controls,
+            .notification,
+            .confirm-overlay {
+                display: none !important;
+            }
+
+            .grid-container {
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: auto auto;
+                gap: 6px;
+            }
+
+            .card {
+                break-inside: avoid;
+                page-break-inside: avoid;
+                border: 1px solid #c9a88c;
+            }
+
+            input, select {
+                border: none !important;
+                background: transparent !important;
+                box-shadow: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                font-size: 0.8rem !important;
+                color: #3e2b1c !important;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                appearance: none;
+            }
+
+            input[type="checkbox"],
+            input[type="radio"] {
+                display: inline-block;
+                width: 12px;
+                height: 12px;
+                border: 1px solid #333 !important;
+                background: white !important;
+                -webkit-appearance: checkbox !important;
+                appearance: checkbox !important;
+            }
+
+            input[type="radio"] {
+                -webkit-appearance: radio !important;
+                appearance: radio !important;
+            }
+
+            input::placeholder {
+                color: transparent !important;
+            }
+
+            .paket-item .input-qty {
+                width: 30px;
+                text-align: center;
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -272,1042 +850,448 @@
         </div>
     </div>
 
-  /* ===== RESET & BASE ===== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #f9f1e7;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px 10px;
-    min-height: 100vh;
-    color: #3e2b1c;
-}
-
-/* ===== HALAMAN A4 ===== */
-.a4-page {
-    width: 210mm;
-    min-height: 297mm;
-    background: #fffefc;
-    margin: 0 auto 20px;
-    padding: 12mm 10mm;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-    border-radius: 8px;
-    border: 1px solid #d8c5b0;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-}
-
-/* ===== HEADER HALAMAN ===== */
-.page-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-bottom: 8px;
-    margin-bottom: 12px;
-    border-bottom: 3px double #b55a2a;
-    flex-shrink: 0;
-}
-
-.brand-title {
-    font-size: 2.4rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-    color: #8b3e1b;
-    line-height: 1.1;
-}
-
-.brand-subtitle {
-    font-size: 0.9rem;
-    letter-spacing: 3px;
-    color: #b55a2a;
-    font-weight: 500;
-    margin-top: 2px;
-}
-
-.reservation-meta {
-    text-align: right;
-    font-size: 0.85rem;
-    color: #5a3e2b;
-}
-
-.reservation-number {
-    display: block;
-    font-weight: 600;
-    font-size: 0.95rem;
-    margin-bottom: 2px;
-    color: #8b3e1b;
-}
-
-.reservation-date {
-    font-style: italic;
-    color: #8a6d5a;
-}
-
-/* ===== GRID 2x2 ===== */
-.grid-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto;
-    gap: 10px;
-    flex: 1;
-}
-
-/* ===== CARD UMUM ===== */
-.card {
-    background: #fffdf9;
-    border: 1.5px solid #d9b99b;
-    border-radius: 14px;
-    padding: 12px 14px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-    display: flex;
-    flex-direction: column;
-    transition: all 0.2s;
-    background: linear-gradient(145deg, #fffcf8, #fef7f0);
-}
-
-.card-title {
-    font-size: 1.3rem;
-    font-weight: 600;
-    margin-bottom: 10px;
-    padding-bottom: 5px;
-    border-bottom: 2px solid #e0c9b0;
-    color: #6b3f1f;
-    letter-spacing: 0.5px;
-}
-
-.barista-title {
-    color: #b0572c;
-}
-.kitchen-title {
-    color: #8b4513;
-}
-.waiters-title {
-    color: #c96e2e;
-}
-.security-title {
-    color: #a14f1e;
-}
-
-/* ===== INPUT & LABEL ===== */
-.reservation-info {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    margin-bottom: 8px;
-}
-
-.field-label {
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: #7a5c42;
-    margin-top: 4px;
-}
-
-.input-text {
-    width: 100%;
-    padding: 6px 8px;
-    border: 1px solid #d0b39a;
-    border-radius: 6px;
-    font-size: 0.85rem;
-    color: #3e2b1c;
-    background: #fffefb;
-    outline: none;
-    transition: border 0.2s;
-}
-
-.input-text:focus {
-    border-color: #b55a2a;
-    box-shadow: 0 0 0 2px rgba(181, 90, 42, 0.15);
-}
-
-input[type="number"].input-text {
-    -moz-appearance: textfield;
-}
-
-input[type="number"].input-text::-webkit-outer-spin-button,
-input[type="number"].input-text::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-/* ===== DIVIDER ===== */
-.section-divider {
-    border-top: 1px dashed #d9bfa6;
-    margin: 8px 0;
-}
-
-/* ===== SUB TITLE ===== */
-.sub-title {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #6b3f1f;
-    margin-bottom: 5px;
-}
-
-/* ===== CHECKBOX GRID BARISTA ===== */
-.checkbox-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 5px 10px;
-    font-size: 0.85rem;
-}
-
-.checkbox-item {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    cursor: pointer;
-    color: #4a3321;
-}
-
-.checkbox-item input[type="checkbox"] {
-    accent-color: #b55a2a;
-    width: 15px;
-    height: 15px;
-    cursor: pointer;
-}
-
-/* ===== INPUT LAINNYA BARISTA ===== */
-.hidden-input {
-    margin-top: 5px;
-}
-
-/* ===== RADIO GROUP KITCHEN ===== */
-.radio-group {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    margin-bottom: 5px;
-    font-size: 0.85rem;
-}
-
-.radio-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    cursor: pointer;
-    color: #4a3321;
-}
-
-.radio-item input[type="radio"] {
-    accent-color: #b55a2a;
-    width: 15px;
-    height: 15px;
-    cursor: pointer;
-}
-
-/* ===== ISI PAKET DENGAN QUANTITY ===== */
-.paket-items-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    margin-top: 5px;
-}
-
-.paket-item {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 0.8rem;
-}
-
-.item-number {
-    font-weight: 600;
-    color: #8b3e1b;
-    min-width: 18px;
-    text-align: right;
-}
-
-.paket-input {
-    flex: 1;
-    padding: 4px 6px;
-    font-size: 0.8rem;
-}
-
-.input-qty {
-    width: 40px;
-    padding: 4px 2px;
-    text-align: center;
-    border: 1px solid #d0b39a;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    background: #fffefb;
-    outline: none;
-    -moz-appearance: textfield;
-}
-
-.input-qty::-webkit-outer-spin-button,
-.input-qty::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-/* ===== WAITERS ===== */
-.waiters-auto-info {
-    font-size: 0.85rem;
-    margin-bottom: 5px;
-}
-
-.waiters-field {
-    display: flex;
-    gap: 5px;
-    margin-bottom: 3px;
-}
-
-.waiters-label {
-    font-weight: 600;
-    color: #7a5c42;
-    min-width: 70px;
-}
-
-.waiters-value {
-    font-weight: 500;
-    color: #3e2b1c;
-}
-
-.waiters-section-label {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: #8b3e1b;
-    margin-top: 5px;
-    margin-bottom: 3px;
-    text-transform: uppercase;
-}
-
-.waiters-list {
-    font-size: 0.8rem;
-    color: #4a3321;
-    margin-bottom: 6px;
-    min-height: 18px;
-    white-space: pre-line;
-}
-
-.waiters-empty {
-    color: #a99584;
-    font-style: italic;
-}
-
-/* ===== STATUS TOGGLE ===== */
-.status-toggle {
-    display: flex;
-    gap: 5px;
-    margin-top: 5px;
-}
-
-.status-btn {
-    padding: 5px 8px;
-    border: none;
-    border-radius: 6px;
-    font-size: 0.7rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    flex: 1;
-    text-align: center;
-}
-
-.status-prepare {
-    background: #fde8d7;
-    color: #c0541e;
-    border: 1px solid #eaa474;
-}
-
-.status-selesai {
-    background: #e8f5e9;
-    color: #2e7d32;
-    border: 1px solid #a5d6a7;
-}
-
-.status-btn.active {
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-    transform: translateY(-1px);
-}
-
-.status-prepare.active {
-    background: #fcd4b6;
-    border-color: #d2691e;
-}
-
-.status-selesai.active {
-    background: #c8e6c9;
-    border-color: #4caf50;
-}
-
-/* ===== SECURITY ===== */
-.select-input {
-    appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238b3e1b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 8px center;
-    background-size: 14px;
-}
-
-/* ===== KONTROL DI BAWAH ===== */
-.controls {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-    margin: 20px 0;
-}
-
-.btn {
-    padding: 10px 18px;
-    border: none;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    letter-spacing: 0.3px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-    color: white;
-}
-
-.btn:active {
-    transform: translateY(1px);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.btn-simpan {
-    background: #a8562c;
-}
-.btn-muat {
-    background: #8b6e4b;
-}
-.btn-print {
-    background: #b55a2a;
-}
-.btn-pdf {
-    background: #c75b39;
-}
-.btn-reset {
-    background: #6b3f1f;
-}
-
-.btn:hover {
-    opacity: 0.9;
-}
-
-/* ===== NOTIFIKASI ===== */
-.notification {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%) translateY(20px);
-    background: #4a2e1a;
-    color: #fff;
-    padding: 12px 24px;
-    border-radius: 30px;
-    font-size: 0.9rem;
-    opacity: 0;
-    pointer-events: none;
-    transition: all 0.4s ease;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-.notification.show {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-}
-
-/* ===== KONFIRMASI OVERLAY ===== */
-.confirm-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-.confirm-dialog {
-    background: #fffdf9;
-    padding: 25px;
-    border-radius: 16px;
-    width: 90%;
-    max-width: 400px;
-    text-align: center;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-}
-
-.confirm-dialog h3 {
-    color: #6b3f1f;
-    margin-bottom: 10px;
-}
-
-.confirm-dialog p {
-    color: #4a3321;
-    margin-bottom: 20px;
-}
-
-.confirm-buttons {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-}
-
-/* ===== RESPONSIVE (Smartphone) ===== */
-@media (max-width: 768px) {
-    .a4-page {
-        width: 100%;
-        min-height: auto;
-        padding: 8px 6px;
-        box-shadow: none;
-        border-radius: 8px;
-    }
-
-    .grid-container {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto;
-    }
-
-    .page-header {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .reservation-meta {
-        text-align: center;
-        margin-top: 5px;
-    }
-
-    .controls {
-        flex-direction: column;
-        align-items: stretch;
-    }
-}
-
-/* ===== PRINT STYLES ===== */
-@media print {
-    body {
-        background: white;
-        padding: 0;
-        margin: 0;
-    }
-
-    .a4-page {
-        width: 210mm;
-        min-height: 297mm;
-        padding: 12mm 10mm;
-        margin: 0;
-        box-shadow: none;
-        border-radius: 0;
-        border: none;
-    }
-
-    .controls,
-    .notification,
-    .confirm-overlay {
-        display: none !important;
-    }
-
-    .grid-container {
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: auto auto;
-        gap: 6px;
-    }
-
-    .card {
-        break-inside: avoid;
-        page-break-inside: avoid;
-        border: 1px solid #c9a88c;
-    }
-
-    input, select {
-        border: none !important;
-        background: transparent !important;
-        box-shadow: none !important;
-        padding: 0 !important;
-        margin: 0 !important;
-        font-size: 0.8rem !important;
-        color: #3e2b1c !important;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-    }
-
-    input[type="checkbox"],
-    input[type="radio"] {
-        display: inline-block;
-        width: 12px;
-        height: 12px;
-        border: 1px solid #333 !important;
-        background: white !important;
-        -webkit-appearance: checkbox !important;
-        appearance: checkbox !important;
-    }
-
-    input[type="radio"] {
-        -webkit-appearance: radio !important;
-        appearance: radio !important;
-    }
-
-    input::placeholder {
-        color: transparent !important;
-    }
-
-    .paket-item .input-qty {
-        width: 30px;
-        text-align: center;
-    }
-}
-document.addEventListener('DOMContentLoaded', function() {
-    // ===== ELEMEN =====
-    // Barista
-    const baristaNama = document.getElementById('baristaNama');
-    const baristaPx = document.getElementById('baristaPx');
-    const baristaJam = document.getElementById('baristaJam');
-    const baristaEsTeler = document.getElementById('baristaEsTeler');
-    const baristaJeruk = document.getElementById('baristaJeruk');
-    const baristaTeh = document.getElementById('baristaTeh');
-    const baristaEsBatu = document.getElementById('baristaEsBatu');
-    const baristaLainnyaCb = document.getElementById('baristaLainnyaCb');
-    const baristaLainnyaText = document.getElementById('baristaLainnyaText');
-    const baristaLainnyaWrap = document.getElementById('baristaLainnyaWrap');
-
-    // Kitchen
-    const kitchenNama = document.getElementById('kitchenNama');
-    const kitchenPx = document.getElementById('kitchenPx');
-    const kitchenJam = document.getElementById('kitchenJam');
-    const paketRadios = document.querySelectorAll('input[name="paket"]');
-    const paketInputs = [];
-    for (let i = 1; i <= 10; i++) {
-        paketInputs.push({
-            text: document.getElementById('paket' + i),
-            qty: document.getElementById('paket' + i + 'Qty')
-        });
-    }
-
-    // Waiters
-    const waitersNama = document.getElementById('waitersNama');
-    const waitersPx = document.getElementById('waitersPx');
-    const waitersJam = document.getElementById('waitersJam');
-    const waitersBaristaList = document.getElementById('waitersBaristaList');
-    const waitersKitchenList = document.getElementById('waitersKitchenList');
-
-    // Security
-    const securityNama = document.getElementById('securityNama');
-    const securityPx = document.getElementById('securityPx');
-    const securityJam = document.getElementById('securityJam');
-    const securityKendaraan = document.getElementById('securityKendaraan');
-    const securityKendaraanLainnya = document.getElementById('securityKendaraanLainnya');
-    const securityLainnyaWrap = document.getElementById('securityLainnyaWrap');
-
-    // Status
-    const statusPrepareBtn = document.getElementById('statusPrepareBtn');
-    const statusSelesaiBtn = document.getElementById('statusSelesaiBtn');
-    let currentStatus = 'prepare'; // default
-
-    // Nomor reservasi & tanggal
-    const reservationNumberDisplay = document.getElementById('reservationNumberDisplay');
-    const currentDateDisplay = document.getElementById('currentDateDisplay');
-    let reservationNumber = 1;
-
-    // Notification
-    const notification = document.getElementById('notification');
-    const notificationText = document.getElementById('notificationText');
-
-    // Confirm overlay
-    const confirmOverlay = document.getElementById('confirmOverlay');
-    const confirmResetYes = document.getElementById('confirmResetYes');
-    const confirmResetNo = document.getElementById('confirmResetNo');
-
-    // Tombol kontrol
-    const btnSimpan = document.getElementById('btnSimpan');
-    const btnMuat = document.getElementById('btnMuat');
-    const btnPrint = document.getElementById('btnPrint');
-    const btnPdf = document.getElementById('btnPdf');
-    const btnReset = document.getElementById('btnReset');
-
-    // ===== FUNGSI UTILITAS =====
-    function formatTanggal() {
-        const now = new Date();
-        const options = { day: 'numeric', month: 'long', year: 'numeric' };
-        return now.toLocaleDateString('id-ID', options);
-    }
-
-    function updateTanggal() {
-        currentDateDisplay.textContent = formatTanggal();
-    }
-
-    function updateReservationNumberDisplay() {
-        reservationNumberDisplay.textContent = String(reservationNumber).padStart(3, '0');
-    }
-
-    // Toggle input lainnya barista
-    baristaLainnyaCb.addEventListener('change', function() {
-        if (this.checked) {
-            baristaLainnyaWrap.style.display = 'block';
-        } else {
-            baristaLainnyaWrap.style.display = 'none';
-            baristaLainnyaText.value = '';
-        }
-        updateWaiters();
-    });
-
-    // Toggle input lainnya security
-    securityKendaraan.addEventListener('change', function() {
-        if (this.value === 'Lainnya') {
-            securityLainnyaWrap.style.display = 'block';
-        } else {
-            securityLainnyaWrap.style.display = 'none';
-            securityKendaraanLainnya.value = '';
-        }
-    });
-
-    // Update waiters otomatis
-    function updateWaiters() {
-        // Ambil data dari barista atau kitchen sebagai prioritas
-        const nama = baristaNama.value.trim() || kitchenNama.value.trim() || '-';
-        const px = baristaPx.value.trim() || kitchenPx.value.trim() || '-';
-        const jam = baristaJam.value || kitchenJam.value || '-';
-
-        waitersNama.textContent = nama;
-        waitersPx.textContent = px;
-        waitersJam.textContent = jam;
-
-        // Barista list
-        const baristaItems = [];
-        if (baristaEsTeler.checked) baristaItems.push('Es Teler');
-        if (baristaJeruk.checked) baristaItems.push('Jeruk');
-        if (baristaTeh.checked) baristaItems.push('Teh');
-        if (baristaEsBatu.checked) baristaItems.push('Es Batu');
-        if (baristaLainnyaCb.checked && baristaLainnyaText.value.trim() !== '') {
-            baristaItems.push(baristaLainnyaText.value.trim());
-        }
-        waitersBaristaList.innerHTML = '';
-        if (baristaItems.length > 0) {
-            baristaItems.forEach(item => {
-                const div = document.createElement('div');
-                div.textContent = '✓ ' + item;
-                waitersBaristaList.appendChild(div);
-            });
-        } else {
-            waitersBaristaList.innerHTML = '<span class="waiters-empty">Belum ada pesanan barista.</span>';
-        }
-
-        // Kitchen list
-        const selectedPaket = document.querySelector('input[name="paket"]:checked');
-        const paketNama = selectedPaket ? selectedPaket.value : '-';
-        const itemsDetail = [];
-        paketInputs.forEach((item, index) => {
-            const text = item.text.value.trim();
-            const qty = item.qty.value.trim() || '0';
-            if (text !== '') {
-                itemsDetail.push(`${index + 1}. ${text} (${qty})`);
-            }
-        });
-        waitersKitchenList.innerHTML = '';
-        if (paketNama !== '-') {
-            const paketHeader = document.createElement('div');
-            paketHeader.style.fontWeight = '600';
-            paketHeader.textContent = 'Paket: ' + paketNama;
-            waitersKitchenList.appendChild(paketHeader);
-            if (itemsDetail.length > 0) {
-                itemsDetail.forEach(line => {
-                    const div = document.createElement('div');
-                    div.textContent = line;
-                    waitersKitchenList.appendChild(div);
-                });
-            } else {
-                const empty = document.createElement('div');
-                empty.textContent = '(Belum ada isi paket)';
-                waitersKitchenList.appendChild(empty);
-            }
-        } else {
-            waitersKitchenList.innerHTML = '<span class="waiters-empty">Belum ada pesanan kitchen.</span>';
-        }
-    }
-
-    // Event listeners untuk update waiters
-    [baristaNama, baristaPx, baristaJam, kitchenNama, kitchenPx, kitchenJam, 
-     baristaEsTeler, baristaJeruk, baristaTeh, baristaEsBatu, baristaLainnyaCb, baristaLainnyaText,
-     ...paketInputs.map(p => p.text), ...paketInputs.map(p => p.qty),
-     ...paketRadios].forEach(el => {
-        el.addEventListener('input', updateWaiters);
-        el.addEventListener('change', updateWaiters);
-    });
-
-    // Status toggle
-    function setStatus(status) {
-        currentStatus = status;
-        if (status === 'prepare') {
-            statusPrepareBtn.classList.add('active');
-            statusSelesaiBtn.classList.remove('active');
-        } else {
-            statusSelesaiBtn.classList.add('active');
-            statusPrepareBtn.classList.remove('active');
-        }
-    }
-
-    statusPrepareBtn.addEventListener('click', function() {
-        setStatus('prepare');
-    });
-    statusSelesaiBtn.addEventListener('click', function() {
-        setStatus('selesai');
-    });
-
-    // ===== SIMPAN DATA =====
-    function simpanData() {
-        const data = {
-            reservationNumber: reservationNumber,
-            barista: {
-                nama: baristaNama.value,
-                px: baristaPx.value,
-                jam: baristaJam.value,
-                esTeler: baristaEsTeler.checked,
-                jeruk: baristaJeruk.checked,
-                teh: baristaTeh.checked,
-                esBatu: baristaEsBatu.checked,
-                lainnyaCb: baristaLainnyaCb.checked,
-                lainnyaText: baristaLainnyaText.value
-            },
-            kitchen: {
-                nama: kitchenNama.value,
-                px: kitchenPx.value,
-                jam: kitchenJam.value,
-                paket: document.querySelector('input[name="paket"]:checked')?.value || '',
-                items: paketInputs.map(item => ({
-                    text: item.text.value,
-                    qty: item.qty.value
-                }))
-            },
-            security: {
-                nama: securityNama.value,
-                px: securityPx.value,
-                jam: securityJam.value,
-                kendaraan: securityKendaraan.value,
-                kendaraanLainnya: securityKendaraanLainnya.value
-            },
-            status: currentStatus
-        };
-        localStorage.setItem('pawonMbahGitoReservasi', JSON.stringify(data));
-        showNotification('Data reservasi berhasil disimpan.');
-    }
-
-    // ===== MUAT DATA =====
-    function muatData() {
-        const saved = localStorage.getItem('pawonMbahGitoReservasi');
-        if (!saved) {
-            showNotification('Tidak ada data tersimpan.');
-            return;
-        }
-        try {
-            const data = JSON.parse(saved);
-            reservationNumber = data.reservationNumber || 1;
-            updateReservationNumberDisplay();
-
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // ===== ELEMEN =====
             // Barista
-            baristaNama.value = data.barista.nama || '';
-            baristaPx.value = data.barista.px || '';
-            baristaJam.value = data.barista.jam || '';
-            baristaEsTeler.checked = data.barista.esTeler || false;
-            baristaJeruk.checked = data.barista.jeruk || false;
-            baristaTeh.checked = data.barista.teh || false;
-            baristaEsBatu.checked = data.barista.esBatu || false;
-            baristaLainnyaCb.checked = data.barista.lainnyaCb || false;
-            baristaLainnyaText.value = data.barista.lainnyaText || '';
-            if (baristaLainnyaCb.checked) {
-                baristaLainnyaWrap.style.display = 'block';
-            } else {
-                baristaLainnyaWrap.style.display = 'none';
-            }
+            const baristaNama = document.getElementById('baristaNama');
+            const baristaPx = document.getElementById('baristaPx');
+            const baristaJam = document.getElementById('baristaJam');
+            const baristaEsTeler = document.getElementById('baristaEsTeler');
+            const baristaJeruk = document.getElementById('baristaJeruk');
+            const baristaTeh = document.getElementById('baristaTeh');
+            const baristaEsBatu = document.getElementById('baristaEsBatu');
+            const baristaLainnyaCb = document.getElementById('baristaLainnyaCb');
+            const baristaLainnyaText = document.getElementById('baristaLainnyaText');
+            const baristaLainnyaWrap = document.getElementById('baristaLainnyaWrap');
 
             // Kitchen
-            kitchenNama.value = data.kitchen.nama || '';
-            kitchenPx.value = data.kitchen.px || '';
-            kitchenJam.value = data.kitchen.jam || '';
-            if (data.kitchen.paket) {
-                const radio = document.querySelector(`input[name="paket"][value="${data.kitchen.paket}"]`);
-                if (radio) radio.checked = true;
-            }
-            if (data.kitchen.items) {
-                data.kitchen.items.forEach((item, index) => {
-                    if (paketInputs[index]) {
-                        paketInputs[index].text.value = item.text || '';
-                        paketInputs[index].qty.value = item.qty || '0';
-                    }
+            const kitchenNama = document.getElementById('kitchenNama');
+            const kitchenPx = document.getElementById('kitchenPx');
+            const kitchenJam = document.getElementById('kitchenJam');
+            const paketRadios = document.querySelectorAll('input[name="paket"]');
+            const paketInputs = [];
+            for (let i = 1; i <= 10; i++) {
+                paketInputs.push({
+                    text: document.getElementById('paket' + i),
+                    qty: document.getElementById('paket' + i + 'Qty')
                 });
             }
 
+            // Waiters
+            const waitersNama = document.getElementById('waitersNama');
+            const waitersPx = document.getElementById('waitersPx');
+            const waitersJam = document.getElementById('waitersJam');
+            const waitersBaristaList = document.getElementById('waitersBaristaList');
+            const waitersKitchenList = document.getElementById('waitersKitchenList');
+
             // Security
-            securityNama.value = data.security.nama || '';
-            securityPx.value = data.security.px || '';
-            securityJam.value = data.security.jam || '';
-            securityKendaraan.value = data.security.kendaraan || '';
-            securityKendaraanLainnya.value = data.security.kendaraanLainnya || '';
-            if (securityKendaraan.value === 'Lainnya') {
-                securityLainnyaWrap.style.display = 'block';
-            } else {
-                securityLainnyaWrap.style.display = 'none';
-            }
+            const securityNama = document.getElementById('securityNama');
+            const securityPx = document.getElementById('securityPx');
+            const securityJam = document.getElementById('securityJam');
+            const securityKendaraan = document.getElementById('securityKendaraan');
+            const securityKendaraanLainnya = document.getElementById('securityKendaraanLainnya');
+            const securityLainnyaWrap = document.getElementById('securityLainnyaWrap');
 
             // Status
-            setStatus(data.status || 'prepare');
+            const statusPrepareBtn = document.getElementById('statusPrepareBtn');
+            const statusSelesaiBtn = document.getElementById('statusSelesaiBtn');
+            let currentStatus = 'prepare'; // default
 
-            updateWaiters();
-            showNotification('Data berhasil dimuat.');
-        } catch (e) {
-            showNotification('Gagal memuat data.');
-        }
-    }
+            // Nomor reservasi & tanggal
+            const reservationNumberDisplay = document.getElementById('reservationNumberDisplay');
+            const currentDateDisplay = document.getElementById('currentDateDisplay');
+            let reservationNumber = 1;
 
-    // ===== RESET DATA =====
-    function resetData() {
-        // Clear all inputs
-        document.querySelectorAll('.input-text').forEach(input => input.value = '');
-        document.querySelectorAll('.input-qty').forEach(input => input.value = '0');
-        document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
-        document.querySelectorAll('input[type="radio"]').forEach(rb => rb.checked = false);
-        securityKendaraan.value = '';
-        securityLainnyaWrap.style.display = 'none';
-        baristaLainnyaWrap.style.display = 'none';
-        setStatus('prepare');
-        // Increase reservation number
-        reservationNumber++;
-        updateReservationNumberDisplay();
-        updateWaiters();
-        localStorage.removeItem('pawonMbahGitoReservasi');
-        showNotification('Data reservasi direset.');
-    }
+            // Notification
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notificationText');
 
-    // ===== NOTIFIKASI =====
-    function showNotification(message) {
-        notificationText.textContent = message;
-        notification.classList.add('show');
-        setTimeout(() => {
-            notification.classList.remove('show');
-        }, 2500);
-    }
+            // Confirm overlay
+            const confirmOverlay = document.getElementById('confirmOverlay');
+            const confirmResetYes = document.getElementById('confirmResetYes');
+            const confirmResetNo = document.getElementById('confirmResetNo');
 
-    // ===== VALIDASI DATA UTAMA =====
-    function validateData() {
-        const nama = baristaNama.value.trim() || kitchenNama.value.trim();
-        const px = baristaPx.value.trim() || kitchenPx.value.trim();
-        const jam = baristaJam.value || kitchenJam.value;
-        if (!nama || !px || !jam) {
-            return false;
-        }
-        return true;
-    }
+            // Tombol kontrol
+            const btnSimpan = document.getElementById('btnSimpan');
+            const btnMuat = document.getElementById('btnMuat');
+            const btnPrint = document.getElementById('btnPrint');
+            const btnPdf = document.getElementById('btnPdf');
+            const btnReset = document.getElementById('btnReset');
 
-    // ===== DOWNLOAD PDF =====
-    function downloadPDF() {
-        if (!validateData()) {
-            showNotification('Data reservasi belum lengkap.');
-            return;
-        }
+            // ===== FUNGSI UTILITAS =====
+            function formatTanggal() {
+                const now = new Date();
+                const options = { day: 'numeric', month: 'long', year: 'numeric' };
+                return now.toLocaleDateString('id-ID', options);
+            }
 
-        const element = document.getElementById('a4Page');
-        const opt = {
-            margin:        [0, 0, 0, 0],
-            filename:      `Reservasi-Pawon-Mbah-Gito-${baristaNama.value.trim() || kitchenNama.value.trim() || 'TanpaNama'}-${formatTanggal().replace(/\s+/g, '-')}.pdf`,
-            image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
-            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
-            pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
-        };
+            function updateTanggal() {
+                currentDateDisplay.textContent = formatTanggal();
+            }
 
-        // Gunakan onclone untuk merapikan tampilan input
-        opt.onclone = function(clonedDoc) {
-            const cloneA4 = clonedDoc.getElementById('a4Page');
-            // Ubah semua input menjadi span dengan nilai
-            const inputs = cloneA4.querySelectorAll('input, select');
-            inputs.forEach(input => {
-                let replacement;
-                if (input.tagName === 'SELECT') {
-                    replacement = clonedDoc.createElement('span');
-                    replacement.textContent = input.options[input.selectedIndex]?.text || '';
-                } else if (input.type === 'checkbox' || input.type === 'radio') {
-                    if (input.checked) {
-                        replacement = clonedDoc.createElement('span');
-                        replacement.textContent = input.type === 'checkbox' ? '☑' : '●';
-                    } else {
-                        replacement = clonedDoc.createElement('span');
-                        replacement.textContent = input.type === 'checkbox' ? '☐' : '○';
-                    }
+            function updateReservationNumberDisplay() {
+                reservationNumberDisplay.textContent = String(reservationNumber).padStart(3, '0');
+            }
+
+            // Toggle input lainnya barista
+            baristaLainnyaCb.addEventListener('change', function() {
+                if (this.checked) {
+                    baristaLainnyaWrap.style.display = 'block';
                 } else {
-                    replacement = clonedDoc.createElement('span');
-                    replacement.textContent = input.value || '';
+                    baristaLainnyaWrap.style.display = 'none';
+                    baristaLainnyaText.value = '';
                 }
-                replacement.style.cssText = 'font-size: 0.8rem; color: #3e2b1c; display: inline-block; min-width: 30px;';
-                input.replaceWith(replacement);
+                updateWaiters();
             });
 
-            // Ubah tombol status menjadi teks indikator
-            const prepareBtn = clonedDoc.getElementById('statusPrepareBtn');
-            const selesaiBtn = clonedDoc.getElementById('statusSelesaiBtn');
-            if (prepareBtn && selesaiBtn) {
-                const container = prepareBtn.parentNode;
-                container.innerHTML = '';
-                const statusText = clonedDoc.createElement('span');
-                statusText.textContent = currentStatus === 'prepare' ? '🟠 MASIH DALAM PROSES / PREPARE' : '🟢 SUDAH SELESAI';
-                statusText.style.cssText = 'font-weight: 600; font-size: 0.8rem; padding: 4px 8px; border-radius: 4px;';
-                if (currentStatus === 'prepare') {
-                    statusText.style.background = '#fde8d7';
-                    statusText.style.color = '#c0541e';
+            // Toggle input lainnya security
+            securityKendaraan.addEventListener('change', function() {
+                if (this.value === 'Lainnya') {
+                    securityLainnyaWrap.style.display = 'block';
                 } else {
-                    statusText.style.background = '#e8f5e9';
-                    statusText.style.color = '#2e7d32';
+                    securityLainnyaWrap.style.display = 'none';
+                    securityKendaraanLainnya.value = '';
                 }
-                container.appendChild(statusText);
+            });
+
+            // Update waiters otomatis
+            function updateWaiters() {
+                // Ambil data dari barista atau kitchen sebagai prioritas
+                const nama = baristaNama.value.trim() || kitchenNama.value.trim() || '-';
+                const px = baristaPx.value.trim() || kitchenPx.value.trim() || '-';
+                const jam = baristaJam.value || kitchenJam.value || '-';
+
+                waitersNama.textContent = nama;
+                waitersPx.textContent = px;
+                waitersJam.textContent = jam;
+
+                // Barista list
+                const baristaItems = [];
+                if (baristaEsTeler.checked) baristaItems.push('Es Teler');
+                if (baristaJeruk.checked) baristaItems.push('Jeruk');
+                if (baristaTeh.checked) baristaItems.push('Teh');
+                if (baristaEsBatu.checked) baristaItems.push('Es Batu');
+                if (baristaLainnyaCb.checked && baristaLainnyaText.value.trim() !== '') {
+                    baristaItems.push(baristaLainnyaText.value.trim());
+                }
+                waitersBaristaList.innerHTML = '';
+                if (baristaItems.length > 0) {
+                    baristaItems.forEach(item => {
+                        const div = document.createElement('div');
+                        div.textContent = '✓ ' + item;
+                        waitersBaristaList.appendChild(div);
+                    });
+                } else {
+                    waitersBaristaList.innerHTML = '<span class="waiters-empty">Belum ada pesanan barista.</span>';
+                }
+
+                // Kitchen list
+                const selectedPaket = document.querySelector('input[name="paket"]:checked');
+                const paketNama = selectedPaket ? selectedPaket.value : '-';
+                const itemsDetail = [];
+                paketInputs.forEach((item, index) => {
+                    const text = item.text.value.trim();
+                    const qty = item.qty.value.trim() || '0';
+                    if (text !== '') {
+                        itemsDetail.push(`${index + 1}. ${text} (${qty})`);
+                    }
+                });
+                waitersKitchenList.innerHTML = '';
+                if (paketNama !== '-') {
+                    const paketHeader = document.createElement('div');
+                    paketHeader.style.fontWeight = '600';
+                    paketHeader.textContent = 'Paket: ' + paketNama;
+                    waitersKitchenList.appendChild(paketHeader);
+                    if (itemsDetail.length > 0) {
+                        itemsDetail.forEach(line => {
+                            const div = document.createElement('div');
+                            div.textContent = line;
+                            waitersKitchenList.appendChild(div);
+                        });
+                    } else {
+                        const empty = document.createElement('div');
+                        empty.textContent = '(Belum ada isi paket)';
+                        waitersKitchenList.appendChild(empty);
+                    }
+                } else {
+                    waitersKitchenList.innerHTML = '<span class="waiters-empty">Belum ada pesanan kitchen.</span>';
+                }
             }
-        };
 
-        html2pdf().set(opt).from(element).save();
-    }
+            // Event listeners untuk update waiters
+            [baristaNama, baristaPx, baristaJam, kitchenNama, kitchenPx, kitchenJam, 
+             baristaEsTeler, baristaJeruk, baristaTeh, baristaEsBatu, baristaLainnyaCb, baristaLainnyaText,
+             ...paketInputs.map(p => p.text), ...paketInputs.map(p => p.qty),
+             ...paketRadios].forEach(el => {
+                el.addEventListener('input', updateWaiters);
+                el.addEventListener('change', updateWaiters);
+            });
 
-    // ===== PRINT =====
-    function printPage() {
-        window.print();
-    }
+            // Status toggle
+            function setStatus(status) {
+                currentStatus = status;
+                if (status === 'prepare') {
+                    statusPrepareBtn.classList.add('active');
+                    statusSelesaiBtn.classList.remove('active');
+                } else {
+                    statusSelesaiBtn.classList.add('active');
+                    statusPrepareBtn.classList.remove('active');
+                }
+            }
 
-    // ===== EVENT LISTENERS =====
-    btnSimpan.addEventListener('click', simpanData);
-    btnMuat.addEventListener('click', muatData);
-    btnPrint.addEventListener('click', printPage);
-    btnPdf.addEventListener('click', downloadPDF);
-    btnReset.addEventListener('click', function() {
-        confirmOverlay.style.display = 'flex';
-    });
+            statusPrepareBtn.addEventListener('click', function() {
+                setStatus('prepare');
+            });
+            statusSelesaiBtn.addEventListener('click', function() {
+                setStatus('selesai');
+            });
 
-    confirmResetYes.addEventListener('click', function() {
-        resetData();
-        confirmOverlay.style.display = 'none';
-    });
+            // ===== SIMPAN DATA =====
+            function simpanData() {
+                const data = {
+                    reservationNumber: reservationNumber,
+                    barista: {
+                        nama: baristaNama.value,
+                        px: baristaPx.value,
+                        jam: baristaJam.value,
+                        esTeler: baristaEsTeler.checked,
+                        jeruk: baristaJeruk.checked,
+                        teh: baristaTeh.checked,
+                        esBatu: baristaEsBatu.checked,
+                        lainnyaCb: baristaLainnyaCb.checked,
+                        lainnyaText: baristaLainnyaText.value
+                    },
+                    kitchen: {
+                        nama: kitchenNama.value,
+                        px: kitchenPx.value,
+                        jam: kitchenJam.value,
+                        paket: document.querySelector('input[name="paket"]:checked')?.value || '',
+                        items: paketInputs.map(item => ({
+                            text: item.text.value,
+                            qty: item.qty.value
+                        }))
+                    },
+                    security: {
+                        nama: securityNama.value,
+                        px: securityPx.value,
+                        jam: securityJam.value,
+                        kendaraan: securityKendaraan.value,
+                        kendaraanLainnya: securityKendaraanLainnya.value
+                    },
+                    status: currentStatus
+                };
+                localStorage.setItem('pawonMbahGitoReservasi', JSON.stringify(data));
+                showNotification('Data reservasi berhasil disimpan.');
+            }
 
-    confirmResetNo.addEventListener('click', function() {
-        confirmOverlay.style.display = 'none';
-    });
+            // ===== MUAT DATA =====
+            function muatData() {
+                const saved = localStorage.getItem('pawonMbahGitoReservasi');
+                if (!saved) {
+                    showNotification('Tidak ada data tersimpan.');
+                    return;
+                }
+                try {
+                    const data = JSON.parse(saved);
+                    reservationNumber = data.reservationNumber || 1;
+                    updateReservationNumberDisplay();
 
-    // ===== INISIALISASI =====
-    updateTanggal();
-    updateReservationNumberDisplay();
-    updateWaiters();
-    setStatus('prepare');
+                    // Barista
+                    baristaNama.value = data.barista.nama || '';
+                    baristaPx.value = data.barista.px || '';
+                    baristaJam.value = data.barista.jam || '';
+                    baristaEsTeler.checked = data.barista.esTeler || false;
+                    baristaJeruk.checked = data.barista.jeruk || false;
+                    baristaTeh.checked = data.barista.teh || false;
+                    baristaEsBatu.checked = data.barista.esBatu || false;
+                    baristaLainnyaCb.checked = data.barista.lainnyaCb || false;
+                    baristaLainnyaText.value = data.barista.lainnyaText || '';
+                    if (baristaLainnyaCb.checked) {
+                        baristaLainnyaWrap.style.display = 'block';
+                    } else {
+                        baristaLainnyaWrap.style.display = 'none';
+                    }
 
-    // Muat data otomatis jika ada
-    const savedData = localStorage.getItem('pawonMbahGitoReservasi');
-    if (savedData) {
-        muatData();
-    }
-});
-    <script src="script.js"></script>
+                    // Kitchen
+                    kitchenNama.value = data.kitchen.nama || '';
+                    kitchenPx.value = data.kitchen.px || '';
+                    kitchenJam.value = data.kitchen.jam || '';
+                    if (data.kitchen.paket) {
+                        const radio = document.querySelector(`input[name="paket"][value="${data.kitchen.paket}"]`);
+                        if (radio) radio.checked = true;
+                    }
+                    if (data.kitchen.items) {
+                        data.kitchen.items.forEach((item, index) => {
+                            if (paketInputs[index]) {
+                                paketInputs[index].text.value = item.text || '';
+                                paketInputs[index].qty.value = item.qty || '0';
+                            }
+                        });
+                    }
+
+                    // Security
+                    securityNama.value = data.security.nama || '';
+                    securityPx.value = data.security.px || '';
+                    securityJam.value = data.security.jam || '';
+                    securityKendaraan.value = data.security.kendaraan || '';
+                    securityKendaraanLainnya.value = data.security.kendaraanLainnya || '';
+                    if (securityKendaraan.value === 'Lainnya') {
+                        securityLainnyaWrap.style.display = 'block';
+                    } else {
+                        securityLainnyaWrap.style.display = 'none';
+                    }
+
+                    // Status
+                    setStatus(data.status || 'prepare');
+
+                    updateWaiters();
+                    showNotification('Data berhasil dimuat.');
+                } catch (e) {
+                    showNotification('Gagal memuat data.');
+                }
+            }
+
+            // ===== RESET DATA =====
+            function resetData() {
+                // Clear all inputs
+                document.querySelectorAll('.input-text').forEach(input => input.value = '');
+                document.querySelectorAll('.input-qty').forEach(input => input.value = '0');
+                document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+                document.querySelectorAll('input[type="radio"]').forEach(rb => rb.checked = false);
+                securityKendaraan.value = '';
+                securityLainnyaWrap.style.display = 'none';
+                baristaLainnyaWrap.style.display = 'none';
+                setStatus('prepare');
+                // Increase reservation number
+                reservationNumber++;
+                updateReservationNumberDisplay();
+                updateWaiters();
+                localStorage.removeItem('pawonMbahGitoReservasi');
+                showNotification('Data reservasi direset.');
+            }
+
+            // ===== NOTIFIKASI =====
+            function showNotification(message) {
+                notificationText.textContent = message;
+                notification.classList.add('show');
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 2500);
+            }
+
+            // ===== VALIDASI DATA UTAMA =====
+            function validateData() {
+                const nama = baristaNama.value.trim() || kitchenNama.value.trim();
+                const px = baristaPx.value.trim() || kitchenPx.value.trim();
+                const jam = baristaJam.value || kitchenJam.value;
+                if (!nama || !px || !jam) {
+                    return false;
+                }
+                return true;
+            }
+
+            // ===== DOWNLOAD PDF =====
+            function downloadPDF() {
+                if (!validateData()) {
+                    showNotification('Data reservasi belum lengkap.');
+                    return;
+                }
+
+                const element = document.getElementById('a4Page');
+                const opt = {
+                    margin:        [0, 0, 0, 0],
+                    filename:      `Reservasi-Pawon-Mbah-Gito-${baristaNama.value.trim() || kitchenNama.value.trim() || 'TanpaNama'}-${formatTanggal().replace(/\s+/g, '-')}.pdf`,
+                    image:        { type: 'jpeg', quality: 0.98 },
+                    html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
+                    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                    pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
+                };
+
+                // Gunakan onclone untuk merapikan tampilan input
+                opt.onclone = function(clonedDoc) {
+                    const cloneA4 = clonedDoc.getElementById('a4Page');
+                    // Ubah semua input menjadi span dengan nilai
+                    const inputs = cloneA4.querySelectorAll('input, select');
+                    inputs.forEach(input => {
+                        let replacement;
+                        if (input.tagName === 'SELECT') {
+                            replacement = clonedDoc.createElement('span');
+                            replacement.textContent = input.options[input.selectedIndex]?.text || '';
+                        } else if (input.type === 'checkbox' || input.type === 'radio') {
+                            if (input.checked) {
+                                replacement = clonedDoc.createElement('span');
+                                replacement.textContent = input.type === 'checkbox' ? '☑' : '●';
+                            } else {
+                                replacement = clonedDoc.createElement('span');
+                                replacement.textContent = input.type === 'checkbox' ? '☐' : '○';
+                            }
+                        } else {
+                            replacement = clonedDoc.createElement('span');
+                            replacement.textContent = input.value || '';
+                        }
+                        replacement.style.cssText = 'font-size: 0.8rem; color: #3e2b1c; display: inline-block; min-width: 30px;';
+                        input.replaceWith(replacement);
+                    });
+
+                    // Ubah tombol status menjadi teks indikator
+                    const prepareBtn = clonedDoc.getElementById('statusPrepareBtn');
+                    const selesaiBtn = clonedDoc.getElementById('statusSelesaiBtn');
+                    if (prepareBtn && selesaiBtn) {
+                        const container = prepareBtn.parentNode;
+                        container.innerHTML = '';
+                        const statusText = clonedDoc.createElement('span');
+                        statusText.textContent = currentStatus === 'prepare' ? '🟠 MASIH DALAM PROSES / PREPARE' : '🟢 SUDAH SELESAI';
+                        statusText.style.cssText = 'font-weight: 600; font-size: 0.8rem; padding: 4px 8px; border-radius: 4px;';
+                        if (currentStatus === 'prepare') {
+                            statusText.style.background = '#fde8d7';
+                            statusText.style.color = '#c0541e';
+                        } else {
+                            statusText.style.background = '#e8f5e9';
+                            statusText.style.color = '#2e7d32';
+                        }
+                        container.appendChild(statusText);
+                    }
+                };
+
+                html2pdf().set(opt).from(element).save();
+            }
+
+            // ===== PRINT =====
+            function printPage() {
+                window.print();
+            }
+
+            // ===== EVENT LISTENERS =====
+            btnSimpan.addEventListener('click', simpanData);
+            btnMuat.addEventListener('click', muatData);
+            btnPrint.addEventListener('click', printPage);
+            btnPdf.addEventListener('click', downloadPDF);
+            btnReset.addEventListener('click', function() {
+                confirmOverlay.style.display = 'flex';
+            });
+
+            confirmResetYes.addEventListener('click', function() {
+                resetData();
+                confirmOverlay.style.display = 'none';
+            });
+
+            confirmResetNo.addEventListener('click', function() {
+                confirmOverlay.style.display = 'none';
+            });
+
+            // ===== INISIALISASI =====
+            updateTanggal();
+            updateReservationNumberDisplay();
+            updateWaiters();
+            setStatus('prepare');
+
+            // Muat data otomatis jika ada
+            const savedData = localStorage.getItem('pawonMbahGitoReservasi');
+            if (savedData) {
+                muatData();
+            }
+        });
+    </script>
 </body>
 </html>
