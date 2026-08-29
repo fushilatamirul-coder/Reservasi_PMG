@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Reservasi - Pawon Mbah Gito</title>
 
-    <!-- html2pdf.js untuk fitur Download PDF -->
+    <!-- html2pdf.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" defer>
     </script>
 
@@ -23,7 +23,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px 10px;
+            padding: 16px 8px;
             min-height: 100vh;
             color: #3e2b1c;
         }
@@ -34,8 +34,8 @@
             min-height: 297mm;
             background: #fffefc;
             margin: 0 auto 20px;
-            padding: 12mm 10mm;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+            padding: 10mm 8mm;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10);
             border-radius: 8px;
             border: 1px solid #d8c5b0;
             position: relative;
@@ -44,50 +44,61 @@
             flex-direction: column;
         }
 
-        /* ===== HEADER HALAMAN ===== */
+        /* ===== HEADER ===== */
         .page-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-bottom: 8px;
-            margin-bottom: 12px;
+            padding-bottom: 4px;
+            margin-bottom: 4px;
             border-bottom: 3px double #b55a2a;
             flex-shrink: 0;
         }
-
         .brand-title {
-            font-size: 2.4rem;
+            font-size: 2.0rem;
             font-weight: 700;
             letter-spacing: 1px;
             color: #8b3e1b;
             line-height: 1.1;
         }
-
         .brand-subtitle {
-            font-size: 0.9rem;
+            font-size: 0.75rem;
             letter-spacing: 3px;
             color: #b55a2a;
             font-weight: 500;
             margin-top: 2px;
         }
-
         .reservation-meta {
             text-align: right;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             color: #5a3e2b;
         }
-
         .reservation-number {
             display: block;
             font-weight: 600;
-            font-size: 0.95rem;
-            margin-bottom: 2px;
+            font-size: 0.85rem;
             color: #8b3e1b;
         }
 
-        .reservation-date {
-            font-style: italic;
-            color: #8a6d5a;
+        /* ===== TANGGAL BESAR TERPISAH ===== */
+        .tanggal-besar {
+            text-align: center;
+            font-size: 2.0rem;
+            font-weight: 700;
+            color: #6b3f1f;
+            letter-spacing: 2px;
+            padding: 4px 0 8px 0;
+            margin-bottom: 6px;
+            border-bottom: 1px dashed #d9bfa6;
+            background: #fef7f0;
+            border-radius: 6px;
+        }
+        .tanggal-besar span {
+            display: inline-block;
+            background: #fff3e6;
+            padding: 0 20px;
+            border-radius: 30px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
         }
 
         /* ===== GRID 2x2 ===== */
@@ -95,188 +106,196 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             grid-template-rows: auto auto;
-            gap: 10px;
+            gap: 8px;
             flex: 1;
         }
 
-        /* ===== CARD UMUM ===== */
+        /* ===== CARD ===== */
         .card {
             background: #fffdf9;
             border: 1.5px solid #d9b99b;
-            border-radius: 14px;
-            padding: 12px 14px;
+            border-radius: 12px;
+            padding: 10px 12px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
             display: flex;
             flex-direction: column;
-            transition: all 0.2s;
             background: linear-gradient(145deg, #fffcf8, #fef7f0);
         }
-
         .card-title {
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             font-weight: 600;
-            margin-bottom: 10px;
-            padding-bottom: 5px;
+            margin-bottom: 6px;
+            padding-bottom: 4px;
             border-bottom: 2px solid #e0c9b0;
             color: #6b3f1f;
             letter-spacing: 0.5px;
         }
-
-        .barista-title { color: #b0572c; }
-        .kitchen-title { color: #8b4513; }
-        .waiters-title { color: #c96e2e; }
-        .security-title { color: #a14f1e; }
-
-        /* ===== INPUT & LABEL ===== */
-        .reservation-info {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            margin-bottom: 8px;
+        .barista-title {
+            color: #b0572c;
+        }
+        .kitchen-title {
+            color: #8b4513;
+        }
+        .waiters-title {
+            color: #c96e2e;
+        }
+        .security-title {
+            color: #a14f1e;
         }
 
+        /* ===== FIELD ===== */
+        .field-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px 8px;
+            margin-bottom: 4px;
+            align-items: center;
+        }
         .field-label {
-            font-size: 0.75rem;
+            font-size: 0.65rem;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.4px;
             color: #7a5c42;
-            margin-top: 4px;
+            min-width: 50px;
         }
-
         .input-text {
-            width: 100%;
-            padding: 6px 8px;
+            flex: 1;
+            min-width: 60px;
+            padding: 4px 6px;
             border: 1px solid #d0b39a;
-            border-radius: 6px;
-            font-size: 0.85rem;
+            border-radius: 5px;
+            font-size: 0.75rem;
             color: #3e2b1c;
             background: #fffefb;
             outline: none;
             transition: border 0.2s;
         }
-
         .input-text:focus {
             border-color: #b55a2a;
-            box-shadow: 0 0 0 2px rgba(181, 90, 42, 0.15);
+            box-shadow: 0 0 0 2px rgba(181, 90, 42, 0.12);
         }
-
+        .input-text-sm {
+            max-width: 60px;
+            text-align: center;
+        }
         input[type="number"].input-text {
             -moz-appearance: textfield;
         }
-
         input[type="number"].input-text::-webkit-outer-spin-button,
         input[type="number"].input-text::-webkit-inner-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
+        input[type="time"].input-text {
+            max-width: 100px;
+        }
 
         /* ===== DIVIDER ===== */
         .section-divider {
             border-top: 1px dashed #d9bfa6;
-            margin: 8px 0;
+            margin: 5px 0;
         }
 
         /* ===== SUB TITLE ===== */
         .sub-title {
-            font-size: 0.9rem;
+            font-size: 0.75rem;
             font-weight: 600;
             color: #6b3f1f;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
         }
 
-        /* ===== CHECKBOX GRID BARISTA ===== */
+        /* ===== CHECKBOX GRID ===== */
         .checkbox-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 5px 10px;
-            font-size: 0.85rem;
+            gap: 3px 8px;
+            font-size: 0.72rem;
         }
-
         .checkbox-item {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
             cursor: pointer;
             color: #4a3321;
         }
-
         .checkbox-item input[type="checkbox"] {
             accent-color: #b55a2a;
-            width: 15px;
-            height: 15px;
+            width: 13px;
+            height: 13px;
             cursor: pointer;
+            flex-shrink: 0;
         }
-
-        /* ===== INPUT LAINNYA BARISTA ===== */
         .hidden-input {
-            margin-top: 5px;
+            margin-top: 4px;
         }
 
-        /* ===== RADIO GROUP KITCHEN ===== */
+        /* ===== RADIO ===== */
         .radio-group {
             display: flex;
-            flex-direction: column;
-            gap: 4px;
-            margin-bottom: 5px;
-            font-size: 0.85rem;
+            flex-wrap: wrap;
+            gap: 2px 12px;
+            font-size: 0.72rem;
         }
-
         .radio-item {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
             cursor: pointer;
             color: #4a3321;
         }
-
         .radio-item input[type="radio"] {
             accent-color: #b55a2a;
-            width: 15px;
-            height: 15px;
+            width: 13px;
+            height: 13px;
             cursor: pointer;
+            flex-shrink: 0;
         }
 
-        /* ===== ISI PAKET DENGAN QUANTITY ===== */
+        /* ===== PAKET ITEMS ===== */
         .paket-items-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            margin-top: 5px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2px 6px;
+            margin-top: 3px;
         }
-
         .paket-item {
             display: flex;
             align-items: center;
-            gap: 5px;
-            font-size: 0.8rem;
+            gap: 3px;
+            font-size: 0.68rem;
         }
-
         .item-number {
             font-weight: 600;
             color: #8b3e1b;
-            min-width: 18px;
+            min-width: 16px;
             text-align: right;
+            font-size: 0.65rem;
         }
-
         .paket-input {
             flex: 1;
-            padding: 4px 6px;
-            font-size: 0.8rem;
+            min-width: 40px;
+            padding: 2px 4px;
+            font-size: 0.68rem;
+            border: 1px solid #d0b39a;
+            border-radius: 4px;
+            background: #fffefb;
+            outline: none;
         }
-
+        .paket-input:focus {
+            border-color: #b55a2a;
+        }
         .input-qty {
-            width: 40px;
-            padding: 4px 2px;
+            width: 32px;
+            padding: 2px 2px;
             text-align: center;
             border: 1px solid #d0b39a;
             border-radius: 4px;
-            font-size: 0.8rem;
+            font-size: 0.68rem;
             background: #fffefb;
             outline: none;
             -moz-appearance: textfield;
         }
-
         .input-qty::-webkit-outer-spin-button,
         .input-qty::-webkit-inner-spin-button {
             -webkit-appearance: none;
@@ -285,44 +304,38 @@
 
         /* ===== WAITERS ===== */
         .waiters-auto-info {
-            font-size: 0.85rem;
-            margin-bottom: 5px;
+            font-size: 0.75rem;
+            margin-bottom: 4px;
         }
-
         .waiters-field {
             display: flex;
-            gap: 5px;
-            margin-bottom: 3px;
+            gap: 4px;
+            margin-bottom: 2px;
         }
-
         .waiters-label {
             font-weight: 600;
             color: #7a5c42;
-            min-width: 70px;
+            min-width: 60px;
         }
-
         .waiters-value {
             font-weight: 500;
             color: #3e2b1c;
         }
-
         .waiters-section-label {
-            font-size: 0.8rem;
+            font-size: 0.68rem;
             font-weight: 600;
             color: #8b3e1b;
-            margin-top: 5px;
-            margin-bottom: 3px;
+            margin-top: 4px;
+            margin-bottom: 2px;
             text-transform: uppercase;
         }
-
         .waiters-list {
-            font-size: 0.8rem;
+            font-size: 0.68rem;
             color: #4a3321;
-            margin-bottom: 6px;
-            min-height: 18px;
+            margin-bottom: 4px;
+            min-height: 16px;
             white-space: pre-line;
         }
-
         .waiters-empty {
             color: #a99584;
             font-style: italic;
@@ -331,44 +344,39 @@
         /* ===== STATUS TOGGLE ===== */
         .status-toggle {
             display: flex;
-            gap: 5px;
-            margin-top: 5px;
+            gap: 4px;
+            margin-top: 4px;
         }
-
         .status-btn {
-            padding: 5px 8px;
+            padding: 4px 6px;
             border: none;
-            border-radius: 6px;
-            font-size: 0.7rem;
+            border-radius: 5px;
+            font-size: 0.6rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
             flex: 1;
             text-align: center;
+            letter-spacing: 0.3px;
         }
-
         .status-prepare {
             background: #fde8d7;
             color: #c0541e;
             border: 1px solid #eaa474;
         }
-
         .status-selesai {
             background: #e8f5e9;
             color: #2e7d32;
             border: 1px solid #a5d6a7;
         }
-
         .status-btn.active {
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
             transform: translateY(-1px);
         }
-
         .status-prepare.active {
             background: #fcd4b6;
             border-color: #d2691e;
         }
-
         .status-selesai.active {
             background: #c8e6c9;
             border-color: #4caf50;
@@ -379,43 +387,50 @@
             appearance: none;
             background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238b3e1b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
             background-repeat: no-repeat;
-            background-position: right 8px center;
-            background-size: 14px;
+            background-position: right 6px center;
+            background-size: 12px;
+            padding-right: 22px;
         }
 
-        /* ===== KONTROL DI BAWAH ===== */
+        /* ===== CONTROLS ===== */
         .controls {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 10px;
-            margin: 20px 0;
+            gap: 8px;
+            margin: 16px 0 8px;
         }
-
         .btn {
-            padding: 10px 18px;
+            padding: 8px 14px;
             border: none;
-            border-radius: 8px;
-            font-size: 0.9rem;
+            border-radius: 7px;
+            font-size: 0.8rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
             letter-spacing: 0.3px;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-            color: white;
+            color: #fff;
         }
-
         .btn:active {
             transform: translateY(1px);
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.10);
         }
-
-        .btn-simpan { background: #a8562c; }
-        .btn-muat { background: #8b6e4b; }
-        .btn-print { background: #b55a2a; }
-        .btn-pdf { background: #c75b39; }
-        .btn-reset { background: #6b3f1f; }
-
+        .btn-simpan {
+            background: #a8562c;
+        }
+        .btn-muat {
+            background: #8b6e4b;
+        }
+        .btn-print {
+            background: #b55a2a;
+        }
+        .btn-pdf {
+            background: #c75b39;
+        }
+        .btn-reset {
+            background: #6b3f1f;
+        }
         .btn:hover {
             opacity: 0.9;
         }
@@ -428,163 +443,166 @@
             transform: translateX(-50%) translateY(20px);
             background: #4a2e1a;
             color: #fff;
-            padding: 12px 24px;
+            padding: 10px 22px;
             border-radius: 30px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             opacity: 0;
             pointer-events: none;
             transition: all 0.4s ease;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            z-index: 999;
         }
-
         .notification.show {
             opacity: 1;
             transform: translateX(-50%) translateY(0);
         }
 
-        /* ===== KONFIRMASI OVERLAY ===== */
+        /* ===== KONFIRMASI ===== */
         .confirm-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.45);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 1000;
         }
-
         .confirm-dialog {
             background: #fffdf9;
-            padding: 25px;
-            border-radius: 16px;
+            padding: 22px 28px;
+            border-radius: 14px;
             width: 90%;
-            max-width: 400px;
+            max-width: 360px;
             text-align: center;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
-
         .confirm-dialog h3 {
             color: #6b3f1f;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
-
         .confirm-dialog p {
             color: #4a3321;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
+            font-size: 0.9rem;
         }
-
         .confirm-buttons {
             display: flex;
             gap: 10px;
             justify-content: center;
         }
 
-        /* ===== RESPONSIVE (Smartphone) ===== */
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             .a4-page {
                 width: 100%;
                 min-height: auto;
-                padding: 8px 6px;
+                padding: 6px 4px;
                 box-shadow: none;
-                border-radius: 8px;
+                border-radius: 6px;
             }
-
             .grid-container {
                 grid-template-columns: 1fr;
                 grid-template-rows: auto;
+                gap: 6px;
             }
-
             .page-header {
                 flex-direction: column;
                 text-align: center;
             }
-
             .reservation-meta {
                 text-align: center;
-                margin-top: 5px;
+                margin-top: 4px;
             }
-
             .controls {
                 flex-direction: column;
                 align-items: stretch;
+            }
+            .paket-items-grid {
+                grid-template-columns: 1fr;
+            }
+            .brand-title {
+                font-size: 1.5rem;
+            }
+            .tanggal-besar {
+                font-size: 1.5rem;
             }
         }
 
         /* ===== PRINT STYLES ===== */
         @media print {
             body {
-                background: white;
-                padding: 0;
-                margin: 0;
+                background: white !important;
+                padding: 0 !important;
+                margin: 0 !important;
             }
-
             .a4-page {
-                width: 210mm;
-                min-height: 297mm;
-                padding: 12mm 10mm;
-                margin: 0;
-                box-shadow: none;
-                border-radius: 0;
-                border: none;
+                width: 210mm !important;
+                min-height: 297mm !important;
+                padding: 10mm 8mm !important;
+                margin: 0 !important;
+                box-shadow: none !important;
+                border-radius: 0 !important;
+                border: none !important;
+                background: white !important;
             }
-
             .controls,
             .notification,
             .confirm-overlay {
                 display: none !important;
             }
-
             .grid-container {
-                grid-template-columns: 1fr 1fr;
-                grid-template-rows: auto auto;
-                gap: 6px;
+                grid-template-columns: 1fr 1fr !important;
+                grid-template-rows: auto auto !important;
+                gap: 6px !important;
             }
-
             .card {
                 break-inside: avoid;
                 page-break-inside: avoid;
-                border: 1px solid #c9a88c;
-            }
-
-            input, select {
-                border: none !important;
-                background: transparent !important;
+                border: 1px solid #c9a88c !important;
+                background: white !important;
                 box-shadow: none !important;
-                padding: 0 !important;
-                margin: 0 !important;
-                font-size: 0.8rem !important;
-                color: #3e2b1c !important;
-                -webkit-appearance: none;
-                -moz-appearance: none;
-                appearance: none;
             }
-
+            .input-text,
+            .paket-input,
+            .input-qty,
+            .select-input {
+                border: 1px solid #c9a88c !important;
+                background: white !important;
+                box-shadow: none !important;
+                color: #3e2b1c !important;
+                -webkit-appearance: none !important;
+                -moz-appearance: none !important;
+                appearance: none !important;
+            }
             input[type="checkbox"],
             input[type="radio"] {
-                display: inline-block;
-                width: 12px;
-                height: 12px;
-                border: 1px solid #333 !important;
-                background: white !important;
                 -webkit-appearance: checkbox !important;
                 appearance: checkbox !important;
+                width: 12px !important;
+                height: 12px !important;
+                border: 1px solid #333 !important;
+                background: white !important;
             }
-
             input[type="radio"] {
                 -webkit-appearance: radio !important;
                 appearance: radio !important;
             }
-
-            input::placeholder {
-                color: transparent !important;
+            .status-btn {
+                border: 1px solid #aaa !important;
+                background: #f5f5f5 !important;
+                color: #333 !important;
             }
-
-            .paket-item .input-qty {
-                width: 30px;
-                text-align: center;
+            .status-btn.active {
+                border-color: #555 !important;
+                background: #eee !important;
+            }
+            .tanggal-besar {
+                font-size: 2.0rem !important;
+                background: #fef7f0 !important;
+                border-bottom: 1px dashed #d9bfa6 !important;
             }
         }
     </style>
@@ -602,216 +620,129 @@
             </div>
             <div class="reservation-meta">
                 <span class="reservation-number">RESERVASI #<span id="reservationNumberDisplay">001</span></span>
-                <span class="reservation-date" id="currentDateDisplay">29 Agustus 2026</span>
             </div>
+        </div>
+
+        <!-- TANGGAL BESAR TERPISAH -->
+        <div class="tanggal-besar">
+            <span id="currentDateDisplay">29 Agustus 2026</span>
         </div>
 
         <!-- GRID 2x2 -->
         <div class="grid-container" id="gridContainer">
 
-            <!-- ===== SHAPE 1 : BARISTA ===== -->
+            <!-- ===== BARISTA ===== -->
             <div class="card barista-card" id="cardBarista">
                 <h2 class="card-title barista-title">☕ BARISTA</h2>
 
-                <div class="reservation-info">
-                    <label class="field-label">Nama</label>
-                    <input type="text" id="baristaNama" placeholder="Masukkan nama tamu" class="input-text" autocomplete="off">
-
-                    <label class="field-label">Berapa Px</label>
-                    <input type="number" id="baristaPx" placeholder="10" class="input-text" min="1" autocomplete="off">
-
-                    <label class="field-label">Jam</label>
-                    <input type="time" id="baristaJam" class="input-text" autocomplete="off">
+                <div class="field-group">
+                    <span class="field-label">Nama</span>
+                    <input type="text" id="baristaNama" placeholder="Nama tamu" class="input-text" autocomplete="off">
+                </div>
+                <div class="field-group">
+                    <span class="field-label">Px</span>
+                    <input type="number" id="baristaPx" placeholder="10" class="input-text input-text-sm" min="1" autocomplete="off">
+                    <span class="field-label" style="min-width:30px;">Jam</span>
+                    <input type="time" id="baristaJam" class="input-text" autocomplete="off" style="max-width:90px;">
                 </div>
 
                 <div class="section-divider"></div>
 
                 <h3 class="sub-title">Jenis Pesanan</h3>
                 <div class="checkbox-grid">
-                    <label class="checkbox-item">
-                        <input type="checkbox" id="baristaEsTeler"> Es Teler
-                    </label>
-                    <label class="checkbox-item">
-                        <input type="checkbox" id="baristaJeruk"> Jeruk
-                    </label>
-                    <label class="checkbox-item">
-                        <input type="checkbox" id="baristaTeh"> Teh
-                    </label>
-                    <label class="checkbox-item">
-                        <input type="checkbox" id="baristaEsBatu"> Es Batu
-                    </label>
-                    <label class="checkbox-item">
-                        <input type="checkbox" id="baristaLainnyaCb"> Lainnya
-                    </label>
+                    <label class="checkbox-item"><input type="checkbox" id="baristaEsTeler"> Es Teler</label>
+                    <label class="checkbox-item"><input type="checkbox" id="baristaJeruk"> Jeruk</label>
+                    <label class="checkbox-item"><input type="checkbox" id="baristaTeh"> Teh</label>
+                    <label class="checkbox-item"><input type="checkbox" id="baristaEsBatu"> Es Batu</label>
+                    <label class="checkbox-item"><input type="checkbox" id="baristaLainnyaCb"> Lainnya</label>
                 </div>
-
-                <div id="baristaLainnyaWrap" class="hidden-input" style="display: none;">
-                    <label class="field-label">Lainnya :</label>
-                    <input type="text" id="baristaLainnyaText" placeholder="Tulis pesanan lainnya" class="input-text" autocomplete="off">
+                <div id="baristaLainnyaWrap" class="hidden-input" style="display:none;">
+                    <input type="text" id="baristaLainnyaText" placeholder="Tulis pesanan lainnya" class="input-text" style="width:100%;" autocomplete="off">
                 </div>
             </div>
 
-            <!-- ===== SHAPE 2 : KITCHEN ===== -->
+            <!-- ===== KITCHEN ===== -->
             <div class="card kitchen-card" id="cardKitchen">
                 <h2 class="card-title kitchen-title">🍳 KITCHEN</h2>
 
-                <div class="reservation-info">
-                    <label class="field-label">Nama</label>
-                    <input type="text" id="kitchenNama" placeholder="Masukkan nama tamu" class="input-text" autocomplete="off">
-
-                    <label class="field-label">Berapa Px</label>
-                    <input type="number" id="kitchenPx" placeholder="10" class="input-text" min="1" autocomplete="off">
-
-                    <label class="field-label">Jam</label>
-                    <input type="time" id="kitchenJam" class="input-text" autocomplete="off">
+                <div class="field-group">
+                    <span class="field-label">Nama</span>
+                    <input type="text" id="kitchenNama" placeholder="Nama tamu" class="input-text" autocomplete="off">
+                </div>
+                <div class="field-group">
+                    <span class="field-label">Px</span>
+                    <input type="number" id="kitchenPx" placeholder="10" class="input-text input-text-sm" min="1" autocomplete="off">
+                    <span class="field-label" style="min-width:30px;">Jam</span>
+                    <input type="time" id="kitchenJam" class="input-text" autocomplete="off" style="max-width:90px;">
                 </div>
 
                 <div class="section-divider"></div>
 
                 <h3 class="sub-title">Pilihan Paket</h3>
                 <div class="radio-group">
-                    <label class="radio-item">
-                        <input type="radio" name="paket" id="paketAlhamdulillah" value="Paket Alhamdulillah">
-                        Paket Alhamdulillah
-                    </label>
-                    <label class="radio-item">
-                        <input type="radio" name="paket" id="paketSyukur" value="Paket Syukur">
-                        Paket Syukur
-                    </label>
-                    <label class="radio-item">
-                        <input type="radio" name="paket" id="paketBahagia" value="Paket Bahagia">
-                        Paket Bahagia
-                    </label>
-                    <!-- TAMBAHAN BARU: Menu Alacarte -->
-                    <label class="radio-item">
-                        <input type="radio" name="paket" id="paketAlacarte" value="Menu Alacarte">
-                        Menu Alacarte
-                    </label>
+                    <label class="radio-item"><input type="radio" name="paket" value="Paket Alhamdulillah"> Paket Alhamdulillah</label>
+                    <label class="radio-item"><input type="radio" name="paket" value="Paket Syukur"> Paket Syukur</label>
+                    <label class="radio-item"><input type="radio" name="paket" value="Paket Bahagia"> Paket Bahagia</label>
+                    <label class="radio-item"><input type="radio" name="paket" value="Menu Alacarte"> Menu Alacarte</label>
                 </div>
 
                 <div class="section-divider"></div>
 
                 <h3 class="sub-title">Isi Paket</h3>
-                <div class="paket-items-grid">
-                    <div class="paket-item">
-                        <span class="item-number">1.</span>
-                        <input type="text" id="paket1" placeholder="Nama item" class="input-text paket-input" autocomplete="off">
-                        <input type="number" id="paket1Qty" placeholder="0" class="input-qty" min="0" value="0">
-                    </div>
-                    <div class="paket-item">
-                        <span class="item-number">2.</span>
-                        <input type="text" id="paket2" placeholder="Nama item" class="input-text paket-input" autocomplete="off">
-                        <input type="number" id="paket2Qty" placeholder="0" class="input-qty" min="0" value="0">
-                    </div>
-                    <div class="paket-item">
-                        <span class="item-number">3.</span>
-                        <input type="text" id="paket3" placeholder="Nama item" class="input-text paket-input" autocomplete="off">
-                        <input type="number" id="paket3Qty" placeholder="0" class="input-qty" min="0" value="0">
-                    </div>
-                    <div class="paket-item">
-                        <span class="item-number">4.</span>
-                        <input type="text" id="paket4" placeholder="Nama item" class="input-text paket-input" autocomplete="off">
-                        <input type="number" id="paket4Qty" placeholder="0" class="input-qty" min="0" value="0">
-                    </div>
-                    <div class="paket-item">
-                        <span class="item-number">5.</span>
-                        <input type="text" id="paket5" placeholder="Nama item" class="input-text paket-input" autocomplete="off">
-                        <input type="number" id="paket5Qty" placeholder="0" class="input-qty" min="0" value="0">
-                    </div>
-                    <div class="paket-item">
-                        <span class="item-number">6.</span>
-                        <input type="text" id="paket6" placeholder="Nama item" class="input-text paket-input" autocomplete="off">
-                        <input type="number" id="paket6Qty" placeholder="0" class="input-qty" min="0" value="0">
-                    </div>
-                    <div class="paket-item">
-                        <span class="item-number">7.</span>
-                        <input type="text" id="paket7" placeholder="Nama item" class="input-text paket-input" autocomplete="off">
-                        <input type="number" id="paket7Qty" placeholder="0" class="input-qty" min="0" value="0">
-                    </div>
-                    <div class="paket-item">
-                        <span class="item-number">8.</span>
-                        <input type="text" id="paket8" placeholder="Nama item" class="input-text paket-input" autocomplete="off">
-                        <input type="number" id="paket8Qty" placeholder="0" class="input-qty" min="0" value="0">
-                    </div>
-                    <div class="paket-item">
-                        <span class="item-number">9.</span>
-                        <input type="text" id="paket9" placeholder="Nama item" class="input-text paket-input" autocomplete="off">
-                        <input type="number" id="paket9Qty" placeholder="0" class="input-qty" min="0" value="0">
-                    </div>
-                    <div class="paket-item">
-                        <span class="item-number">10.</span>
-                        <input type="text" id="paket10" placeholder="Nama item" class="input-text paket-input" autocomplete="off">
-                        <input type="number" id="paket10Qty" placeholder="0" class="input-qty" min="0" value="0">
-                    </div>
+                <div class="paket-items-grid" id="paketItemsGrid">
+                    <!-- 10 item akan diisi oleh JS -->
                 </div>
             </div>
 
-            <!-- ===== SHAPE 3 : WAITERS ===== -->
+            <!-- ===== WAITERS ===== -->
             <div class="card waiters-card" id="cardWaiters">
                 <h2 class="card-title waiters-title">👨‍🍳 WAITERS</h2>
 
                 <div class="waiters-auto-info">
-                    <div class="waiters-field">
-                        <span class="waiters-label">Nama :</span>
-                        <span id="waitersNama" class="waiters-value">-</span>
-                    </div>
-                    <div class="waiters-field">
-                        <span class="waiters-label">Berapa Px :</span>
-                        <span id="waitersPx" class="waiters-value">-</span>
-                    </div>
-                    <div class="waiters-field">
-                        <span class="waiters-label">Jam :</span>
-                        <span id="waitersJam" class="waiters-value">-</span>
-                    </div>
+                    <div class="waiters-field"><span class="waiters-label">Nama :</span><span id="waitersNama" class="waiters-value">-</span></div>
+                    <div class="waiters-field"><span class="waiters-label">Px :</span><span id="waitersPx" class="waiters-value">-</span></div>
+                    <div class="waiters-field"><span class="waiters-label">Jam :</span><span id="waitersJam" class="waiters-value">-</span></div>
                 </div>
 
                 <div class="section-divider"></div>
 
                 <div class="waiters-detail">
                     <h4 class="waiters-section-label">BARISTA</h4>
-                    <div id="waitersBaristaList" class="waiters-list">
-                        <span class="waiters-empty">Belum ada pesanan barista.</span>
-                    </div>
+                    <div id="waitersBaristaList" class="waiters-list"><span class="waiters-empty">Belum ada pesanan.</span></div>
 
                     <h4 class="waiters-section-label">KITCHEN</h4>
-                    <div id="waitersKitchenList" class="waiters-list">
-                        <span class="waiters-empty">Belum ada pesanan kitchen.</span>
-                    </div>
+                    <div id="waitersKitchenList" class="waiters-list"><span class="waiters-empty">Belum ada pesanan.</span></div>
                 </div>
 
                 <div class="section-divider"></div>
 
-                <h4 class="waiters-section-label">STATUS PROGRES</h4>
+                <h4 class="waiters-section-label">STATUS</h4>
                 <div class="status-toggle" id="statusToggle">
-                    <button type="button" id="statusPrepareBtn" class="status-btn status-prepare active">
-                        🟠 MASIH DALAM PROSES / PREPARE
-                    </button>
-                    <button type="button" id="statusSelesaiBtn" class="status-btn status-selesai">
-                        🟢 SUDAH SELESAI
-                    </button>
+                    <button type="button" id="statusPrepareBtn" class="status-btn status-prepare active">🟠 PREPARE</button>
+                    <button type="button" id="statusSelesaiBtn" class="status-btn status-selesai">🟢 SELESAI</button>
                 </div>
             </div>
 
-            <!-- ===== SHAPE 4 : SECURITY ===== -->
+            <!-- ===== SECURITY ===== -->
             <div class="card security-card" id="cardSecurity">
                 <h2 class="card-title security-title">🛡 SECURITY</h2>
 
-                <div class="reservation-info">
-                    <label class="field-label">Nama</label>
-                    <input type="text" id="securityNama" placeholder="Masukkan nama tamu" class="input-text" autocomplete="off">
-
-                    <label class="field-label">Berapa Px</label>
-                    <input type="number" id="securityPx" placeholder="10" class="input-text" min="1" autocomplete="off">
-
-                    <label class="field-label">Jam</label>
-                    <input type="time" id="securityJam" class="input-text" autocomplete="off">
+                <div class="field-group">
+                    <span class="field-label">Nama</span>
+                    <input type="text" id="securityNama" placeholder="Nama tamu" class="input-text" autocomplete="off">
+                </div>
+                <div class="field-group">
+                    <span class="field-label">Px</span>
+                    <input type="number" id="securityPx" placeholder="10" class="input-text input-text-sm" min="1" autocomplete="off">
+                    <span class="field-label" style="min-width:30px;">Jam</span>
+                    <input type="time" id="securityJam" class="input-text" autocomplete="off" style="max-width:90px;">
                 </div>
 
                 <div class="section-divider"></div>
 
                 <h3 class="sub-title">Jenis Kendaraan</h3>
-                <select id="securityKendaraan" class="input-text select-input">
-                    <option value="">-- Pilih Kendaraan --</option>
+                <select id="securityKendaraan" class="input-text select-input" style="width:100%;">
+                    <option value="">-- Pilih --</option>
                     <option value="Mobil Pribadi">Mobil Pribadi</option>
                     <option value="Medium Bus">Medium Bus</option>
                     <option value="Elf">Elf</option>
@@ -819,35 +750,31 @@
                     <option value="Motor">Motor</option>
                     <option value="Lainnya">Lainnya</option>
                 </select>
-
-                <div id="securityLainnyaWrap" class="hidden-input" style="display: none; margin-top: 6px;">
-                    <label class="field-label">Kendaraan Lainnya :</label>
-                    <input type="text" id="securityKendaraanLainnya" placeholder="Tulis jenis kendaraan" class="input-text" autocomplete="off">
+                <div id="securityLainnyaWrap" class="hidden-input" style="display:none; margin-top:4px;">
+                    <input type="text" id="securityKendaraanLainnya" placeholder="Tulis kendaraan" class="input-text" style="width:100%;" autocomplete="off">
                 </div>
             </div>
 
-        </div>
-    </div>
+        </div><!-- grid -->
+    </div><!-- a4-page -->
 
-    <!-- ===== KONTROL DI BAWAH HALAMAN ===== -->
+    <!-- ===== KONTROL ===== -->
     <div class="controls" id="controls">
-        <button type="button" id="btnSimpan" class="btn btn-simpan">💾 SIMPAN DATA</button>
-        <button type="button" id="btnMuat" class="btn btn-muat">🔄 MUAT DATA</button>
+        <button type="button" id="btnSimpan" class="btn btn-simpan">💾 SIMPAN</button>
+        <button type="button" id="btnMuat" class="btn btn-muat">🔄 MUAT</button>
         <button type="button" id="btnPrint" class="btn btn-print">🖨 PRINT</button>
-        <button type="button" id="btnPdf" class="btn btn-pdf">📄 DOWNLOAD PDF</button>
+        <button type="button" id="btnPdf" class="btn btn-pdf">📄 PDF</button>
         <button type="button" id="btnReset" class="btn btn-reset">🗑 RESET</button>
     </div>
 
     <!-- ===== NOTIFIKASI ===== -->
-    <div id="notification" class="notification">
-        <span id="notificationText">Data reservasi berhasil disimpan.</span>
-    </div>
+    <div id="notification" class="notification"><span id="notificationText">Data tersimpan.</span></div>
 
     <!-- ===== KONFIRMASI RESET ===== -->
-    <div id="confirmOverlay" class="confirm-overlay" style="display: none;">
+    <div id="confirmOverlay" class="confirm-overlay" style="display:none;">
         <div class="confirm-dialog">
             <h3>Konfirmasi Reset</h3>
-            <p>Apakah Anda yakin ingin menghapus seluruh data reservasi?</p>
+            <p>Yakin ingin menghapus seluruh data reservasi?</p>
             <div class="confirm-buttons">
                 <button type="button" id="confirmResetYes" class="btn btn-reset">Ya, Hapus</button>
                 <button type="button" id="confirmResetNo" class="btn btn-muat">Batal</button>
@@ -857,409 +784,408 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+
             // ===== ELEMEN =====
             // Barista
-            const baristaNama = document.getElementById('baristaNama');
-            const baristaPx = document.getElementById('baristaPx');
-            const baristaJam = document.getElementById('baristaJam');
-            const baristaEsTeler = document.getElementById('baristaEsTeler');
-            const baristaJeruk = document.getElementById('baristaJeruk');
-            const baristaTeh = document.getElementById('baristaTeh');
-            const baristaEsBatu = document.getElementById('baristaEsBatu');
-            const baristaLainnyaCb = document.getElementById('baristaLainnyaCb');
-            const baristaLainnyaText = document.getElementById('baristaLainnyaText');
-            const baristaLainnyaWrap = document.getElementById('baristaLainnyaWrap');
+            const bNama = document.getElementById('baristaNama');
+            const bPx = document.getElementById('baristaPx');
+            const bJam = document.getElementById('baristaJam');
+            const bEsTeler = document.getElementById('baristaEsTeler');
+            const bJeruk = document.getElementById('baristaJeruk');
+            const bTeh = document.getElementById('baristaTeh');
+            const bEsBatu = document.getElementById('baristaEsBatu');
+            const bLainnyaCb = document.getElementById('baristaLainnyaCb');
+            const bLainnyaText = document.getElementById('baristaLainnyaText');
+            const bLainnyaWrap = document.getElementById('baristaLainnyaWrap');
 
             // Kitchen
-            const kitchenNama = document.getElementById('kitchenNama');
-            const kitchenPx = document.getElementById('kitchenPx');
-            const kitchenJam = document.getElementById('kitchenJam');
+            const kNama = document.getElementById('kitchenNama');
+            const kPx = document.getElementById('kitchenPx');
+            const kJam = document.getElementById('kitchenJam');
             const paketRadios = document.querySelectorAll('input[name="paket"]');
-            const paketInputs = [];
-            for (let i = 1; i <= 10; i++) {
-                paketInputs.push({
-                    text: document.getElementById('paket' + i),
-                    qty: document.getElementById('paket' + i + 'Qty')
-                });
-            }
-
-            // Waiters
-            const waitersNama = document.getElementById('waitersNama');
-            const waitersPx = document.getElementById('waitersPx');
-            const waitersJam = document.getElementById('waitersJam');
-            const waitersBaristaList = document.getElementById('waitersBaristaList');
-            const waitersKitchenList = document.getElementById('waitersKitchenList');
 
             // Security
-            const securityNama = document.getElementById('securityNama');
-            const securityPx = document.getElementById('securityPx');
-            const securityJam = document.getElementById('securityJam');
-            const securityKendaraan = document.getElementById('securityKendaraan');
-            const securityKendaraanLainnya = document.getElementById('securityKendaraanLainnya');
-            const securityLainnyaWrap = document.getElementById('securityLainnyaWrap');
+            const sNama = document.getElementById('securityNama');
+            const sPx = document.getElementById('securityPx');
+            const sJam = document.getElementById('securityJam');
+            const sKendaraan = document.getElementById('securityKendaraan');
+            const sKendaraanLainnya = document.getElementById('securityKendaraanLainnya');
+            const sLainnyaWrap = document.getElementById('securityLainnyaWrap');
+
+            // Waiters display
+            const wNama = document.getElementById('waitersNama');
+            const wPx = document.getElementById('waitersPx');
+            const wJam = document.getElementById('waitersJam');
+            const wBaristaList = document.getElementById('waitersBaristaList');
+            const wKitchenList = document.getElementById('waitersKitchenList');
 
             // Status
-            const statusPrepareBtn = document.getElementById('statusPrepareBtn');
-            const statusSelesaiBtn = document.getElementById('statusSelesaiBtn');
-            let currentStatus = 'prepare'; // default
+            const statusPrepare = document.getElementById('statusPrepareBtn');
+            const statusSelesai = document.getElementById('statusSelesaiBtn');
+            let currentStatus = 'prepare';
 
-            // Nomor reservasi & tanggal
-            const reservationNumberDisplay = document.getElementById('reservationNumberDisplay');
-            const currentDateDisplay = document.getElementById('currentDateDisplay');
+            // Nomor & tanggal
+            const resNumberDisplay = document.getElementById('reservationNumberDisplay');
+            const dateDisplay = document.getElementById('currentDateDisplay');
             let reservationNumber = 1;
 
-            // Notification
-            const notification = document.getElementById('notification');
-            const notificationText = document.getElementById('notificationText');
+            // Notifikasi
+            const notif = document.getElementById('notification');
+            const notifText = document.getElementById('notificationText');
 
-            // Confirm overlay
+            // Confirm
             const confirmOverlay = document.getElementById('confirmOverlay');
-            const confirmResetYes = document.getElementById('confirmResetYes');
-            const confirmResetNo = document.getElementById('confirmResetNo');
+            const confirmYes = document.getElementById('confirmResetYes');
+            const confirmNo = document.getElementById('confirmResetNo');
 
-            // Tombol kontrol
+            // Tombol
             const btnSimpan = document.getElementById('btnSimpan');
             const btnMuat = document.getElementById('btnMuat');
             const btnPrint = document.getElementById('btnPrint');
             const btnPdf = document.getElementById('btnPdf');
             const btnReset = document.getElementById('btnReset');
 
-            // ===== FUNGSI UTILITAS =====
+            // ===== BUAT PAKET ITEMS (10) =====
+            const paketItems = [];
+            const paketContainer = document.getElementById('paketItemsGrid');
+            paketContainer.innerHTML = '';
+            for (let i = 1; i <= 10; i++) {
+                const div = document.createElement('div');
+                div.className = 'paket-item';
+                const num = document.createElement('span');
+                num.className = 'item-number';
+                num.textContent = i + '.';
+                const inp = document.createElement('input');
+                inp.type = 'text';
+                inp.id = 'paket' + i;
+                inp.className = 'paket-input';
+                inp.placeholder = 'Item ' + i;
+                inp.autocomplete = 'off';
+                const qty = document.createElement('input');
+                qty.type = 'number';
+                qty.id = 'paket' + i + 'Qty';
+                qty.className = 'input-qty';
+                qty.placeholder = '0';
+                qty.min = '0';
+                qty.value = '0';
+                div.appendChild(num);
+                div.appendChild(inp);
+                div.appendChild(qty);
+                paketContainer.appendChild(div);
+                paketItems.push({ text: inp, qty: qty });
+            }
+
+            // ===== FUNGSI TANGGAL =====
             function formatTanggal() {
                 const now = new Date();
-                const options = { day: 'numeric', month: 'long', year: 'numeric' };
-                return now.toLocaleDateString('id-ID', options);
+                return now.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
             }
+            dateDisplay.textContent = formatTanggal();
 
-            function updateTanggal() {
-                currentDateDisplay.textContent = formatTanggal();
+            function updateResNumber() {
+                resNumberDisplay.textContent = String(reservationNumber).padStart(3, '0');
             }
+            updateResNumber();
 
-            function updateReservationNumberDisplay() {
-                reservationNumberDisplay.textContent = String(reservationNumber).padStart(3, '0');
-            }
-
-            // Toggle input lainnya barista
-            baristaLainnyaCb.addEventListener('change', function() {
-                if (this.checked) {
-                    baristaLainnyaWrap.style.display = 'block';
+            // ===== AUTO-SYNC NAMA, PX, JAM =====
+            function syncFields(fromId) {
+                let namaVal = '',
+                    pxVal = '',
+                    jamVal = '';
+                if (fromId === 'barista') {
+                    namaVal = bNama.value;
+                    pxVal = bPx.value;
+                    jamVal = bJam.value;
+                } else if (fromId === 'kitchen') {
+                    namaVal = kNama.value;
+                    pxVal = kPx.value;
+                    jamVal = kJam.value;
+                } else if (fromId === 'security') {
+                    namaVal = sNama.value;
+                    pxVal = sPx.value;
+                    jamVal = sJam.value;
                 } else {
-                    baristaLainnyaWrap.style.display = 'none';
-                    baristaLainnyaText.value = '';
+                    return;
                 }
+
+                if (fromId !== 'barista') {
+                    bNama.value = namaVal;
+                    bPx.value = pxVal;
+                    bJam.value = jamVal;
+                }
+                if (fromId !== 'kitchen') {
+                    kNama.value = namaVal;
+                    kPx.value = pxVal;
+                    kJam.value = jamVal;
+                }
+                if (fromId !== 'security') {
+                    sNama.value = namaVal;
+                    sPx.value = pxVal;
+                    sJam.value = jamVal;
+                }
+                updateWaiters();
+            }
+
+            function attachSyncEvents() {
+                const syncMap = [
+                    { el: bNama, id: 'barista' },
+                    { el: bPx, id: 'barista' },
+                    { el: bJam, id: 'barista' },
+                    { el: kNama, id: 'kitchen' },
+                    { el: kPx, id: 'kitchen' },
+                    { el: kJam, id: 'kitchen' },
+                    { el: sNama, id: 'security' },
+                    { el: sPx, id: 'security' },
+                    { el: sJam, id: 'security' }
+                ];
+                syncMap.forEach(({ el, id }) => {
+                    el.addEventListener('input', function() { syncFields(id); });
+                    el.addEventListener('change', function() { syncFields(id); });
+                });
+            }
+            attachSyncEvents();
+
+            // ===== UPDATE WAITERS =====
+            function updateWaiters() {
+                const nama = bNama.value.trim() || kNama.value.trim() || sNama.value.trim() || '-';
+                const px = bPx.value.trim() || kPx.value.trim() || sPx.value.trim() || '-';
+                const jam = bJam.value || kJam.value || sJam.value || '-';
+                wNama.textContent = nama;
+                wPx.textContent = px;
+                wJam.textContent = jam;
+
+                const items = [];
+                if (bEsTeler.checked) items.push('Es Teler');
+                if (bJeruk.checked) items.push('Jeruk');
+                if (bTeh.checked) items.push('Teh');
+                if (bEsBatu.checked) items.push('Es Batu');
+                if (bLainnyaCb.checked && bLainnyaText.value.trim()) {
+                    items.push(bLainnyaText.value.trim());
+                }
+                wBaristaList.innerHTML = '';
+                if (items.length) {
+                    items.forEach(it => { const d = document.createElement('div');
+                        d.textContent = '✓ ' + it;
+                        wBaristaList.appendChild(d); });
+                } else {
+                    wBaristaList.innerHTML = '<span class="waiters-empty">Belum ada pesanan.</span>';
+                }
+
+                const selected = document.querySelector('input[name="paket"]:checked');
+                const paketNama = selected ? selected.value : '-';
+                const detail = [];
+                paketItems.forEach((item, idx) => {
+                    const t = item.text.value.trim();
+                    const q = item.qty.value.trim() || '0';
+                    if (t) detail.push((idx + 1) + '. ' + t + ' (' + q + ')');
+                });
+                wKitchenList.innerHTML = '';
+                if (paketNama !== '-') {
+                    const hdr = document.createElement('div');
+                    hdr.style.fontWeight = '600';
+                    hdr.textContent = 'Paket: ' + paketNama;
+                    wKitchenList.appendChild(hdr);
+                    if (detail.length) {
+                        detail.forEach(line => { const d = document.createElement('div');
+                            d.textContent = line;
+                            wKitchenList.appendChild(d); });
+                    } else {
+                        const empty = document.createElement('div');
+                        empty.textContent = '(Belum ada isi)';
+                        wKitchenList.appendChild(empty);
+                    }
+                } else {
+                    wKitchenList.innerHTML = '<span class="waiters-empty">Belum ada pesanan.</span>';
+                }
+            }
+
+            function attachWaitersUpdate() {
+                const allInputs = [
+                    bEsTeler, bJeruk, bTeh, bEsBatu, bLainnyaCb, bLainnyaText,
+                    ...paketItems.map(p => p.text),
+                    ...paketItems.map(p => p.qty),
+                    ...paketRadios
+                ];
+                allInputs.forEach(el => {
+                    el.addEventListener('input', updateWaiters);
+                    el.addEventListener('change', updateWaiters);
+                });
+                [bNama, bPx, bJam, kNama, kPx, kJam, sNama, sPx, sJam].forEach(el => {
+                    el.addEventListener('input', updateWaiters);
+                    el.addEventListener('change', updateWaiters);
+                });
+            }
+            attachWaitersUpdate();
+
+            // ===== TOGGLE LAINNYA BARISTA =====
+            bLainnyaCb.addEventListener('change', function() {
+                bLainnyaWrap.style.display = this.checked ? 'block' : 'none';
+                if (!this.checked) bLainnyaText.value = '';
                 updateWaiters();
             });
 
-            // Toggle input lainnya security
-            securityKendaraan.addEventListener('change', function() {
-                if (this.value === 'Lainnya') {
-                    securityLainnyaWrap.style.display = 'block';
-                } else {
-                    securityLainnyaWrap.style.display = 'none';
-                    securityKendaraanLainnya.value = '';
-                }
+            // ===== TOGGLE LAINNYA SECURITY =====
+            sKendaraan.addEventListener('change', function() {
+                sLainnyaWrap.style.display = this.value === 'Lainnya' ? 'block' : 'none';
+                if (this.value !== 'Lainnya') sKendaraanLainnya.value = '';
             });
 
-            // Update waiters otomatis
-            function updateWaiters() {
-                // Ambil data dari barista atau kitchen sebagai prioritas
-                const nama = baristaNama.value.trim() || kitchenNama.value.trim() || '-';
-                const px = baristaPx.value.trim() || kitchenPx.value.trim() || '-';
-                const jam = baristaJam.value || kitchenJam.value || '-';
-
-                waitersNama.textContent = nama;
-                waitersPx.textContent = px;
-                waitersJam.textContent = jam;
-
-                // Barista list
-                const baristaItems = [];
-                if (baristaEsTeler.checked) baristaItems.push('Es Teler');
-                if (baristaJeruk.checked) baristaItems.push('Jeruk');
-                if (baristaTeh.checked) baristaItems.push('Teh');
-                if (baristaEsBatu.checked) baristaItems.push('Es Batu');
-                if (baristaLainnyaCb.checked && baristaLainnyaText.value.trim() !== '') {
-                    baristaItems.push(baristaLainnyaText.value.trim());
-                }
-                waitersBaristaList.innerHTML = '';
-                if (baristaItems.length > 0) {
-                    baristaItems.forEach(item => {
-                        const div = document.createElement('div');
-                        div.textContent = '✓ ' + item;
-                        waitersBaristaList.appendChild(div);
-                    });
-                } else {
-                    waitersBaristaList.innerHTML = '<span class="waiters-empty">Belum ada pesanan barista.</span>';
-                }
-
-                // Kitchen list
-                const selectedPaket = document.querySelector('input[name="paket"]:checked');
-                const paketNama = selectedPaket ? selectedPaket.value : '-';
-                const itemsDetail = [];
-                paketInputs.forEach((item, index) => {
-                    const text = item.text.value.trim();
-                    const qty = item.qty.value.trim() || '0';
-                    if (text !== '') {
-                        itemsDetail.push(`${index + 1}. ${text} (${qty})`);
-                    }
-                });
-                waitersKitchenList.innerHTML = '';
-                if (paketNama !== '-') {
-                    const paketHeader = document.createElement('div');
-                    paketHeader.style.fontWeight = '600';
-                    paketHeader.textContent = 'Paket: ' + paketNama;
-                    waitersKitchenList.appendChild(paketHeader);
-                    if (itemsDetail.length > 0) {
-                        itemsDetail.forEach(line => {
-                            const div = document.createElement('div');
-                            div.textContent = line;
-                            waitersKitchenList.appendChild(div);
-                        });
-                    } else {
-                        const empty = document.createElement('div');
-                        empty.textContent = '(Belum ada isi paket)';
-                        waitersKitchenList.appendChild(empty);
-                    }
-                } else {
-                    waitersKitchenList.innerHTML = '<span class="waiters-empty">Belum ada pesanan kitchen.</span>';
-                }
+            // ===== STATUS TOGGLE =====
+            function setStatus(st) {
+                currentStatus = st;
+                statusPrepare.classList.toggle('active', st === 'prepare');
+                statusSelesai.classList.toggle('active', st === 'selesai');
             }
+            statusPrepare.addEventListener('click', () => setStatus('prepare'));
+            statusSelesai.addEventListener('click', () => setStatus('selesai'));
+            setStatus('prepare');
 
-            // Event listeners untuk update waiters
-            [baristaNama, baristaPx, baristaJam, kitchenNama, kitchenPx, kitchenJam, 
-             baristaEsTeler, baristaJeruk, baristaTeh, baristaEsBatu, baristaLainnyaCb, baristaLainnyaText,
-             ...paketInputs.map(p => p.text), ...paketInputs.map(p => p.qty),
-             ...paketRadios].forEach(el => {
-                el.addEventListener('input', updateWaiters);
-                el.addEventListener('change', updateWaiters);
-            });
-
-            // Status toggle
-            function setStatus(status) {
-                currentStatus = status;
-                if (status === 'prepare') {
-                    statusPrepareBtn.classList.add('active');
-                    statusSelesaiBtn.classList.remove('active');
-                } else {
-                    statusSelesaiBtn.classList.add('active');
-                    statusPrepareBtn.classList.remove('active');
-                }
-            }
-
-            statusPrepareBtn.addEventListener('click', function() {
-                setStatus('prepare');
-            });
-            statusSelesaiBtn.addEventListener('click', function() {
-                setStatus('selesai');
-            });
-
-            // ===== SIMPAN DATA =====
+            // ===== SIMPAN =====
             function simpanData() {
                 const data = {
                     reservationNumber: reservationNumber,
                     barista: {
-                        nama: baristaNama.value,
-                        px: baristaPx.value,
-                        jam: baristaJam.value,
-                        esTeler: baristaEsTeler.checked,
-                        jeruk: baristaJeruk.checked,
-                        teh: baristaTeh.checked,
-                        esBatu: baristaEsBatu.checked,
-                        lainnyaCb: baristaLainnyaCb.checked,
-                        lainnyaText: baristaLainnyaText.value
+                        nama: bNama.value,
+                        px: bPx.value,
+                        jam: bJam.value,
+                        esTeler: bEsTeler.checked,
+                        jeruk: bJeruk.checked,
+                        teh: bTeh.checked,
+                        esBatu: bEsBatu.checked,
+                        lainnyaCb: bLainnyaCb.checked,
+                        lainnyaText: bLainnyaText.value
                     },
                     kitchen: {
-                        nama: kitchenNama.value,
-                        px: kitchenPx.value,
-                        jam: kitchenJam.value,
+                        nama: kNama.value,
+                        px: kPx.value,
+                        jam: kJam.value,
                         paket: document.querySelector('input[name="paket"]:checked')?.value || '',
-                        items: paketInputs.map(item => ({
-                            text: item.text.value,
-                            qty: item.qty.value
-                        }))
+                        items: paketItems.map(p => ({ text: p.text.value, qty: p.qty.value }))
                     },
                     security: {
-                        nama: securityNama.value,
-                        px: securityPx.value,
-                        jam: securityJam.value,
-                        kendaraan: securityKendaraan.value,
-                        kendaraanLainnya: securityKendaraanLainnya.value
+                        nama: sNama.value,
+                        px: sPx.value,
+                        jam: sJam.value,
+                        kendaraan: sKendaraan.value,
+                        kendaraanLainnya: sKendaraanLainnya.value
                     },
                     status: currentStatus
                 };
                 localStorage.setItem('pawonMbahGitoReservasi', JSON.stringify(data));
-                showNotification('Data reservasi berhasil disimpan.');
+                showNotif('Data reservasi disimpan.');
             }
 
-            // ===== MUAT DATA =====
+            // ===== MUAT =====
             function muatData() {
                 const saved = localStorage.getItem('pawonMbahGitoReservasi');
-                if (!saved) {
-                    showNotification('Tidak ada data tersimpan.');
-                    return;
-                }
+                if (!saved) { showNotif('Tidak ada data tersimpan.'); return; }
                 try {
                     const data = JSON.parse(saved);
                     reservationNumber = data.reservationNumber || 1;
-                    updateReservationNumberDisplay();
+                    updateResNumber();
 
-                    // Barista
-                    baristaNama.value = data.barista.nama || '';
-                    baristaPx.value = data.barista.px || '';
-                    baristaJam.value = data.barista.jam || '';
-                    baristaEsTeler.checked = data.barista.esTeler || false;
-                    baristaJeruk.checked = data.barista.jeruk || false;
-                    baristaTeh.checked = data.barista.teh || false;
-                    baristaEsBatu.checked = data.barista.esBatu || false;
-                    baristaLainnyaCb.checked = data.barista.lainnyaCb || false;
-                    baristaLainnyaText.value = data.barista.lainnyaText || '';
-                    if (baristaLainnyaCb.checked) {
-                        baristaLainnyaWrap.style.display = 'block';
-                    } else {
-                        baristaLainnyaWrap.style.display = 'none';
-                    }
+                    bNama.value = data.barista.nama || '';
+                    bPx.value = data.barista.px || '';
+                    bJam.value = data.barista.jam || '';
+                    bEsTeler.checked = data.barista.esTeler || false;
+                    bJeruk.checked = data.barista.jeruk || false;
+                    bTeh.checked = data.barista.teh || false;
+                    bEsBatu.checked = data.barista.esBatu || false;
+                    bLainnyaCb.checked = data.barista.lainnyaCb || false;
+                    bLainnyaText.value = data.barista.lainnyaText || '';
+                    bLainnyaWrap.style.display = bLainnyaCb.checked ? 'block' : 'none';
 
-                    // Kitchen
-                    kitchenNama.value = data.kitchen.nama || '';
-                    kitchenPx.value = data.kitchen.px || '';
-                    kitchenJam.value = data.kitchen.jam || '';
+                    kNama.value = data.kitchen.nama || '';
+                    kPx.value = data.kitchen.px || '';
+                    kJam.value = data.kitchen.jam || '';
                     if (data.kitchen.paket) {
                         const radio = document.querySelector(`input[name="paket"][value="${data.kitchen.paket}"]`);
                         if (radio) radio.checked = true;
                     }
                     if (data.kitchen.items) {
-                        data.kitchen.items.forEach((item, index) => {
-                            if (paketInputs[index]) {
-                                paketInputs[index].text.value = item.text || '';
-                                paketInputs[index].qty.value = item.qty || '0';
+                        data.kitchen.items.forEach((item, idx) => {
+                            if (paketItems[idx]) {
+                                paketItems[idx].text.value = item.text || '';
+                                paketItems[idx].qty.value = item.qty || '0';
                             }
                         });
                     }
 
-                    // Security
-                    securityNama.value = data.security.nama || '';
-                    securityPx.value = data.security.px || '';
-                    securityJam.value = data.security.jam || '';
-                    securityKendaraan.value = data.security.kendaraan || '';
-                    securityKendaraanLainnya.value = data.security.kendaraanLainnya || '';
-                    if (securityKendaraan.value === 'Lainnya') {
-                        securityLainnyaWrap.style.display = 'block';
-                    } else {
-                        securityLainnyaWrap.style.display = 'none';
-                    }
+                    sNama.value = data.security.nama || '';
+                    sPx.value = data.security.px || '';
+                    sJam.value = data.security.jam || '';
+                    sKendaraan.value = data.security.kendaraan || '';
+                    sKendaraanLainnya.value = data.security.kendaraanLainnya || '';
+                    sLainnyaWrap.style.display = sKendaraan.value === 'Lainnya' ? 'block' : 'none';
 
-                    // Status
                     setStatus(data.status || 'prepare');
-
                     updateWaiters();
-                    showNotification('Data berhasil dimuat.');
+                    showNotif('Data dimuat.');
                 } catch (e) {
-                    showNotification('Gagal memuat data.');
+                    showNotif('Gagal memuat data.');
                 }
             }
 
-            // ===== RESET DATA =====
+            // ===== RESET =====
             function resetData() {
-                // Clear all inputs
-                document.querySelectorAll('.input-text').forEach(input => input.value = '');
-                document.querySelectorAll('.input-qty').forEach(input => input.value = '0');
+                document.querySelectorAll('.input-text').forEach(inp => inp.value = '');
+                document.querySelectorAll('.input-qty').forEach(inp => inp.value = '0');
                 document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
                 document.querySelectorAll('input[type="radio"]').forEach(rb => rb.checked = false);
-                securityKendaraan.value = '';
-                securityLainnyaWrap.style.display = 'none';
-                baristaLainnyaWrap.style.display = 'none';
+                sKendaraan.value = '';
+                sLainnyaWrap.style.display = 'none';
+                bLainnyaWrap.style.display = 'none';
                 setStatus('prepare');
-                // Increase reservation number
                 reservationNumber++;
-                updateReservationNumberDisplay();
+                updateResNumber();
                 updateWaiters();
                 localStorage.removeItem('pawonMbahGitoReservasi');
-                showNotification('Data reservasi direset.');
+                showNotif('Data direset.');
             }
 
-            // ===== NOTIFIKASI =====
-            function showNotification(message) {
-                notificationText.textContent = message;
-                notification.classList.add('show');
-                setTimeout(() => {
-                    notification.classList.remove('show');
-                }, 2500);
+            // ===== NOTIF =====
+            function showNotif(msg) {
+                notifText.textContent = msg;
+                notif.classList.add('show');
+                clearTimeout(notif._timer);
+                notif._timer = setTimeout(() => notif.classList.remove('show'), 2200);
             }
 
-            // ===== VALIDASI DATA UTAMA =====
+            // ===== VALIDASI =====
             function validateData() {
-                const nama = baristaNama.value.trim() || kitchenNama.value.trim();
-                const px = baristaPx.value.trim() || kitchenPx.value.trim();
-                const jam = baristaJam.value || kitchenJam.value;
-                if (!nama || !px || !jam) {
-                    return false;
-                }
-                return true;
+                const nama = bNama.value.trim() || kNama.value.trim() || sNama.value.trim();
+                const px = bPx.value.trim() || kPx.value.trim() || sPx.value.trim();
+                const jam = bJam.value || kJam.value || sJam.value;
+                return !!(nama && px && jam);
             }
 
-            // ===== DOWNLOAD PDF =====
+            // ===== PDF =====
             function downloadPDF() {
                 if (!validateData()) {
-                    showNotification('Data reservasi belum lengkap.');
+                    showNotif('Data reservasi belum lengkap (Nama, Px, Jam).');
                     return;
                 }
+                const controlsEl = document.getElementById('controls');
+                controlsEl.style.display = 'none';
 
                 const element = document.getElementById('a4Page');
                 const opt = {
-                    margin:        [0, 0, 0, 0],
-                    filename:      `Reservasi-Pawon-Mbah-Gito-${baristaNama.value.trim() || kitchenNama.value.trim() || 'TanpaNama'}-${formatTanggal().replace(/\s+/g, '-')}.pdf`,
-                    image:        { type: 'jpeg', quality: 0.98 },
-                    html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
-                    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                    pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
+                    margin: [0, 0, 0, 0],
+                    filename: 'Reservasi-Pawon-Mbah-Gito-' +
+                        (bNama.value.trim() || kNama.value.trim() || 'TanpaNama') +
+                        '-' + formatTanggal().replace(/\s+/g, '-') + '.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2, useCORS: true, letterRendering: true },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                    pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
                 };
 
-                // Gunakan onclone untuk merapikan tampilan input
-                opt.onclone = function(clonedDoc) {
-                    const cloneA4 = clonedDoc.getElementById('a4Page');
-                    // Ubah semua input menjadi span dengan nilai
-                    const inputs = cloneA4.querySelectorAll('input, select');
-                    inputs.forEach(input => {
-                        let replacement;
-                        if (input.tagName === 'SELECT') {
-                            replacement = clonedDoc.createElement('span');
-                            replacement.textContent = input.options[input.selectedIndex]?.text || '';
-                        } else if (input.type === 'checkbox' || input.type === 'radio') {
-                            if (input.checked) {
-                                replacement = clonedDoc.createElement('span');
-                                replacement.textContent = input.type === 'checkbox' ? '☑' : '●';
-                            } else {
-                                replacement = clonedDoc.createElement('span');
-                                replacement.textContent = input.type === 'checkbox' ? '☐' : '○';
-                            }
-                        } else {
-                            replacement = clonedDoc.createElement('span');
-                            replacement.textContent = input.value || '';
-                        }
-                        replacement.style.cssText = 'font-size: 0.8rem; color: #3e2b1c; display: inline-block; min-width: 30px;';
-                        input.replaceWith(replacement);
-                    });
-
-                    // Ubah tombol status menjadi teks indikator
-                    const prepareBtn = clonedDoc.getElementById('statusPrepareBtn');
-                    const selesaiBtn = clonedDoc.getElementById('statusSelesaiBtn');
-                    if (prepareBtn && selesaiBtn) {
-                        const container = prepareBtn.parentNode;
-                        container.innerHTML = '';
-                        const statusText = clonedDoc.createElement('span');
-                        statusText.textContent = currentStatus === 'prepare' ? '🟠 MASIH DALAM PROSES / PREPARE' : '🟢 SUDAH SELESAI';
-                        statusText.style.cssText = 'font-weight: 600; font-size: 0.8rem; padding: 4px 8px; border-radius: 4px;';
-                        if (currentStatus === 'prepare') {
-                            statusText.style.background = '#fde8d7';
-                            statusText.style.color = '#c0541e';
-                        } else {
-                            statusText.style.background = '#e8f5e9';
-                            statusText.style.color = '#2e7d32';
-                        }
-                        container.appendChild(statusText);
-                    }
-                };
-
-                html2pdf().set(opt).from(element).save();
+                html2pdf().set(opt).from(element).save().then(() => {
+                    controlsEl.style.display = 'flex';
+                }).catch(() => {
+                    controlsEl.style.display = 'flex';
+                    showNotif('Gagal generate PDF.');
+                });
             }
 
             // ===== PRINT =====
@@ -1267,33 +1193,19 @@
                 window.print();
             }
 
-            // ===== EVENT LISTENERS =====
+            // ===== EVENT =====
             btnSimpan.addEventListener('click', simpanData);
             btnMuat.addEventListener('click', muatData);
             btnPrint.addEventListener('click', printPage);
             btnPdf.addEventListener('click', downloadPDF);
-            btnReset.addEventListener('click', function() {
-                confirmOverlay.style.display = 'flex';
-            });
-
-            confirmResetYes.addEventListener('click', function() {
-                resetData();
-                confirmOverlay.style.display = 'none';
-            });
-
-            confirmResetNo.addEventListener('click', function() {
-                confirmOverlay.style.display = 'none';
-            });
+            btnReset.addEventListener('click', () => { confirmOverlay.style.display = 'flex'; });
+            confirmYes.addEventListener('click', () => { resetData();
+                confirmOverlay.style.display = 'none'; });
+            confirmNo.addEventListener('click', () => { confirmOverlay.style.display = 'none'; });
 
             // ===== INISIALISASI =====
-            updateTanggal();
-            updateReservationNumberDisplay();
             updateWaiters();
-            setStatus('prepare');
-
-            // Muat data otomatis jika ada
-            const savedData = localStorage.getItem('pawonMbahGitoReservasi');
-            if (savedData) {
+            if (localStorage.getItem('pawonMbahGitoReservasi')) {
                 muatData();
             }
         });
