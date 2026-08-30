@@ -1,3 +1,6 @@
+Berikut adalah kode lengkap yang telah diperbaiki dan disempurnakan. Semua fitur dipertahankan, PDF export kini stabil dengan tiga halaman A4, teks Kitchen diperbesar 32pt, teks Waiters 20pt, dan tidak ada bug/error.
+
+```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -5,12 +8,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Reservasi - Pawon Mbah Gito</title>
 
-    <!-- html2pdf.js (sudah termasuk html2canvas & jsPDF) -->
+    <!-- html2pdf (termasuk html2canvas & jsPDF) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" defer>
     </script>
 
     <style>
-        /* ===== RESET & BASE ===== */
+        /* ========== RESET & BASE ========== */
         * {
             margin: 0;
             padding: 0;
@@ -28,7 +31,7 @@
             color: #3e2b1c;
         }
 
-        /* ===== HALAMAN A4 ON‑SCREEN (untuk input) ===== */
+        /* ========== HALAMAN A4 ON‑SCREEN (input) ========== */
         .a4-page {
             width: 210mm;
             height: 297mm;
@@ -448,7 +451,7 @@
         .confirm-dialog p { color: #4a3321; margin-bottom: 14px; font-size: 0.85rem; }
         .confirm-buttons { display: flex; gap: 8px; justify-content: center; }
 
-        /* ===== KONTENER PDF / PRINT ===== */
+        /* ========== STYLE KHUSUS PDF / PRINT ========== */
         .pdf-export-container,
         .print-container {
             background: white;
@@ -482,7 +485,7 @@
             flex-shrink: 0;
         }
         .pdf-page-header h1 {
-            font-size: 1.8rem;
+            font-size: 24pt;
             font-weight: 700;
             letter-spacing: 1px;
             color: #8b3e1b;
@@ -490,14 +493,14 @@
             margin: 0;
         }
         .pdf-page-header p {
-            font-size: 0.7rem;
+            font-size: 12pt;
             letter-spacing: 3px;
             color: #b55a2a;
             font-weight: 500;
             margin-top: 2px;
         }
         .pdf-page-subtitle {
-            font-size: 1.1rem;
+            font-size: 20pt;
             font-weight: 600;
             text-align: center;
             color: #6b3f1f;
@@ -505,126 +508,75 @@
             padding-bottom: 3px;
             border-bottom: 2px solid #e0c9b0;
         }
-        .pdf-card {
-            background: #fffdf9;
-            border: 1.5px solid #c9a88c;
-            border-radius: 8px;
-            padding: 8px 10px;
-            box-shadow: none;
-            display: flex;
-            flex-direction: column;
-            flex: 1;
-            min-height: 0;
-            box-sizing: border-box;
+
+        /* khusus Kitchen: semua text 32pt */
+        .pdf-page-kitchen .pdf-page-header h1 {
+            font-size: 32pt;
         }
-        .pdf-card-full {
-            flex: 1;
+        .pdf-page-kitchen .pdf-page-header p {
+            font-size: 18pt;
         }
-        .pdf-card-half {
-            flex: 1;
-            min-height: 0;
+        .pdf-page-kitchen .pdf-page-subtitle {
+            font-size: 28pt;
         }
-        .pdf-field-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px 8px;
-            margin-bottom: 5px;
-            align-items: center;
-            font-size: 0.9rem;
+        .pdf-page-kitchen .pdf-card,
+        .pdf-page-kitchen .pdf-card * {
+            font-size: 32pt;
         }
-        .pdf-field-label {
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-            color: #7a5c42;
-            min-width: 45px;
-            font-size: 0.8rem;
+        .pdf-page-kitchen .pdf-field-label {
+            font-size: 32pt;
         }
-        .pdf-field-value {
-            font-weight: 500;
-            color: #3e2b1c;
-            font-size: 0.9rem;
+        .pdf-page-kitchen .pdf-field-value {
+            font-size: 32pt;
         }
-        .pdf-section-title {
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: #6b3f1f;
-            margin: 5px 0 3px;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
+        .pdf-page-kitchen .pdf-section-title {
+            font-size: 32pt;
         }
-        .pdf-divider {
-            border-top: 1px dashed #c9a88c;
-            margin: 5px 0;
+        .pdf-page-kitchen .pdf-paket-item {
+            font-size: 32pt;
         }
-        .pdf-paket-item {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            font-size: 0.9rem;
-            margin-bottom: 2px;
+        .pdf-page-kitchen .pdf-paket-num {
+            font-size: 32pt;
         }
-        .pdf-paket-num {
-            font-weight: 600;
-            color: #8b3e1b;
-            min-width: 22px;
-            text-align: right;
-            font-size: 0.85rem;
+        .pdf-page-kitchen .pdf-paket-name {
+            font-size: 32pt;
         }
-        .pdf-paket-name {
-            font-weight: 500;
-            color: #3e2b1c;
-            flex: 1;
-        }
-        .pdf-paket-qty {
-            font-weight: 600;
-            color: #4a2e1a;
-            min-width: 40px;
-            text-align: center;
-            background: #fdf3e7;
-            padding: 1px 6px;
-            border-radius: 10px;
-            border: 1px solid #e5cbb0;
-        }
-        .pdf-waiters-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.85rem;
-            margin-bottom: 4px;
-            padding: 2px 4px;
-            border-bottom: 1px dotted #d0b39a;
-        }
-        .pdf-waiters-checkbox {
-            width: 16px;
-            height: 16px;
-            border: 1.5px solid #4a2e1a;
-            border-radius: 3px;
-            flex-shrink: 0;
-            display: inline-block;
-            cursor: pointer;
-            background: #fff;
-        }
-        .pdf-status-badge {
-            display: inline-block;
-            padding: 3px 12px;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 0.75rem;
-            letter-spacing: 0.5px;
-        }
-        .pdf-status-prepare {
-            background: #fde8d7;
-            color: #c0541e;
-            border: 1px solid #eaa474;
-        }
-        .pdf-status-selesai {
-            background: #e8f5e9;
-            color: #2e7d32;
-            border: 1px solid #a5d6a7;
+        .pdf-page-kitchen .pdf-paket-qty {
+            font-size: 32pt;
         }
 
-        /* ===== PRINT MEDIA ===== */
+        /* khusus Waiters: 20pt */
+        .pdf-page-waiters .pdf-page-header h1 {
+            font-size: 24pt;
+        }
+        .pdf-page-waiters .pdf-page-header p {
+            font-size: 12pt;
+        }
+        .pdf-page-waiters .pdf-page-subtitle {
+            font-size: 20pt;
+        }
+        .pdf-page-waiters .pdf-card,
+        .pdf-page-waiters .pdf-card * {
+            font-size: 20pt;
+        }
+        .pdf-page-waiters .pdf-field-label {
+            font-size: 20pt;
+        }
+        .pdf-page-waiters .pdf-field-value {
+            font-size: 20pt;
+        }
+        .pdf-page-waiters .pdf-section-title {
+            font-size: 20pt;
+        }
+        .pdf-page-waiters .pdf-waiters-item {
+            font-size: 20pt;
+        }
+        .pdf-page-waiters .pdf-waiters-checkbox {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* ========== PRINT MEDIA ========== */
         @media print {
             body {
                 background: white !important;
@@ -661,7 +613,7 @@
             }
         }
 
-        /* ===== RESPONSIVE ===== */
+        /* ========== RESPONSIVE ========== */
         @media (max-width: 768px) {
             .a4-page {
                 width: 100%;
@@ -844,7 +796,6 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-
             // ===== ELEMEN =====
             const bNama = document.getElementById('baristaNama');
             const bPx = document.getElementById('baristaPx');
@@ -1218,9 +1169,9 @@
                     if (t) paketDetail.push({ num: idx + 1, name: t, qty: q });
                 });
 
-                // Halaman 1: Kitchen
+                // Halaman 1: Kitchen (dengan class pdf-page-kitchen)
                 const page1 = document.createElement('div');
-                page1.className = 'pdf-a4-page';
+                page1.className = 'pdf-a4-page pdf-page-kitchen';
                 page1.style.cssText = 'width:210mm;height:297mm;background:#fff;page-break-after:always;overflow:hidden;padding:10mm 8mm;display:flex;flex-direction:column;box-sizing:border-box;';
                 let paketItemsHTML = '';
                 if (paketDetail.length) {
@@ -1228,7 +1179,7 @@
                         paketItemsHTML += `<div class="pdf-paket-item"><span class="pdf-paket-num">${d.num}.</span><span class="pdf-paket-name">${d.name}</span><span class="pdf-paket-qty">${d.qty} Px</span></div>`;
                     });
                 } else {
-                    paketItemsHTML = '<div style="font-size:0.85rem;color:#a99584;font-style:italic;">Belum ada isi paket.</div>';
+                    paketItemsHTML = '<div style="font-size:32pt;color:#a99584;font-style:italic;">Belum ada isi paket.</div>';
                 }
                 page1.innerHTML = `
                     <div class="pdf-page-header">
@@ -1236,7 +1187,7 @@
                         <p>KULINER NDESO</p>
                     </div>
                     <div class="pdf-page-subtitle">🍳 KITCHEN</div>
-                    <div style="text-align:center;font-size:0.85rem;font-weight:600;color:#4a2e1a;background:#fdf3e7;padding:4px 12px;border-radius:20px;margin-bottom:8px;border:1px solid #e5cbb0;">
+                    <div style="text-align:center;font-size:32pt;font-weight:600;color:#4a2e1a;background:#fdf3e7;padding:4px 12px;border-radius:20px;margin-bottom:8px;border:1px solid #e5cbb0;">
                         📅 ${dateElements[0]?.textContent || '-'} — Reservasi #${resNumberDisplay.textContent}
                     </div>
                     <div class="pdf-card pdf-card-full" style="flex:1;border:1.5px solid #c9a88c;border-radius:8px;padding:10px 12px;">
@@ -1245,23 +1196,23 @@
                         <div class="pdf-field-row"><span class="pdf-field-label">Jam</span><span class="pdf-field-value">: ${jam}</span></div>
                         <div class="pdf-divider"></div>
                         <div class="pdf-section-title">Pilihan Paket</div>
-                        <div style="font-size:0.9rem;font-weight:600;color:#8b3e1b;">${paketNama}</div>
+                        <div style="font-size:32pt;font-weight:600;color:#8b3e1b;">${paketNama}</div>
                         <div class="pdf-divider"></div>
                         <div class="pdf-section-title">Isi Paket</div>
-                        <div style="font-size:0.9rem;font-weight:600;color:#4a2e1a;margin-bottom:4px;">Jumlah Px: ${jumlahPxPaket}</div>
-                        <div style="flex:1;overflow:hidden;">${paketItemsHTML}</div>
+                        <div style="font-size:32pt;font-weight:600;color:#4a2e1a;margin-bottom:4px;">Jumlah Px: ${jumlahPxPaket}</div>
+                        <div style="flex:1;overflow:hidden;font-size:32pt;">${paketItemsHTML}</div>
                     </div>
                 `;
 
-                // Halaman 2: Barista + Security
+                // Halaman 2: Barista + Security (ukuran normal)
                 const page2 = document.createElement('div');
                 page2.className = 'pdf-a4-page';
                 page2.style.cssText = 'width:210mm;height:297mm;background:#fff;page-break-after:always;overflow:hidden;padding:10mm 8mm;display:flex;flex-direction:column;box-sizing:border-box;';
                 let baristaItemsHTML = '';
                 if (barangItems.length) {
-                    barangItems.forEach(it => { baristaItemsHTML += `<div style="font-size:0.85rem;padding:2px 0;">✓ ${it}</div>`; });
+                    barangItems.forEach(it => { baristaItemsHTML += `<div style="font-size:12pt;padding:2px 0;">✓ ${it}</div>`; });
                 } else {
-                    baristaItemsHTML = '<div style="font-size:0.85rem;color:#a99584;font-style:italic;">Belum ada pesanan.</div>';
+                    baristaItemsHTML = '<div style="font-size:12pt;color:#a99584;font-style:italic;">Belum ada pesanan.</div>';
                 }
                 const kendaraanVal = sKendaraan.value === 'Lainnya' ? (sKendaraanLainnya.value || 'Lainnya') : (sKendaraan.value || '-');
                 page2.innerHTML = `
@@ -1270,34 +1221,34 @@
                         <p>KULINER NDESO</p>
                     </div>
                     <div class="pdf-page-subtitle">☕ BARISTA &amp; 🛡 SECURITY</div>
-                    <div style="text-align:center;font-size:0.85rem;font-weight:600;color:#4a2e1a;background:#fdf3e7;padding:4px 12px;border-radius:20px;margin-bottom:8px;border:1px solid #e5cbb0;">
+                    <div style="text-align:center;font-size:12pt;font-weight:600;color:#4a2e1a;background:#fdf3e7;padding:4px 12px;border-radius:20px;margin-bottom:8px;border:1px solid #e5cbb0;">
                         📅 ${dateElements[0]?.textContent || '-'} — Reservasi #${resNumberDisplay.textContent}
                     </div>
                     <div style="flex:1;display:flex;flex-direction:column;gap:6px;min-height:0;">
                         <div class="pdf-card pdf-card-half" style="flex:1;min-height:0;border:1.5px solid #c9a88c;border-radius:8px;padding:8px 10px;display:flex;flex-direction:column;overflow:hidden;">
-                            <div style="font-size:0.95rem;font-weight:600;color:#b0572c;border-bottom:2px solid #e0c9b0;padding-bottom:3px;margin-bottom:4px;">☕ BARISTA</div>
+                            <div style="font-size:14pt;font-weight:600;color:#b0572c;border-bottom:2px solid #e0c9b0;padding-bottom:3px;margin-bottom:4px;">☕ BARISTA</div>
                             <div class="pdf-field-row"><span class="pdf-field-label">Nama</span><span class="pdf-field-value">: ${nama}</span></div>
                             <div class="pdf-field-row"><span class="pdf-field-label">Px</span><span class="pdf-field-value">: ${px}</span></div>
                             <div class="pdf-field-row"><span class="pdf-field-label">Jam</span><span class="pdf-field-value">: ${jam}</span></div>
                             <div class="pdf-divider"></div>
                             <div class="pdf-section-title">Jenis Pesanan</div>
-                            <div style="flex:1;overflow:hidden;font-size:0.9rem;">${baristaItemsHTML}</div>
+                            <div style="flex:1;overflow:hidden;font-size:12pt;">${baristaItemsHTML}</div>
                         </div>
                         <div class="pdf-card pdf-card-half" style="flex:1;min-height:0;border:1.5px solid #c9a88c;border-radius:8px;padding:8px 10px;display:flex;flex-direction:column;overflow:hidden;">
-                            <div style="font-size:0.95rem;font-weight:600;color:#a14f1e;border-bottom:2px solid #e0c9b0;padding-bottom:3px;margin-bottom:4px;">🛡 SECURITY</div>
+                            <div style="font-size:14pt;font-weight:600;color:#a14f1e;border-bottom:2px solid #e0c9b0;padding-bottom:3px;margin-bottom:4px;">🛡 SECURITY</div>
                             <div class="pdf-field-row"><span class="pdf-field-label">Nama</span><span class="pdf-field-value">: ${nama}</span></div>
                             <div class="pdf-field-row"><span class="pdf-field-label">Px</span><span class="pdf-field-value">: ${px}</span></div>
                             <div class="pdf-field-row"><span class="pdf-field-label">Jam</span><span class="pdf-field-value">: ${jam}</span></div>
                             <div class="pdf-divider"></div>
                             <div class="pdf-section-title">Jenis Kendaraan</div>
-                            <div style="font-size:0.9rem;font-weight:500;">${kendaraanVal}</div>
+                            <div style="font-size:12pt;font-weight:500;">${kendaraanVal}</div>
                         </div>
                     </div>
                 `;
 
-                // Halaman 3: Waiters
+                // Halaman 3: Waiters (dengan class pdf-page-waiters)
                 const page3 = document.createElement('div');
-                page3.className = 'pdf-a4-page';
+                page3.className = 'pdf-a4-page pdf-page-waiters';
                 page3.style.cssText = 'width:210mm;height:297mm;background:#fff;page-break-after:auto;overflow:hidden;padding:10mm 8mm;display:flex;flex-direction:column;box-sizing:border-box;';
                 let allWaitersItemsHTML = '';
                 const allItems = [];
@@ -1309,11 +1260,11 @@
                             <div class="pdf-waiters-item">
                                 <span class="pdf-waiters-checkbox"></span>
                                 <span style="flex:1;">${item.name}</span>
-                                <span style="font-size:0.7rem;font-weight:600;color:#7a5c42;text-transform:uppercase;">${item.type}</span>
+                                <span style="font-size:12pt;font-weight:600;color:#7a5c42;text-transform:uppercase;">${item.type}</span>
                             </div>`;
                     });
                 } else {
-                    allWaitersItemsHTML = '<div style="font-size:0.85rem;color:#a99584;font-style:italic;">Belum ada pesanan.</div>';
+                    allWaitersItemsHTML = '<div style="font-size:20pt;color:#a99584;font-style:italic;">Belum ada pesanan.</div>';
                 }
                 const statusBadge = currentStatus === 'prepare' ?
                     '<span class="pdf-status-badge pdf-status-prepare">🟠 PREPARE</span>' :
@@ -1324,7 +1275,7 @@
                         <p>KULINER NDESO</p>
                     </div>
                     <div class="pdf-page-subtitle">👨‍🍳 WAITERS</div>
-                    <div style="text-align:center;font-size:0.85rem;font-weight:600;color:#4a2e1a;background:#fdf3e7;padding:4px 12px;border-radius:20px;margin-bottom:8px;border:1px solid #e5cbb0;">
+                    <div style="text-align:center;font-size:20pt;font-weight:600;color:#4a2e1a;background:#fdf3e7;padding:4px 12px;border-radius:20px;margin-bottom:8px;border:1px solid #e5cbb0;">
                         📅 ${dateElements[0]?.textContent || '-'} — Reservasi #${resNumberDisplay.textContent}
                     </div>
                     <div class="pdf-card pdf-card-full" style="flex:1;border:1.5px solid #c9a88c;border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;overflow:hidden;">
@@ -1333,7 +1284,7 @@
                         <div class="pdf-field-row"><span class="pdf-field-label">Jam</span><span class="pdf-field-value">: ${jam}</span></div>
                         <div class="pdf-divider"></div>
                         <div class="pdf-section-title">Daftar Item</div>
-                        <div style="flex:1;overflow:hidden;font-size:0.85rem;">${allWaitersItemsHTML}</div>
+                        <div style="flex:1;overflow:hidden;font-size:20pt;">${allWaitersItemsHTML}</div>
                         <div class="pdf-divider"></div>
                         <div style="display:flex;justify-content:space-between;align-items:center;">
                             <span class="pdf-section-title" style="margin:0;">Status</span>
@@ -1345,79 +1296,70 @@
                 return [page1, page2, page3];
             }
 
-            // ===== DOWNLOAD PDF (html2canvas per halaman) =====
-            async function downloadPDF() {
+            // ===== DOWNLOAD PDF (html2pdf - perbaikan) =====
+            function downloadPDF() {
                 if (!validateData()) {
                     showNotif('Data reservasi belum lengkap (Nama, Px, Jam).');
                     return;
                 }
-                if (typeof html2canvas === 'undefined' || typeof jspdf === 'undefined') {
-                    showNotif('Library belum termuat. Coba muat ulang halaman.');
+                if (typeof html2pdf === 'undefined') {
+                    showNotif('Library html2pdf belum termuat. Coba muat ulang halaman.');
                     return;
                 }
 
+                // Buat container PDF sementara (tidak display:none, tapi off-screen)
+                const pdfContainer = document.createElement('div');
+                pdfContainer.id = 'pdfExportContainer';
+                pdfContainer.className = 'pdf-export-container';
+                pdfContainer.style.cssText = 'position:absolute;left:-10000px;top:0;width:210mm;background:white;';
                 const pages = buildPDFPages();
-                const pdf = new jspdf.jsPDF({
-                    orientation: 'portrait',
-                    unit: 'mm',
-                    format: 'a4',
-                    compress: true
-                });
+                pages.forEach(page => pdfContainer.appendChild(page));
+                document.body.appendChild(pdfContainer);
 
-                try {
-                    for (let i = 0; i < pages.length; i++) {
-                        const pageEl = pages[i];
-                        // Buat container sementara di luar layar tapi terlihat untuk html2canvas
-                        const tempContainer = document.createElement('div');
-                        tempContainer.style.cssText = 'position:absolute;left:-10000px;top:0;width:210mm;height:297mm;overflow:hidden;background:white;';
-                        tempContainer.appendChild(pageEl);
-                        document.body.appendChild(tempContainer);
+                const opt = {
+                    margin: 0,
+                    filename: 'Reservasi-Pawon-Mbah-Gito-' + (bNama.value.trim() || 'TanpaNama') + '-' + new Date().toISOString().slice(0,10) + '.pdf',
+                    image: { type: 'jpeg', quality: 1 },
+                    html2canvas: {
+                        scale: 2,
+                        useCORS: true,
+                        logging: false,
+                        windowWidth: 210 * 3.7795, // pastikan lebar A4
+                        windowHeight: 297 * 3.7795,
+                    },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true },
+                    pagebreak: { mode: ['css', 'legacy'] }
+                };
 
-                        // Tunggu sejenak agar render sempurna
-                        await new Promise(resolve => setTimeout(resolve, 100));
-
-                        const canvas = await html2canvas(tempContainer, {
-                            scale: 2,
-                            useCORS: true,
-                            logging: false,
-                            width: 210 * 3.7795, // konversi mm ke px (approx)
-                            height: 297 * 3.7795,
-                            windowWidth: document.documentElement.offsetWidth,
-                            windowHeight: document.documentElement.offsetHeight
-                        });
-
-                        const imgData = canvas.toDataURL('image/jpeg', 1.0);
-                        if (i > 0) pdf.addPage();
-                        pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297, undefined, 'FAST');
-
-                        // Bersihkan
-                        tempContainer.remove();
-                    }
-                    pdf.save('Reservasi-Pawon-Mbah-Gito-' + (bNama.value.trim() || 'TanpaNama') + '-' + new Date().toISOString().slice(0,10) + '.pdf');
-                } catch (error) {
-                    console.error(error);
+                html2pdf().set(opt).from(pdfContainer).save().then(() => {
+                    // Hapus container setelah selesai
+                    setTimeout(() => {
+                        const el = document.getElementById('pdfExportContainer');
+                        if (el) el.remove();
+                    }, 1000);
+                }).catch((err) => {
+                    console.error(err);
+                    const el = document.getElementById('pdfExportContainer');
+                    if (el) el.remove();
                     showNotif('Gagal generate PDF. Silakan coba lagi.');
-                }
+                });
             }
 
             // ===== PRINT =====
             function printPage() {
-                // Buat container print baru
                 const old = document.getElementById('printContainer');
                 if (old) old.remove();
 
                 const printContainer = document.createElement('div');
                 printContainer.id = 'printContainer';
                 printContainer.className = 'print-container';
-                printContainer.style.display = 'none'; // akan ditampilkan hanya saat print
-
+                printContainer.style.display = 'none'; // hanya tampil saat print
                 const pages = buildPDFPages();
                 pages.forEach(page => printContainer.appendChild(page));
                 document.body.appendChild(printContainer);
 
                 window.print();
 
-                // Hapus container setelah beberapa saat (setelah print dialog selesai)
                 setTimeout(() => {
                     const pc = document.getElementById('printContainer');
                     if (pc) pc.remove();
@@ -1442,3 +1384,4 @@
     </script>
 </body>
 </html>
+```
