@@ -5,12 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Reservasi - Pawon Mbah Gito</title>
 
-    <!-- html2pdf.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" defer>
     </script>
 
     <style>
-        /* ===== RESET & BASE ===== */
         * {
             margin: 0;
             padding: 0;
@@ -28,7 +26,6 @@
             color: #3e2b1c;
         }
 
-        /* ===== HALAMAN A4 ===== */
         .a4-page {
             width: 210mm;
             height: 297mm;
@@ -44,7 +41,6 @@
             flex-direction: column;
         }
 
-        /* ===== HEADER ===== */
         .page-header {
             display: flex;
             justify-content: space-between;
@@ -80,7 +76,6 @@
             color: #8b3e1b;
         }
 
-        /* ===== GRID 2x2 ===== */
         .grid-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -89,7 +84,6 @@
             flex: 1;
         }
 
-        /* ===== CARD ===== */
         .card {
             background: #fffdf9;
             border: 1.5px solid #d9b99b;
@@ -109,14 +103,21 @@
             color: #6b3f1f;
             letter-spacing: 0.5px;
         }
-        .barista-title { color: #b0572c; }
-        .kitchen-title { color: #8b4513; }
-        .waiters-title { color: #c96e2e; }
-        .security-title { color: #a14f1e; }
+        .barista-title {
+            color: #b0572c;
+        }
+        .kitchen-title {
+            color: #8b4513;
+        }
+        .waiters-title {
+            color: #c96e2e;
+        }
+        .security-title {
+            color: #a14f1e;
+        }
 
-        /* Tanggal di dalam kartu - UKURAN DIPERBESAR */
         .card-date {
-            font-size: 0.95rem;          /* sebelumnya 0.7rem */
+            font-size: 0.95rem;
             font-weight: 600;
             color: #4a2e1a;
             background: #fdf3e7;
@@ -129,7 +130,6 @@
             letter-spacing: 0.3px;
         }
 
-        /* ===== FIELD ===== */
         .field-group {
             display: flex;
             flex-wrap: wrap;
@@ -161,7 +161,10 @@
             border-color: #b55a2a;
             box-shadow: 0 0 0 2px rgba(181, 90, 42, 0.12);
         }
-        .input-text-sm { max-width: 70px; text-align: center; }
+        .input-text-sm {
+            max-width: 70px;
+            text-align: center;
+        }
         input[type="number"].input-text {
             -moz-appearance: textfield;
         }
@@ -170,15 +173,15 @@
             -webkit-appearance: none;
             margin: 0;
         }
-        input[type="time"].input-text { max-width: 110px; }
+        input[type="time"].input-text {
+            max-width: 110px;
+        }
 
-        /* ===== DIVIDER ===== */
         .section-divider {
             border-top: 1px dashed #d9bfa6;
             margin: 6px 0;
         }
 
-        /* ===== SUB TITLE ===== */
         .sub-title {
             font-size: 0.75rem;
             font-weight: 600;
@@ -186,12 +189,11 @@
             margin-bottom: 4px;
         }
 
-        /* ===== CHECKBOX GRID ===== */
         .checkbox-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 3px 8px;
-            font-size: 0.72rem;
+            font-size: 0.85rem;
         }
         .checkbox-item {
             display: flex;
@@ -202,19 +204,20 @@
         }
         .checkbox-item input[type="checkbox"] {
             accent-color: #b55a2a;
-            width: 14px;
-            height: 14px;
+            width: 16px;
+            height: 16px;
             cursor: pointer;
             flex-shrink: 0;
         }
-        .hidden-input { margin-top: 4px; }
+        .hidden-input {
+            margin-top: 4px;
+        }
 
-        /* ===== RADIO ===== */
         .radio-group {
             display: flex;
             flex-wrap: wrap;
             gap: 4px 12px;
-            font-size: 0.72rem;
+            font-size: 0.85rem;
         }
         .radio-item {
             display: flex;
@@ -225,50 +228,51 @@
         }
         .radio-item input[type="radio"] {
             accent-color: #b55a2a;
-            width: 14px;
-            height: 14px;
+            width: 15px;
+            height: 15px;
             cursor: pointer;
             flex-shrink: 0;
         }
 
-        /* ===== PAKET ITEMS ===== */
         .paket-items-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 2px 4px;
+            gap: 3px 6px;
             margin-top: 4px;
         }
         .paket-item {
             display: flex;
             align-items: center;
-            gap: 3px;
-            font-size: 0.68rem;
+            gap: 4px;
+            font-size: 0.85rem;
         }
         .item-number {
             font-weight: 600;
             color: #8b3e1b;
-            min-width: 16px;
+            min-width: 20px;
             text-align: right;
-            font-size: 0.65rem;
+            font-size: 0.8rem;
         }
         .paket-input {
             flex: 1;
             min-width: 40px;
-            padding: 2px 4px;
-            font-size: 0.7rem;
+            padding: 3px 5px;
+            font-size: 0.85rem;
             border: 1px solid #d0b39a;
             border-radius: 3px;
             background: #fffefb;
             outline: none;
         }
-        .paket-input:focus { border-color: #b55a2a; }
+        .paket-input:focus {
+            border-color: #b55a2a;
+        }
         .input-qty {
-            width: 30px;
-            padding: 2px 3px;
+            width: 38px;
+            padding: 3px 4px;
             text-align: center;
             border: 1px solid #d0b39a;
             border-radius: 3px;
-            font-size: 0.7rem;
+            font-size: 0.85rem;
             background: #fffefb;
             outline: none;
             -moz-appearance: textfield;
@@ -279,13 +283,57 @@
             margin: 0;
         }
 
-        /* ===== WAITERS ===== */
-        .waiters-auto-info { font-size: 0.75rem; margin-bottom: 6px; }
-        .waiters-field { display: flex; gap: 4px; margin-bottom: 2px; }
-        .waiters-label { font-weight: 600; color: #7a5c42; min-width: 60px; }
-        .waiters-value { font-weight: 500; color: #3e2b1c; }
+        .paket-jumlah-px {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin: 2px 0 6px;
+            padding: 4px 8px;
+            background: #fdf3e7;
+            border-radius: 6px;
+            border: 1px solid #e5cbb0;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #4a2e1a;
+        }
+        .paket-jumlah-px input {
+            width: 60px;
+            padding: 3px 5px;
+            text-align: center;
+            border: 1px solid #d0b39a;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            background: #fffefb;
+            outline: none;
+            -moz-appearance: textfield;
+        }
+        .paket-jumlah-px input::-webkit-outer-spin-button,
+        .paket-jumlah-px input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .waiters-auto-info {
+            font-size: 0.8rem;
+            margin-bottom: 6px;
+        }
+        .waiters-field {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 2px;
+        }
+        .waiters-label {
+            font-weight: 600;
+            color: #7a5c42;
+            min-width: 60px;
+        }
+        .waiters-value {
+            font-weight: 500;
+            color: #3e2b1c;
+        }
         .waiters-section-label {
-            font-size: 0.68rem;
+            font-size: 0.7rem;
             font-weight: 600;
             color: #8b3e1b;
             margin-top: 5px;
@@ -293,15 +341,17 @@
             text-transform: uppercase;
         }
         .waiters-list {
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             color: #4a3321;
             margin-bottom: 4px;
             min-height: 14px;
             white-space: pre-line;
         }
-        .waiters-empty { color: #a99584; font-style: italic; }
+        .waiters-empty {
+            color: #a99584;
+            font-style: italic;
+        }
 
-        /* ===== STATUS TOGGLE ===== */
         .status-toggle {
             display: flex;
             gap: 4px;
@@ -311,7 +361,7 @@
             padding: 4px 6px;
             border: none;
             border-radius: 4px;
-            font-size: 0.6rem;
+            font-size: 0.65rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
@@ -342,7 +392,6 @@
             border-color: #4caf50;
         }
 
-        /* ===== SECURITY ===== */
         .select-input {
             appearance: none;
             background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238b3e1b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
@@ -354,7 +403,6 @@
             padding: 6px 30px 6px 8px;
         }
 
-        /* ===== CONTROLS ===== */
         .controls {
             display: flex;
             flex-wrap: wrap;
@@ -378,14 +426,25 @@
             transform: translateY(1px);
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.10);
         }
-        .btn-simpan { background: #a8562c; }
-        .btn-muat { background: #8b6e4b; }
-        .btn-print { background: #b55a2a; }
-        .btn-pdf { background: #c75b39; }
-        .btn-reset { background: #6b3f1f; }
-        .btn:hover { opacity: 0.9; }
+        .btn-simpan {
+            background: #a8562c;
+        }
+        .btn-muat {
+            background: #8b6e4b;
+        }
+        .btn-print {
+            background: #b55a2a;
+        }
+        .btn-pdf {
+            background: #c75b39;
+        }
+        .btn-reset {
+            background: #6b3f1f;
+        }
+        .btn:hover {
+            opacity: 0.9;
+        }
 
-        /* ===== NOTIFIKASI ===== */
         .notification {
             position: fixed;
             bottom: 20px;
@@ -407,7 +466,6 @@
             transform: translateX(-50%) translateY(0);
         }
 
-        /* ===== KONFIRMASI ===== */
         .confirm-overlay {
             position: fixed;
             top: 0;
@@ -429,11 +487,195 @@
             text-align: center;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
-        .confirm-dialog h3 { color: #6b3f1f; margin-bottom: 6px; }
-        .confirm-dialog p { color: #4a3321; margin-bottom: 14px; font-size: 0.85rem; }
-        .confirm-buttons { display: flex; gap: 8px; justify-content: center; }
+        .confirm-dialog h3 {
+            color: #6b3f1f;
+            margin-bottom: 6px;
+        }
+        .confirm-dialog p {
+            color: #4a3321;
+            margin-bottom: 14px;
+            font-size: 0.85rem;
+        }
+        .confirm-buttons {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+        }
 
-        /* ===== RESPONSIVE ===== */
+        /* ===== PDF EXPORT PAGE STYLES ===== */
+        .pdf-export-container {
+            position: absolute;
+            left: -10000px;
+            top: 0;
+            width: 210mm;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .pdf-a4-page {
+            width: 210mm;
+            height: 297mm;
+            background: #ffffff;
+            page-break-after: always;
+            overflow: hidden;
+            position: relative;
+            padding: 10mm 8mm;
+            border: none;
+            box-shadow: none;
+            display: flex;
+            flex-direction: column;
+            color: #3e2b1c;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .pdf-a4-page:last-child {
+            page-break-after: auto;
+        }
+        .pdf-page-header {
+            text-align: center;
+            padding-bottom: 4px;
+            margin-bottom: 6px;
+            border-bottom: 3px double #b55a2a;
+            flex-shrink: 0;
+        }
+        .pdf-page-header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #8b3e1b;
+            line-height: 1.1;
+        }
+        .pdf-page-header p {
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            color: #b55a2a;
+            font-weight: 500;
+        }
+        .pdf-page-subtitle {
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-align: center;
+            color: #6b3f1f;
+            margin-bottom: 6px;
+            padding-bottom: 3px;
+            border-bottom: 2px solid #e0c9b0;
+        }
+        .pdf-card {
+            background: #fffdf9;
+            border: 1.5px solid #c9a88c;
+            border-radius: 8px;
+            padding: 8px 10px;
+            box-shadow: none;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-height: 0;
+        }
+        .pdf-card-full {
+            flex: 1;
+        }
+        .pdf-card-half {
+            flex: 1;
+            min-height: 0;
+        }
+        .pdf-field-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px 8px;
+            margin-bottom: 5px;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+        .pdf-field-label {
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            color: #7a5c42;
+            min-width: 45px;
+            font-size: 0.8rem;
+        }
+        .pdf-field-value {
+            font-weight: 500;
+            color: #3e2b1c;
+            font-size: 0.9rem;
+        }
+        .pdf-section-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #6b3f1f;
+            margin: 5px 0 3px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .pdf-divider {
+            border-top: 1px dashed #c9a88c;
+            margin: 5px 0;
+        }
+        .pdf-paket-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.9rem;
+            margin-bottom: 2px;
+        }
+        .pdf-paket-num {
+            font-weight: 600;
+            color: #8b3e1b;
+            min-width: 22px;
+            text-align: right;
+            font-size: 0.85rem;
+        }
+        .pdf-paket-name {
+            font-weight: 500;
+            color: #3e2b1c;
+            flex: 1;
+        }
+        .pdf-paket-qty {
+            font-weight: 600;
+            color: #4a2e1a;
+            min-width: 40px;
+            text-align: center;
+            background: #fdf3e7;
+            padding: 1px 6px;
+            border-radius: 10px;
+            border: 1px solid #e5cbb0;
+        }
+        .pdf-waiters-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            margin-bottom: 4px;
+            padding: 2px 4px;
+            border-bottom: 1px dotted #d0b39a;
+        }
+        .pdf-waiters-checkbox {
+            width: 16px;
+            height: 16px;
+            border: 1.5px solid #4a2e1a;
+            border-radius: 3px;
+            flex-shrink: 0;
+            display: inline-block;
+            cursor: pointer;
+            background: #fff;
+        }
+        .pdf-status-badge {
+            display: inline-block;
+            padding: 3px 12px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+        }
+        .pdf-status-prepare {
+            background: #fde8d7;
+            color: #c0541e;
+            border: 1px solid #eaa474;
+        }
+        .pdf-status-selesai {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #a5d6a7;
+        }
+
         @media (max-width: 768px) {
             .a4-page {
                 width: 100%;
@@ -448,14 +690,26 @@
                 grid-template-rows: auto;
                 gap: 4px;
             }
-            .page-header { flex-direction: column; text-align: center; }
-            .reservation-meta { text-align: center; margin-top: 2px; }
-            .controls { flex-direction: column; align-items: stretch; }
-            .paket-items-grid { grid-template-columns: 1fr; }
-            .brand-title { font-size: 1.4rem; }
+            .page-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            .reservation-meta {
+                text-align: center;
+                margin-top: 2px;
+            }
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .paket-items-grid {
+                grid-template-columns: 1fr;
+            }
+            .brand-title {
+                font-size: 1.4rem;
+            }
         }
 
-        /* ===== PRINT STYLES ===== */
         @media print {
             body {
                 background: white !important;
@@ -475,7 +729,8 @@
             }
             .controls,
             .notification,
-            .confirm-overlay {
+            .confirm-overlay,
+            .pdf-export-container {
                 display: none !important;
             }
             .grid-container {
@@ -493,7 +748,8 @@
             .input-text,
             .paket-input,
             .input-qty,
-            .select-input {
+            .select-input,
+            .paket-jumlah-px input {
                 border: 1px solid #c9a88c !important;
                 background: white !important;
                 box-shadow: none !important;
@@ -506,8 +762,8 @@
             input[type="radio"] {
                 -webkit-appearance: checkbox !important;
                 appearance: checkbox !important;
-                width: 12px !important;
-                height: 12px !important;
+                width: 14px !important;
+                height: 14px !important;
                 border: 1px solid #333 !important;
                 background: white !important;
             }
@@ -533,10 +789,8 @@
 </head>
 <body>
 
-    <!-- ===== HALAMAN A4 ===== -->
+    <!-- ===== HALAMAN A4 ON-SCREEN ===== -->
     <div class="a4-page" id="a4Page">
-
-        <!-- HEADER -->
         <div class="page-header">
             <div class="brand">
                 <h1 class="brand-title">PAWON MBAH GITO</h1>
@@ -547,14 +801,11 @@
             </div>
         </div>
 
-        <!-- GRID 2x2 -->
         <div class="grid-container" id="gridContainer">
-
-            <!-- ===== BARISTA ===== -->
+            <!-- BARISTA -->
             <div class="card barista-card" id="cardBarista">
                 <h2 class="card-title barista-title">☕ BARISTA</h2>
                 <div class="card-date">📅 <span class="card-date-value" id="dateBarista">-</span></div>
-
                 <div class="field-group">
                     <span class="field-label">Nama</span>
                     <input type="text" id="baristaNama" placeholder="Nama tamu" class="input-text" autocomplete="off">
@@ -565,15 +816,14 @@
                     <span class="field-label" style="min-width:30px;">Jam</span>
                     <input type="time" id="baristaJam" class="input-text" autocomplete="off">
                 </div>
-
                 <div class="section-divider"></div>
-
                 <h3 class="sub-title">Jenis Pesanan</h3>
                 <div class="checkbox-grid">
                     <label class="checkbox-item"><input type="checkbox" id="baristaEsTeler"> Es Teler</label>
                     <label class="checkbox-item"><input type="checkbox" id="baristaJeruk"> Jeruk</label>
                     <label class="checkbox-item"><input type="checkbox" id="baristaTeh"> Teh</label>
                     <label class="checkbox-item"><input type="checkbox" id="baristaEsBatu"> Es Batu</label>
+                    <label class="checkbox-item"><input type="checkbox" id="baristaKelapa"> Kelapa</label>
                     <label class="checkbox-item"><input type="checkbox" id="baristaLainnyaCb"> Lainnya</label>
                 </div>
                 <div id="baristaLainnyaWrap" class="hidden-input" style="display:none;">
@@ -581,11 +831,10 @@
                 </div>
             </div>
 
-            <!-- ===== KITCHEN ===== -->
+            <!-- KITCHEN -->
             <div class="card kitchen-card" id="cardKitchen">
                 <h2 class="card-title kitchen-title">🍳 KITCHEN</h2>
                 <div class="card-date">📅 <span class="card-date-value" id="dateKitchen">-</span></div>
-
                 <div class="field-group">
                     <span class="field-label">Nama</span>
                     <input type="text" id="kitchenNama" placeholder="Nama tamu" class="input-text" autocomplete="off">
@@ -596,9 +845,7 @@
                     <span class="field-label" style="min-width:30px;">Jam</span>
                     <input type="time" id="kitchenJam" class="input-text" autocomplete="off">
                 </div>
-
                 <div class="section-divider"></div>
-
                 <h3 class="sub-title">Pilihan Paket</h3>
                 <div class="radio-group">
                     <label class="radio-item"><input type="radio" name="paket" value="Paket Alhamdulillah"> Paket Alhamdulillah</label>
@@ -606,38 +853,35 @@
                     <label class="radio-item"><input type="radio" name="paket" value="Paket Bahagia"> Paket Bahagia</label>
                     <label class="radio-item"><input type="radio" name="paket" value="Menu Alacarte"> Menu Alacarte</label>
                 </div>
-
                 <div class="section-divider"></div>
-
                 <h3 class="sub-title">Isi Paket</h3>
+                <div class="paket-jumlah-px">
+                    <span>Jumlah Px:</span>
+                    <input type="number" id="paketJumlahPx" class="input-text input-text-sm" min="1" placeholder="Auto" autocomplete="off">
+                    <span style="font-weight:400;font-size:0.75rem;color:#7a5c42;">(auto dari Px, bisa diedit)</span>
+                </div>
                 <div class="paket-items-grid" id="paketItemsGrid">
-                    <!-- 10 item akan diisi oleh JS -->
+                    <!-- 10 item diisi oleh JS -->
                 </div>
             </div>
 
-            <!-- ===== WAITERS ===== -->
+            <!-- WAITERS -->
             <div class="card waiters-card" id="cardWaiters">
                 <h2 class="card-title waiters-title">👨‍🍳 WAITERS</h2>
                 <div class="card-date">📅 <span class="card-date-value" id="dateWaiters">-</span></div>
-
                 <div class="waiters-auto-info">
                     <div class="waiters-field"><span class="waiters-label">Nama :</span><span id="waitersNama" class="waiters-value">-</span></div>
                     <div class="waiters-field"><span class="waiters-label">Px :</span><span id="waitersPx" class="waiters-value">-</span></div>
                     <div class="waiters-field"><span class="waiters-label">Jam :</span><span id="waitersJam" class="waiters-value">-</span></div>
                 </div>
-
                 <div class="section-divider"></div>
-
                 <div class="waiters-detail">
                     <h4 class="waiters-section-label">BARISTA</h4>
                     <div id="waitersBaristaList" class="waiters-list"><span class="waiters-empty">Belum ada pesanan.</span></div>
-
                     <h4 class="waiters-section-label">KITCHEN</h4>
                     <div id="waitersKitchenList" class="waiters-list"><span class="waiters-empty">Belum ada pesanan.</span></div>
                 </div>
-
                 <div class="section-divider"></div>
-
                 <h4 class="waiters-section-label">STATUS</h4>
                 <div class="status-toggle" id="statusToggle">
                     <button type="button" id="statusPrepareBtn" class="status-btn status-prepare active">🟠 PREPARE</button>
@@ -645,11 +889,10 @@
                 </div>
             </div>
 
-            <!-- ===== SECURITY ===== -->
+            <!-- SECURITY -->
             <div class="card security-card" id="cardSecurity">
                 <h2 class="card-title security-title">🛡 SECURITY</h2>
                 <div class="card-date">📅 <span class="card-date-value" id="dateSecurity">-</span></div>
-
                 <div class="field-group">
                     <span class="field-label">Nama</span>
                     <input type="text" id="securityNama" placeholder="Nama tamu" class="input-text" autocomplete="off">
@@ -660,9 +903,7 @@
                     <span class="field-label" style="min-width:30px;">Jam</span>
                     <input type="time" id="securityJam" class="input-text" autocomplete="off">
                 </div>
-
                 <div class="section-divider"></div>
-
                 <h3 class="sub-title">Jenis Kendaraan</h3>
                 <select id="securityKendaraan" class="input-text select-input" style="width:100%;">
                     <option value="">-- Pilih --</option>
@@ -677,9 +918,8 @@
                     <input type="text" id="securityKendaraanLainnya" placeholder="Tulis kendaraan" class="input-text" style="width:100%;" autocomplete="off">
                 </div>
             </div>
-
-        </div><!-- grid -->
-    </div><!-- a4-page -->
+        </div>
+    </div>
 
     <!-- ===== KONTROL ===== -->
     <div class="controls" id="controls">
@@ -709,7 +949,6 @@
         document.addEventListener('DOMContentLoaded', function() {
 
             // ===== ELEMEN =====
-            // Barista
             const bNama = document.getElementById('baristaNama');
             const bPx = document.getElementById('baristaPx');
             const bJam = document.getElementById('baristaJam');
@@ -717,17 +956,17 @@
             const bJeruk = document.getElementById('baristaJeruk');
             const bTeh = document.getElementById('baristaTeh');
             const bEsBatu = document.getElementById('baristaEsBatu');
+            const bKelapa = document.getElementById('baristaKelapa');
             const bLainnyaCb = document.getElementById('baristaLainnyaCb');
             const bLainnyaText = document.getElementById('baristaLainnyaText');
             const bLainnyaWrap = document.getElementById('baristaLainnyaWrap');
 
-            // Kitchen
             const kNama = document.getElementById('kitchenNama');
             const kPx = document.getElementById('kitchenPx');
             const kJam = document.getElementById('kitchenJam');
             const paketRadios = document.querySelectorAll('input[name="paket"]');
+            const paketJumlahPxInput = document.getElementById('paketJumlahPx');
 
-            // Security
             const sNama = document.getElementById('securityNama');
             const sPx = document.getElementById('securityPx');
             const sJam = document.getElementById('securityJam');
@@ -735,35 +974,25 @@
             const sKendaraanLainnya = document.getElementById('securityKendaraanLainnya');
             const sLainnyaWrap = document.getElementById('securityLainnyaWrap');
 
-            // Waiters display
             const wNama = document.getElementById('waitersNama');
             const wPx = document.getElementById('waitersPx');
             const wJam = document.getElementById('waitersJam');
             const wBaristaList = document.getElementById('waitersBaristaList');
             const wKitchenList = document.getElementById('waitersKitchenList');
 
-            // Status
             const statusPrepare = document.getElementById('statusPrepareBtn');
             const statusSelesai = document.getElementById('statusSelesaiBtn');
             let currentStatus = 'prepare';
 
-            // Nomor & tanggal
             const resNumberDisplay = document.getElementById('reservationNumberDisplay');
             let reservationNumber = 1;
-
-            // Elemen tanggal di setiap kartu
             const dateElements = document.querySelectorAll('.card-date-value');
 
-            // Notifikasi
             const notif = document.getElementById('notification');
             const notifText = document.getElementById('notificationText');
-
-            // Confirm
             const confirmOverlay = document.getElementById('confirmOverlay');
             const confirmYes = document.getElementById('confirmResetYes');
             const confirmNo = document.getElementById('confirmResetNo');
-
-            // Tombol
             const btnSimpan = document.getElementById('btnSimpan');
             const btnMuat = document.getElementById('btnMuat');
             const btnPrint = document.getElementById('btnPrint');
@@ -800,16 +1029,14 @@
                 paketItems.push({ text: inp, qty: qty });
             }
 
-            // ===== FUNGSI TANGGAL & HARI =====
+            // ===== FUNGSI TANGGAL =====
             function updateDateDisplay() {
                 const now = new Date();
                 const optionsDate = { day: 'numeric', month: 'long', year: 'numeric' };
                 const dateStr = now.toLocaleDateString('id-ID', optionsDate);
                 const hariStr = now.toLocaleDateString('id-ID', { weekday: 'long' });
                 const fullText = hariStr + ', ' + dateStr;
-                dateElements.forEach(el => {
-                    el.textContent = fullText;
-                });
+                dateElements.forEach(el => { el.textContent = fullText; });
             }
             updateDateDisplay();
 
@@ -817,6 +1044,16 @@
                 resNumberDisplay.textContent = String(reservationNumber).padStart(3, '0');
             }
             updateResNumber();
+
+            // ===== AUTO-SYNC PAKET JUMLAH PX =====
+            function syncPaketJumlahPxFromPx(pxVal) {
+                if (pxVal) {
+                    paketJumlahPxInput.value = pxVal;
+                }
+            }
+            bPx.addEventListener('input', function() { syncPaketJumlahPxFromPx(this.value); });
+            kPx.addEventListener('input', function() { syncPaketJumlahPxFromPx(this.value); });
+            sPx.addEventListener('input', function() { syncPaketJumlahPxFromPx(this.value); });
 
             // ===== AUTO-SYNC NAMA, PX, JAM =====
             function syncFields(fromId) {
@@ -838,22 +1075,16 @@
                 } else {
                     return;
                 }
-
-                if (fromId !== 'barista') {
-                    bNama.value = namaVal;
+                if (fromId !== 'barista') { bNama.value = namaVal;
                     bPx.value = pxVal;
-                    bJam.value = jamVal;
-                }
-                if (fromId !== 'kitchen') {
-                    kNama.value = namaVal;
+                    bJam.value = jamVal; }
+                if (fromId !== 'kitchen') { kNama.value = namaVal;
                     kPx.value = pxVal;
-                    kJam.value = jamVal;
-                }
-                if (fromId !== 'security') {
-                    sNama.value = namaVal;
+                    kJam.value = jamVal; }
+                if (fromId !== 'security') { sNama.value = namaVal;
                     sPx.value = pxVal;
-                    sJam.value = jamVal;
-                }
+                    sJam.value = jamVal; }
+                if (pxVal) syncPaketJumlahPxFromPx(pxVal);
                 updateWaiters();
             }
 
@@ -876,7 +1107,7 @@
             }
             attachSyncEvents();
 
-            // ===== UPDATE WAITERS =====
+            // ===== UPDATE WAITERS ON-SCREEN =====
             function updateWaiters() {
                 const nama = bNama.value.trim() || kNama.value.trim() || sNama.value.trim() || '-';
                 const px = bPx.value.trim() || kPx.value.trim() || sPx.value.trim() || '-';
@@ -890,14 +1121,15 @@
                 if (bJeruk.checked) items.push('Jeruk');
                 if (bTeh.checked) items.push('Teh');
                 if (bEsBatu.checked) items.push('Es Batu');
-                if (bLainnyaCb.checked && bLainnyaText.value.trim()) {
-                    items.push(bLainnyaText.value.trim());
-                }
+                if (bKelapa.checked) items.push('Kelapa');
+                if (bLainnyaCb.checked && bLainnyaText.value.trim()) items.push(bLainnyaText.value.trim());
                 wBaristaList.innerHTML = '';
                 if (items.length) {
-                    items.forEach(it => { const d = document.createElement('div');
+                    items.forEach(it => {
+                        const d = document.createElement('div');
                         d.textContent = '✓ ' + it;
-                        wBaristaList.appendChild(d); });
+                        wBaristaList.appendChild(d);
+                    });
                 } else {
                     wBaristaList.innerHTML = '<span class="waiters-empty">Belum ada pesanan.</span>';
                 }
@@ -917,9 +1149,11 @@
                     hdr.textContent = 'Paket: ' + paketNama;
                     wKitchenList.appendChild(hdr);
                     if (detail.length) {
-                        detail.forEach(line => { const d = document.createElement('div');
+                        detail.forEach(line => {
+                            const d = document.createElement('div');
                             d.textContent = line;
-                            wKitchenList.appendChild(d); });
+                            wKitchenList.appendChild(d);
+                        });
                     } else {
                         const empty = document.createElement('div');
                         empty.textContent = '(Belum ada isi)';
@@ -932,10 +1166,11 @@
 
             function attachWaitersUpdate() {
                 const allInputs = [
-                    bEsTeler, bJeruk, bTeh, bEsBatu, bLainnyaCb, bLainnyaText,
+                    bEsTeler, bJeruk, bTeh, bEsBatu, bKelapa, bLainnyaCb, bLainnyaText,
                     ...paketItems.map(p => p.text),
                     ...paketItems.map(p => p.qty),
-                    ...paketRadios
+                    ...paketRadios,
+                    paketJumlahPxInput
                 ];
                 allInputs.forEach(el => {
                     el.addEventListener('input', updateWaiters);
@@ -983,6 +1218,7 @@
                         jeruk: bJeruk.checked,
                         teh: bTeh.checked,
                         esBatu: bEsBatu.checked,
+                        kelapa: bKelapa.checked,
                         lainnyaCb: bLainnyaCb.checked,
                         lainnyaText: bLainnyaText.value
                     },
@@ -991,6 +1227,7 @@
                         px: kPx.value,
                         jam: kJam.value,
                         paket: document.querySelector('input[name="paket"]:checked')?.value || '',
+                        jumlahPx: paketJumlahPxInput.value,
                         items: paketItems.map(p => ({ text: p.text.value, qty: p.qty.value }))
                     },
                     security: {
@@ -1009,12 +1246,12 @@
             // ===== MUAT =====
             function muatData() {
                 const saved = localStorage.getItem('pawonMbahGitoReservasi');
-                if (!saved) { showNotif('Tidak ada data tersimpan.'); return; }
+                if (!saved) { showNotif('Tidak ada data tersimpan.');
+                    return; }
                 try {
                     const data = JSON.parse(saved);
                     reservationNumber = data.reservationNumber || 1;
                     updateResNumber();
-
                     bNama.value = data.barista.nama || '';
                     bPx.value = data.barista.px || '';
                     bJam.value = data.barista.jam || '';
@@ -1022,17 +1259,19 @@
                     bJeruk.checked = data.barista.jeruk || false;
                     bTeh.checked = data.barista.teh || false;
                     bEsBatu.checked = data.barista.esBatu || false;
+                    bKelapa.checked = data.barista.kelapa || false;
                     bLainnyaCb.checked = data.barista.lainnyaCb || false;
                     bLainnyaText.value = data.barista.lainnyaText || '';
                     bLainnyaWrap.style.display = bLainnyaCb.checked ? 'block' : 'none';
-
                     kNama.value = data.kitchen.nama || '';
                     kPx.value = data.kitchen.px || '';
                     kJam.value = data.kitchen.jam || '';
                     if (data.kitchen.paket) {
-                        const radio = document.querySelector(`input[name="paket"][value="${data.kitchen.paket}"]`);
+                        const radio = document.querySelector(
+                            `input[name="paket"][value="${data.kitchen.paket}"]`);
                         if (radio) radio.checked = true;
                     }
+                    paketJumlahPxInput.value = data.kitchen.jumlahPx || data.kitchen.px || '';
                     if (data.kitchen.items) {
                         data.kitchen.items.forEach((item, idx) => {
                             if (paketItems[idx]) {
@@ -1041,20 +1280,16 @@
                             }
                         });
                     }
-
                     sNama.value = data.security.nama || '';
                     sPx.value = data.security.px || '';
                     sJam.value = data.security.jam || '';
                     sKendaraan.value = data.security.kendaraan || '';
                     sKendaraanLainnya.value = data.security.kendaraanLainnya || '';
                     sLainnyaWrap.style.display = sKendaraan.value === 'Lainnya' ? 'block' : 'none';
-
                     setStatus(data.status || 'prepare');
                     updateWaiters();
                     showNotif('Data dimuat.');
-                } catch (e) {
-                    showNotif('Gagal memuat data.');
-                }
+                } catch (e) { showNotif('Gagal memuat data.'); }
             }
 
             // ===== RESET =====
@@ -1066,6 +1301,7 @@
                 sKendaraan.value = '';
                 sLainnyaWrap.style.display = 'none';
                 bLainnyaWrap.style.display = 'none';
+                paketJumlahPxInput.value = '';
                 setStatus('prepare');
                 reservationNumber++;
                 updateResNumber();
@@ -1090,30 +1326,198 @@
                 return !!(nama && px && jam);
             }
 
-            // ===== PDF =====
+            // ===== PRINT =====
+            function printPage() {
+                window.print();
+            }
+
+            // ===== PDF EXPORT — EXACTLY 3 PAGES =====
+            function buildPDFHTML() {
+                const nama = bNama.value.trim() || kNama.value.trim() || sNama.value.trim() || '-';
+                const px = bPx.value.trim() || kPx.value.trim() || sPx.value.trim() || '-';
+                const jam = bJam.value || kJam.value || sJam.value || '-';
+                const selectedPaket = document.querySelector('input[name="paket"]:checked');
+                const paketNama = selectedPaket ? selectedPaket.value : '-';
+                const jumlahPxPaket = paketJumlahPxInput.value || px || '-';
+                const barangItems = [];
+                if (bEsTeler.checked) barangItems.push('Es Teler');
+                if (bJeruk.checked) barangItems.push('Jeruk');
+                if (bTeh.checked) barangItems.push('Teh');
+                if (bEsBatu.checked) barangItems.push('Es Batu');
+                if (bKelapa.checked) barangItems.push('Kelapa');
+                if (bLainnyaCb.checked && bLainnyaText.value.trim()) barangItems.push(bLainnyaText.value.trim());
+                const paketDetail = [];
+                paketItems.forEach((item, idx) => {
+                    const t = item.text.value.trim();
+                    const q = item.qty.value.trim() || '0';
+                    if (t) paketDetail.push({ num: idx + 1, name: t, qty: q });
+                });
+
+                // PAGE 1 — KITCHEN (FULL A4)
+                const page1 = document.createElement('div');
+                page1.className = 'pdf-a4-page';
+                page1.style.cssText = 'width:210mm;height:297mm;background:#fff;page-break-after:always;overflow:hidden;padding:10mm 8mm;display:flex;flex-direction:column;';
+                let paketItemsHTML = '';
+                if (paketDetail.length) {
+                    paketDetail.forEach(d => {
+                        paketItemsHTML +=
+                            `<div class="pdf-paket-item"><span class="pdf-paket-num">${d.num}.</span><span class="pdf-paket-name">${d.name}</span><span class="pdf-paket-qty">${d.qty} Px</span></div>`;
+                    });
+                } else {
+                    paketItemsHTML = '<div style="font-size:0.85rem;color:#a99584;font-style:italic;">Belum ada isi paket.</div>';
+                }
+                page1.innerHTML = `
+                    <div class="pdf-page-header">
+                        <h1>PAWON MBAH GITO</h1>
+                        <p>KULINER NDESO</p>
+                    </div>
+                    <div class="pdf-page-subtitle">🍳 KITCHEN</div>
+                    <div style="text-align:center;font-size:0.85rem;font-weight:600;color:#4a2e1a;background:#fdf3e7;padding:4px 12px;border-radius:20px;margin-bottom:8px;border:1px solid #e5cbb0;">
+                        📅 ${dateElements[0]?.textContent || '-'} — Reservasi #${resNumberDisplay.textContent}
+                    </div>
+                    <div class="pdf-card pdf-card-full" style="flex:1;border:1.5px solid #c9a88c;border-radius:8px;padding:10px 12px;">
+                        <div class="pdf-field-row"><span class="pdf-field-label">Nama</span><span class="pdf-field-value">: ${nama}</span></div>
+                        <div class="pdf-field-row"><span class="pdf-field-label">Px</span><span class="pdf-field-value">: ${px}</span></div>
+                        <div class="pdf-field-row"><span class="pdf-field-label">Jam</span><span class="pdf-field-value">: ${jam}</span></div>
+                        <div class="pdf-divider"></div>
+                        <div class="pdf-section-title">Pilihan Paket</div>
+                        <div style="font-size:0.9rem;font-weight:600;color:#8b3e1b;">${paketNama}</div>
+                        <div class="pdf-divider"></div>
+                        <div class="pdf-section-title">Isi Paket</div>
+                        <div style="font-size:0.9rem;font-weight:600;color:#4a2e1a;margin-bottom:4px;">Jumlah Px: ${jumlahPxPaket}</div>
+                        <div style="flex:1;overflow:hidden;">${paketItemsHTML}</div>
+                    </div>
+                `;
+
+                // PAGE 2 — BARISTA + SECURITY
+                const page2 = document.createElement('div');
+                page2.className = 'pdf-a4-page';
+                page2.style.cssText = 'width:210mm;height:297mm;background:#fff;page-break-after:always;overflow:hidden;padding:10mm 8mm;display:flex;flex-direction:column;';
+                let baristaItemsHTML = '';
+                if (barangItems.length) {
+                    barangItems.forEach(it => {
+                        baristaItemsHTML +=
+                            `<div style="font-size:0.85rem;padding:2px 0;">✓ ${it}</div>`;
+                    });
+                } else {
+                    baristaItemsHTML =
+                        '<div style="font-size:0.85rem;color:#a99584;font-style:italic;">Belum ada pesanan.</div>';
+                }
+                const kendaraanVal = sKendaraan.value === 'Lainnya' ? (sKendaraanLainnya.value ||
+                    'Lainnya') : (sKendaraan.value || '-');
+                page2.innerHTML = `
+                    <div class="pdf-page-header">
+                        <h1>PAWON MBAH GITO</h1>
+                        <p>KULINER NDESO</p>
+                    </div>
+                    <div class="pdf-page-subtitle">☕ BARISTA &amp; 🛡 SECURITY</div>
+                    <div style="text-align:center;font-size:0.85rem;font-weight:600;color:#4a2e1a;background:#fdf3e7;padding:4px 12px;border-radius:20px;margin-bottom:8px;border:1px solid #e5cbb0;">
+                        📅 ${dateElements[0]?.textContent || '-'} — Reservasi #${resNumberDisplay.textContent}
+                    </div>
+                    <div style="flex:1;display:flex;flex-direction:column;gap:6px;min-height:0;">
+                        <div class="pdf-card pdf-card-half" style="flex:1;min-height:0;border:1.5px solid #c9a88c;border-radius:8px;padding:8px 10px;display:flex;flex-direction:column;overflow:hidden;">
+                            <div style="font-size:0.95rem;font-weight:600;color:#b0572c;border-bottom:2px solid #e0c9b0;padding-bottom:3px;margin-bottom:4px;">☕ BARISTA</div>
+                            <div class="pdf-field-row"><span class="pdf-field-label">Nama</span><span class="pdf-field-value">: ${nama}</span></div>
+                            <div class="pdf-field-row"><span class="pdf-field-label">Px</span><span class="pdf-field-value">: ${px}</span></div>
+                            <div class="pdf-field-row"><span class="pdf-field-label">Jam</span><span class="pdf-field-value">: ${jam}</span></div>
+                            <div class="pdf-divider"></div>
+                            <div class="pdf-section-title">Jenis Pesanan</div>
+                            <div style="flex:1;overflow:hidden;font-size:0.9rem;">${baristaItemsHTML}</div>
+                        </div>
+                        <div class="pdf-card pdf-card-half" style="flex:1;min-height:0;border:1.5px solid #c9a88c;border-radius:8px;padding:8px 10px;display:flex;flex-direction:column;overflow:hidden;">
+                            <div style="font-size:0.95rem;font-weight:600;color:#a14f1e;border-bottom:2px solid #e0c9b0;padding-bottom:3px;margin-bottom:4px;">🛡 SECURITY</div>
+                            <div class="pdf-field-row"><span class="pdf-field-label">Nama</span><span class="pdf-field-value">: ${nama}</span></div>
+                            <div class="pdf-field-row"><span class="pdf-field-label">Px</span><span class="pdf-field-value">: ${px}</span></div>
+                            <div class="pdf-field-row"><span class="pdf-field-label">Jam</span><span class="pdf-field-value">: ${jam}</span></div>
+                            <div class="pdf-divider"></div>
+                            <div class="pdf-section-title">Jenis Kendaraan</div>
+                            <div style="font-size:0.9rem;font-weight:500;">${kendaraanVal}</div>
+                        </div>
+                    </div>
+                `;
+
+                // PAGE 3 — WAITERS (dengan checkbox)
+                const page3 = document.createElement('div');
+                page3.className = 'pdf-a4-page';
+                page3.style.cssText = 'width:210mm;height:297mm;background:#fff;page-break-after:auto;overflow:hidden;padding:10mm 8mm;display:flex;flex-direction:column;';
+                let allWaitersItemsHTML = '';
+                const allItems = [];
+                barangItems.forEach(it => allItems.push({ type: 'Barista', name: it }));
+                paketDetail.forEach(d => allItems.push({ type: 'Kitchen', name: `${d.num}. ${d.name} (${d.qty} Px)` }));
+                if (allItems.length) {
+                    allItems.forEach((item, idx) => {
+                        allWaitersItemsHTML += `
+                            <div class="pdf-waiters-item">
+                                <span class="pdf-waiters-checkbox"></span>
+                                <span style="flex:1;">${item.name}</span>
+                                <span style="font-size:0.7rem;font-weight:600;color:#7a5c42;text-transform:uppercase;">${item.type}</span>
+                            </div>`;
+                    });
+                } else {
+                    allWaitersItemsHTML =
+                        '<div style="font-size:0.85rem;color:#a99584;font-style:italic;">Belum ada pesanan.</div>';
+                }
+                const statusBadge = currentStatus === 'prepare' ?
+                    '<span class="pdf-status-badge pdf-status-prepare">🟠 PREPARE</span>' :
+                    '<span class="pdf-status-badge pdf-status-selesai">🟢 SELESAI</span>';
+                page3.innerHTML = `
+                    <div class="pdf-page-header">
+                        <h1>PAWON MBAH GITO</h1>
+                        <p>KULINER NDESO</p>
+                    </div>
+                    <div class="pdf-page-subtitle">👨‍🍳 WAITERS</div>
+                    <div style="text-align:center;font-size:0.85rem;font-weight:600;color:#4a2e1a;background:#fdf3e7;padding:4px 12px;border-radius:20px;margin-bottom:8px;border:1px solid #e5cbb0;">
+                        📅 ${dateElements[0]?.textContent || '-'} — Reservasi #${resNumberDisplay.textContent}
+                    </div>
+                    <div class="pdf-card pdf-card-full" style="flex:1;border:1.5px solid #c9a88c;border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;overflow:hidden;">
+                        <div class="pdf-field-row"><span class="pdf-field-label">Nama</span><span class="pdf-field-value">: ${nama}</span></div>
+                        <div class="pdf-field-row"><span class="pdf-field-label">Px</span><span class="pdf-field-value">: ${px}</span></div>
+                        <div class="pdf-field-row"><span class="pdf-field-label">Jam</span><span class="pdf-field-value">: ${jam}</span></div>
+                        <div class="pdf-divider"></div>
+                        <div class="pdf-section-title">Daftar Item</div>
+                        <div style="flex:1;overflow:hidden;font-size:0.85rem;">${allWaitersItemsHTML}</div>
+                        <div class="pdf-divider"></div>
+                        <div style="display:flex;justify-content:space-between;align-items:center;">
+                            <span class="pdf-section-title" style="margin:0;">Status</span>
+                            ${statusBadge}
+                        </div>
+                    </div>
+                `;
+
+                return { page1, page2, page3 };
+            }
+
             function downloadPDF() {
                 if (!validateData()) {
                     showNotif('Data reservasi belum lengkap (Nama, Px, Jam).');
                     return;
                 }
-
                 if (typeof html2pdf === 'undefined') {
                     showNotif('Library html2pdf gagal dimuat. Gunakan tombol Print sebagai alternatif.');
                     return;
                 }
 
-                const controlsEl = document.getElementById('controls');
-                controlsEl.style.display = 'none';
+                // Hapus container PDF lama jika ada
+                const old = document.getElementById('pdfExportContainer');
+                if (old) old.remove();
 
-                const element = document.getElementById('a4Page');
-                element.style.height = '297mm';
-                element.style.overflow = 'hidden';
+                // Buat container PDF
+                const pdfContainer = document.createElement('div');
+                pdfContainer.id = 'pdfExportContainer';
+                pdfContainer.className = 'pdf-export-container';
+                pdfContainer.style.cssText = 'position:absolute;left:-10000px;top:0;width:210mm;pointer-events:none;z-index:-1;';
 
+                const { page1, page2, page3 } = buildPDFHTML();
+                pdfContainer.appendChild(page1);
+                pdfContainer.appendChild(page2);
+                pdfContainer.appendChild(page3);
+                document.body.appendChild(pdfContainer);
+
+                const namaFile = (bNama.value.trim() || kNama.value.trim() || 'TanpaNama');
                 const opt = {
                     margin: 0,
-                    filename: 'Reservasi-Pawon-Mbah-Gito-' +
-                        (bNama.value.trim() || kNama.value.trim() || 'TanpaNama') +
-                        '-' + new Date().toISOString().slice(0,10) + '.pdf',
+                    filename: 'Reservasi-Pawon-Mbah-Gito-' + namaFile + '-' + new Date().toISOString()
+                        .slice(0, 10) + '.pdf',
                     image: { type: 'jpeg', quality: 1 },
                     html2canvas: {
                         scale: 2,
@@ -1125,24 +1529,24 @@
                         windowHeight: document.documentElement.offsetHeight
                     },
                     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true },
-                    pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+                    pagebreak: { mode: ['css', 'legacy'] }
                 };
 
-                html2pdf().set(opt).from(element).save().then(() => {
-                    controlsEl.style.display = 'flex';
+                html2pdf().set(opt).from(pdfContainer).save().then(() => {
+                    // Bersihkan container setelah selesai
+                    setTimeout(() => {
+                        const el = document.getElementById('pdfExportContainer');
+                        if (el) el.remove();
+                    }, 500);
                 }).catch((err) => {
                     console.error(err);
-                    controlsEl.style.display = 'flex';
+                    const el = document.getElementById('pdfExportContainer');
+                    if (el) el.remove();
                     showNotif('Gagal generate PDF. Silakan coba lagi.');
                 });
             }
 
-            // ===== PRINT =====
-            function printPage() {
-                window.print();
-            }
-
-            // ===== EVENT =====
+            // ===== EVENT LISTENERS =====
             btnSimpan.addEventListener('click', simpanData);
             btnMuat.addEventListener('click', muatData);
             btnPrint.addEventListener('click', printPage);
