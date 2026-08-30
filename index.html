@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Reservasi - Pawon Mbah Gito</title>
 
-    <!-- html2pdf.js -->
+    <!-- html2pdf.js (sudah termasuk html2canvas & jsPDF) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" defer>
     </script>
 
@@ -28,7 +28,7 @@
             color: #3e2b1c;
         }
 
-        /* ===== HALAMAN A4 ON‑SCREEN (tetap sebagai referensi input) ===== */
+        /* ===== HALAMAN A4 ON‑SCREEN (untuk input) ===== */
         .a4-page {
             width: 210mm;
             height: 297mm;
@@ -1196,34 +1196,7 @@
                 return !!(nama && px && jam);
             }
 
-            // ===== PRINT =====
-            function printPage() {
-                buildAndShowPrintContainer();
-                window.print();
-                // Setelah print, container bisa dibiarkan atau dihapus setelah beberapa saat
-                setTimeout(() => {
-                    const pc = document.getElementById('printContainer');
-                    if (pc) pc.remove();
-                }, 1000);
-            }
-
-            // ===== MEMBANGUN KONTENER PRINT =====
-            function buildAndShowPrintContainer() {
-                // Hapus yang lama jika ada
-                const old = document.getElementById('printContainer');
-                if (old) old.remove();
-
-                const printContainer = document.createElement('div');
-                printContainer.id = 'printContainer';
-                printContainer.className = 'print-container';
-                printContainer.style.display = 'none'; // default hidden, tapi di print media akan ditampilkan
-
-                const pages = buildPDFPages();
-                pages.forEach(page => printContainer.appendChild(page));
-                document.body.appendChild(printContainer);
-            }
-
-            // ===== PDF EXPORT – EXACTLY 3 PAGES =====
+            // ===== MEMBANGUN HALAMAN PDF (array 3 halaman) =====
             function buildPDFPages() {
                 const nama = bNama.value.trim() || kNama.value.trim() || sNama.value.trim() || '-';
                 const px = bPx.value.trim() || kPx.value.trim() || sPx.value.trim() || '-';
@@ -1372,57 +1345,83 @@
                 return [page1, page2, page3];
             }
 
-            function downloadPDF() {
+            // ===== DOWNLOAD PDF (html2canvas per halaman) =====
+            async function downloadPDF() {
                 if (!validateData()) {
                     showNotif('Data reservasi belum lengkap (Nama, Px, Jam).');
                     return;
                 }
-                if (typeof html2pdf === 'undefined') {
-                    showNotif('Library html2pdf gagal dimuat. Gunakan tombol Print sebagai alternatif.');
+                if (typeof html2canvas === 'undefined' || typeof jspdf === 'undefined') {
+                    showNotif('Library belum termuat. Coba muat ulang halaman.');
                     return;
                 }
 
-                // Buat container sementara yang terlihat untuk capture
-                const pdfContainer = document.createElement('div');
-                pdfContainer.id = 'pdfExportContainer';
-                pdfContainer.className = 'pdf-export-container';
-                // Tampilkan di area yang terlihat (fixed, z-index tinggi) agar html2canvas bisa capture
-                pdfContainer.style.cssText = 'position:fixed;top:0;left:0;width:210mm;z-index:99999;background:white;pointer-events:none;';
-                // Tambahkan halaman
                 const pages = buildPDFPages();
-                pages.forEach(page => pdfContainer.appendChild(page));
-                document.body.appendChild(pdfContainer);
-
-                const namaFile = (bNama.value.trim() || kNama.value.trim() || 'TanpaNama');
-                const opt = {
-                    margin: 0,
-                    filename: 'Reservasi-Pawon-Mbah-Gito-' + namaFile + '-' + new Date().toISOString().slice(0,10) + '.pdf',
-                    image: { type: 'jpeg', quality: 1 },
-                    html2canvas: {
-                        scale: 2,
-                        useCORS: true,
-                        logging: false,
-                        scrollX: 0,
-                        scrollY: 0,
-                        windowWidth: document.documentElement.offsetWidth,
-                        windowHeight: document.documentElement.offsetHeight
-                    },
-                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true },
-                    pagebreak: { mode: ['css', 'legacy'] }
-                };
-
-                html2pdf().set(opt).from(pdfContainer).save().then(() => {
-                    // Hapus container setelah selesai
-                    setTimeout(() => {
-                        const el = document.getElementById('pdfExportContainer');
-                        if (el) el.remove();
-                    }, 500);
-                }).catch((err) => {
-                    console.error(err);
-                    const el = document.getElementById('pdfExportContainer');
-                    if (el) el.remove();
-                    showNotif('Gagal generate PDF. Silakan coba lagi.');
+                const pdf = new jspdf.jsPDF({
+                    orientation: 'portrait',
+                    unit: 'mm',
+                    format: 'a4',
+                    compress: true
                 });
+
+                try {
+                    for (let i = 0; i < pages.length; i++) {
+                        const pageEl = pages[i];
+                        // Buat container sementara di luar layar tapi terlihat untuk html2canvas
+                        const tempContainer = document.createElement('div');
+                        tempContainer.style.cssText = 'position:absolute;left:-10000px;top:0;width:210mm;height:297mm;overflow:hidden;background:white;';
+                        tempContainer.appendChild(pageEl);
+                        document.body.appendChild(tempContainer);
+
+                        // Tunggu sejenak agar render sempurna
+                        await new Promise(resolve => setTimeout(resolve, 100));
+
+                        const canvas = await html2canvas(tempContainer, {
+                            scale: 2,
+                            useCORS: true,
+                            logging: false,
+                            width: 210 * 3.7795, // konversi mm ke px (approx)
+                            height: 297 * 3.7795,
+                            windowWidth: document.documentElement.offsetWidth,
+                            windowHeight: document.documentElement.offsetHeight
+                        });
+
+                        const imgData = canvas.toDataURL('image/jpeg', 1.0);
+                        if (i > 0) pdf.addPage();
+                        pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297, undefined, 'FAST');
+
+                        // Bersihkan
+                        tempContainer.remove();
+                    }
+                    pdf.save('Reservasi-Pawon-Mbah-Gito-' + (bNama.value.trim() || 'TanpaNama') + '-' + new Date().toISOString().slice(0,10) + '.pdf');
+                } catch (error) {
+                    console.error(error);
+                    showNotif('Gagal generate PDF. Silakan coba lagi.');
+                }
+            }
+
+            // ===== PRINT =====
+            function printPage() {
+                // Buat container print baru
+                const old = document.getElementById('printContainer');
+                if (old) old.remove();
+
+                const printContainer = document.createElement('div');
+                printContainer.id = 'printContainer';
+                printContainer.className = 'print-container';
+                printContainer.style.display = 'none'; // akan ditampilkan hanya saat print
+
+                const pages = buildPDFPages();
+                pages.forEach(page => printContainer.appendChild(page));
+                document.body.appendChild(printContainer);
+
+                window.print();
+
+                // Hapus container setelah beberapa saat (setelah print dialog selesai)
+                setTimeout(() => {
+                    const pc = document.getElementById('printContainer');
+                    if (pc) pc.remove();
+                }, 2000);
             }
 
             // ===== EVENT LISTENERS =====
