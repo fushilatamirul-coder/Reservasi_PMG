@@ -5,10 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Reservasi - Pawon Mbah Gito</title>
 
+    <!-- html2pdf.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" defer>
     </script>
 
     <style>
+        /* ===== RESET & BASE ===== */
         * {
             margin: 0;
             padding: 0;
@@ -26,6 +28,7 @@
             color: #3e2b1c;
         }
 
+        /* ===== HALAMAN A4 ON‑SCREEN (tetap sebagai referensi input) ===== */
         .a4-page {
             width: 210mm;
             height: 297mm;
@@ -103,18 +106,10 @@
             color: #6b3f1f;
             letter-spacing: 0.5px;
         }
-        .barista-title {
-            color: #b0572c;
-        }
-        .kitchen-title {
-            color: #8b4513;
-        }
-        .waiters-title {
-            color: #c96e2e;
-        }
-        .security-title {
-            color: #a14f1e;
-        }
+        .barista-title { color: #b0572c; }
+        .kitchen-title { color: #8b4513; }
+        .waiters-title { color: #c96e2e; }
+        .security-title { color: #a14f1e; }
 
         .card-date {
             font-size: 0.95rem;
@@ -161,10 +156,7 @@
             border-color: #b55a2a;
             box-shadow: 0 0 0 2px rgba(181, 90, 42, 0.12);
         }
-        .input-text-sm {
-            max-width: 70px;
-            text-align: center;
-        }
+        .input-text-sm { max-width: 70px; text-align: center; }
         input[type="number"].input-text {
             -moz-appearance: textfield;
         }
@@ -173,9 +165,7 @@
             -webkit-appearance: none;
             margin: 0;
         }
-        input[type="time"].input-text {
-            max-width: 110px;
-        }
+        input[type="time"].input-text { max-width: 110px; }
 
         .section-divider {
             border-top: 1px dashed #d9bfa6;
@@ -183,7 +173,7 @@
         }
 
         .sub-title {
-            font-size: 0.75rem;
+            font-size: 0.85rem;
             font-weight: 600;
             color: #6b3f1f;
             margin-bottom: 4px;
@@ -209,9 +199,7 @@
             cursor: pointer;
             flex-shrink: 0;
         }
-        .hidden-input {
-            margin-top: 4px;
-        }
+        .hidden-input { margin-top: 4px; }
 
         .radio-group {
             display: flex;
@@ -263,9 +251,7 @@
             background: #fffefb;
             outline: none;
         }
-        .paket-input:focus {
-            border-color: #b55a2a;
-        }
+        .paket-input:focus { border-color: #b55a2a; }
         .input-qty {
             width: 38px;
             padding: 3px 4px;
@@ -314,24 +300,10 @@
             margin: 0;
         }
 
-        .waiters-auto-info {
-            font-size: 0.8rem;
-            margin-bottom: 6px;
-        }
-        .waiters-field {
-            display: flex;
-            gap: 4px;
-            margin-bottom: 2px;
-        }
-        .waiters-label {
-            font-weight: 600;
-            color: #7a5c42;
-            min-width: 60px;
-        }
-        .waiters-value {
-            font-weight: 500;
-            color: #3e2b1c;
-        }
+        .waiters-auto-info { font-size: 0.8rem; margin-bottom: 6px; }
+        .waiters-field { display: flex; gap: 4px; margin-bottom: 2px; }
+        .waiters-label { font-weight: 600; color: #7a5c42; min-width: 60px; }
+        .waiters-value { font-weight: 500; color: #3e2b1c; }
         .waiters-section-label {
             font-size: 0.7rem;
             font-weight: 600;
@@ -347,10 +319,7 @@
             min-height: 14px;
             white-space: pre-line;
         }
-        .waiters-empty {
-            color: #a99584;
-            font-style: italic;
-        }
+        .waiters-empty { color: #a99584; font-style: italic; }
 
         .status-toggle {
             display: flex;
@@ -426,24 +395,12 @@
             transform: translateY(1px);
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.10);
         }
-        .btn-simpan {
-            background: #a8562c;
-        }
-        .btn-muat {
-            background: #8b6e4b;
-        }
-        .btn-print {
-            background: #b55a2a;
-        }
-        .btn-pdf {
-            background: #c75b39;
-        }
-        .btn-reset {
-            background: #6b3f1f;
-        }
-        .btn:hover {
-            opacity: 0.9;
-        }
+        .btn-simpan { background: #a8562c; }
+        .btn-muat { background: #8b6e4b; }
+        .btn-print { background: #b55a2a; }
+        .btn-pdf { background: #c75b39; }
+        .btn-reset { background: #6b3f1f; }
+        .btn:hover { opacity: 0.9; }
 
         .notification {
             position: fixed;
@@ -487,30 +444,17 @@
             text-align: center;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
-        .confirm-dialog h3 {
-            color: #6b3f1f;
-            margin-bottom: 6px;
-        }
-        .confirm-dialog p {
-            color: #4a3321;
-            margin-bottom: 14px;
-            font-size: 0.85rem;
-        }
-        .confirm-buttons {
-            display: flex;
-            gap: 8px;
-            justify-content: center;
+        .confirm-dialog h3 { color: #6b3f1f; margin-bottom: 6px; }
+        .confirm-dialog p { color: #4a3321; margin-bottom: 14px; font-size: 0.85rem; }
+        .confirm-buttons { display: flex; gap: 8px; justify-content: center; }
+
+        /* ===== KONTENER PDF / PRINT ===== */
+        .pdf-export-container,
+        .print-container {
+            background: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        /* ===== PDF EXPORT PAGE STYLES ===== */
-        .pdf-export-container {
-            position: absolute;
-            left: -10000px;
-            top: 0;
-            width: 210mm;
-            pointer-events: none;
-            z-index: -1;
-        }
         .pdf-a4-page {
             width: 210mm;
             height: 297mm;
@@ -524,11 +468,12 @@
             display: flex;
             flex-direction: column;
             color: #3e2b1c;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            box-sizing: border-box;
         }
         .pdf-a4-page:last-child {
             page-break-after: auto;
         }
+
         .pdf-page-header {
             text-align: center;
             padding-bottom: 4px;
@@ -542,12 +487,14 @@
             letter-spacing: 1px;
             color: #8b3e1b;
             line-height: 1.1;
+            margin: 0;
         }
         .pdf-page-header p {
             font-size: 0.7rem;
             letter-spacing: 3px;
             color: #b55a2a;
             font-weight: 500;
+            margin-top: 2px;
         }
         .pdf-page-subtitle {
             font-size: 1.1rem;
@@ -568,6 +515,7 @@
             flex-direction: column;
             flex: 1;
             min-height: 0;
+            box-sizing: border-box;
         }
         .pdf-card-full {
             flex: 1;
@@ -676,6 +624,44 @@
             border: 1px solid #a5d6a7;
         }
 
+        /* ===== PRINT MEDIA ===== */
+        @media print {
+            body {
+                background: white !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            .a4-page,
+            .controls,
+            .notification,
+            .confirm-overlay,
+            #pdfExportContainer,
+            .pdf-export-container {
+                display: none !important;
+            }
+            .print-container {
+                display: block !important;
+                position: static;
+                width: auto;
+                height: auto;
+                margin: 0;
+                padding: 0;
+                box-shadow: none;
+                border: none;
+            }
+            .print-container .pdf-a4-page {
+                page-break-after: always;
+                page-break-inside: avoid;
+                margin: 0;
+                box-shadow: none;
+                border: none;
+            }
+            .print-container .pdf-a4-page:last-child {
+                page-break-after: auto;
+            }
+        }
+
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             .a4-page {
                 width: 100%;
@@ -690,106 +676,17 @@
                 grid-template-rows: auto;
                 gap: 4px;
             }
-            .page-header {
-                flex-direction: column;
-                text-align: center;
-            }
-            .reservation-meta {
-                text-align: center;
-                margin-top: 2px;
-            }
-            .controls {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .paket-items-grid {
-                grid-template-columns: 1fr;
-            }
-            .brand-title {
-                font-size: 1.4rem;
-            }
-        }
-
-        @media print {
-            body {
-                background: white !important;
-                padding: 0 !important;
-                margin: 0 !important;
-            }
-            .a4-page {
-                width: 210mm !important;
-                height: 297mm !important;
-                padding: 8mm 6mm !important;
-                margin: 0 !important;
-                box-shadow: none !important;
-                border-radius: 0 !important;
-                border: none !important;
-                background: white !important;
-                overflow: hidden !important;
-            }
-            .controls,
-            .notification,
-            .confirm-overlay,
-            .pdf-export-container {
-                display: none !important;
-            }
-            .grid-container {
-                grid-template-columns: 1fr 1fr !important;
-                grid-template-rows: auto auto !important;
-                gap: 4px !important;
-            }
-            .card {
-                break-inside: avoid;
-                page-break-inside: avoid;
-                border: 1px solid #c9a88c !important;
-                background: white !important;
-                box-shadow: none !important;
-            }
-            .input-text,
-            .paket-input,
-            .input-qty,
-            .select-input,
-            .paket-jumlah-px input {
-                border: 1px solid #c9a88c !important;
-                background: white !important;
-                box-shadow: none !important;
-                color: #3e2b1c !important;
-                -webkit-appearance: none !important;
-                -moz-appearance: none !important;
-                appearance: none !important;
-            }
-            input[type="checkbox"],
-            input[type="radio"] {
-                -webkit-appearance: checkbox !important;
-                appearance: checkbox !important;
-                width: 14px !important;
-                height: 14px !important;
-                border: 1px solid #333 !important;
-                background: white !important;
-            }
-            input[type="radio"] {
-                -webkit-appearance: radio !important;
-                appearance: radio !important;
-            }
-            .status-btn {
-                border: 1px solid #aaa !important;
-                background: #f5f5f5 !important;
-                color: #333 !important;
-            }
-            .status-btn.active {
-                border-color: #555 !important;
-                background: #eee !important;
-            }
-            .card-date {
-                background: #fdf3e7 !important;
-                color: #4a2e1a !important;
-            }
+            .page-header { flex-direction: column; text-align: center; }
+            .reservation-meta { text-align: center; margin-top: 2px; }
+            .controls { flex-direction: column; align-items: stretch; }
+            .paket-items-grid { grid-template-columns: 1fr; }
+            .brand-title { font-size: 1.4rem; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ===== HALAMAN A4 ON-SCREEN ===== -->
+    <!-- ===== HALAMAN A4 ON‑SCREEN (untuk input) ===== -->
     <div class="a4-page" id="a4Page">
         <div class="page-header">
             <div class="brand">
@@ -1075,15 +972,9 @@
                 } else {
                     return;
                 }
-                if (fromId !== 'barista') { bNama.value = namaVal;
-                    bPx.value = pxVal;
-                    bJam.value = jamVal; }
-                if (fromId !== 'kitchen') { kNama.value = namaVal;
-                    kPx.value = pxVal;
-                    kJam.value = jamVal; }
-                if (fromId !== 'security') { sNama.value = namaVal;
-                    sPx.value = pxVal;
-                    sJam.value = jamVal; }
+                if (fromId !== 'barista') { bNama.value = namaVal; bPx.value = pxVal; bJam.value = jamVal; }
+                if (fromId !== 'kitchen') { kNama.value = namaVal; kPx.value = pxVal; kJam.value = jamVal; }
+                if (fromId !== 'security') { sNama.value = namaVal; sPx.value = pxVal; sJam.value = jamVal; }
                 if (pxVal) syncPaketJumlahPxFromPx(pxVal);
                 updateWaiters();
             }
@@ -1107,7 +998,7 @@
             }
             attachSyncEvents();
 
-            // ===== UPDATE WAITERS ON-SCREEN =====
+            // ===== UPDATE WAITERS ON‑SCREEN =====
             function updateWaiters() {
                 const nama = bNama.value.trim() || kNama.value.trim() || sNama.value.trim() || '-';
                 const px = bPx.value.trim() || kPx.value.trim() || sPx.value.trim() || '-';
@@ -1125,11 +1016,7 @@
                 if (bLainnyaCb.checked && bLainnyaText.value.trim()) items.push(bLainnyaText.value.trim());
                 wBaristaList.innerHTML = '';
                 if (items.length) {
-                    items.forEach(it => {
-                        const d = document.createElement('div');
-                        d.textContent = '✓ ' + it;
-                        wBaristaList.appendChild(d);
-                    });
+                    items.forEach(it => { const d = document.createElement('div'); d.textContent = '✓ ' + it; wBaristaList.appendChild(d); });
                 } else {
                     wBaristaList.innerHTML = '<span class="waiters-empty">Belum ada pesanan.</span>';
                 }
@@ -1149,11 +1036,7 @@
                     hdr.textContent = 'Paket: ' + paketNama;
                     wKitchenList.appendChild(hdr);
                     if (detail.length) {
-                        detail.forEach(line => {
-                            const d = document.createElement('div');
-                            d.textContent = line;
-                            wKitchenList.appendChild(d);
-                        });
+                        detail.forEach(line => { const d = document.createElement('div'); d.textContent = line; wKitchenList.appendChild(d); });
                     } else {
                         const empty = document.createElement('div');
                         empty.textContent = '(Belum ada isi)';
@@ -1211,31 +1094,20 @@
                 const data = {
                     reservationNumber: reservationNumber,
                     barista: {
-                        nama: bNama.value,
-                        px: bPx.value,
-                        jam: bJam.value,
-                        esTeler: bEsTeler.checked,
-                        jeruk: bJeruk.checked,
-                        teh: bTeh.checked,
-                        esBatu: bEsBatu.checked,
-                        kelapa: bKelapa.checked,
-                        lainnyaCb: bLainnyaCb.checked,
-                        lainnyaText: bLainnyaText.value
+                        nama: bNama.value, px: bPx.value, jam: bJam.value,
+                        esTeler: bEsTeler.checked, jeruk: bJeruk.checked, teh: bTeh.checked,
+                        esBatu: bEsBatu.checked, kelapa: bKelapa.checked,
+                        lainnyaCb: bLainnyaCb.checked, lainnyaText: bLainnyaText.value
                     },
                     kitchen: {
-                        nama: kNama.value,
-                        px: kPx.value,
-                        jam: kJam.value,
+                        nama: kNama.value, px: kPx.value, jam: kJam.value,
                         paket: document.querySelector('input[name="paket"]:checked')?.value || '',
                         jumlahPx: paketJumlahPxInput.value,
                         items: paketItems.map(p => ({ text: p.text.value, qty: p.qty.value }))
                     },
                     security: {
-                        nama: sNama.value,
-                        px: sPx.value,
-                        jam: sJam.value,
-                        kendaraan: sKendaraan.value,
-                        kendaraanLainnya: sKendaraanLainnya.value
+                        nama: sNama.value, px: sPx.value, jam: sJam.value,
+                        kendaraan: sKendaraan.value, kendaraanLainnya: sKendaraanLainnya.value
                     },
                     status: currentStatus
                 };
@@ -1246,8 +1118,7 @@
             // ===== MUAT =====
             function muatData() {
                 const saved = localStorage.getItem('pawonMbahGitoReservasi');
-                if (!saved) { showNotif('Tidak ada data tersimpan.');
-                    return; }
+                if (!saved) { showNotif('Tidak ada data tersimpan.'); return; }
                 try {
                     const data = JSON.parse(saved);
                     reservationNumber = data.reservationNumber || 1;
@@ -1267,8 +1138,7 @@
                     kPx.value = data.kitchen.px || '';
                     kJam.value = data.kitchen.jam || '';
                     if (data.kitchen.paket) {
-                        const radio = document.querySelector(
-                            `input[name="paket"][value="${data.kitchen.paket}"]`);
+                        const radio = document.querySelector(`input[name="paket"][value="${data.kitchen.paket}"]`);
                         if (radio) radio.checked = true;
                     }
                     paketJumlahPxInput.value = data.kitchen.jumlahPx || data.kitchen.px || '';
@@ -1328,11 +1198,33 @@
 
             // ===== PRINT =====
             function printPage() {
+                buildAndShowPrintContainer();
                 window.print();
+                // Setelah print, container bisa dibiarkan atau dihapus setelah beberapa saat
+                setTimeout(() => {
+                    const pc = document.getElementById('printContainer');
+                    if (pc) pc.remove();
+                }, 1000);
             }
 
-            // ===== PDF EXPORT — EXACTLY 3 PAGES =====
-            function buildPDFHTML() {
+            // ===== MEMBANGUN KONTENER PRINT =====
+            function buildAndShowPrintContainer() {
+                // Hapus yang lama jika ada
+                const old = document.getElementById('printContainer');
+                if (old) old.remove();
+
+                const printContainer = document.createElement('div');
+                printContainer.id = 'printContainer';
+                printContainer.className = 'print-container';
+                printContainer.style.display = 'none'; // default hidden, tapi di print media akan ditampilkan
+
+                const pages = buildPDFPages();
+                pages.forEach(page => printContainer.appendChild(page));
+                document.body.appendChild(printContainer);
+            }
+
+            // ===== PDF EXPORT – EXACTLY 3 PAGES =====
+            function buildPDFPages() {
                 const nama = bNama.value.trim() || kNama.value.trim() || sNama.value.trim() || '-';
                 const px = bPx.value.trim() || kPx.value.trim() || sPx.value.trim() || '-';
                 const jam = bJam.value || kJam.value || sJam.value || '-';
@@ -1353,15 +1245,14 @@
                     if (t) paketDetail.push({ num: idx + 1, name: t, qty: q });
                 });
 
-                // PAGE 1 — KITCHEN (FULL A4)
+                // Halaman 1: Kitchen
                 const page1 = document.createElement('div');
                 page1.className = 'pdf-a4-page';
-                page1.style.cssText = 'width:210mm;height:297mm;background:#fff;page-break-after:always;overflow:hidden;padding:10mm 8mm;display:flex;flex-direction:column;';
+                page1.style.cssText = 'width:210mm;height:297mm;background:#fff;page-break-after:always;overflow:hidden;padding:10mm 8mm;display:flex;flex-direction:column;box-sizing:border-box;';
                 let paketItemsHTML = '';
                 if (paketDetail.length) {
                     paketDetail.forEach(d => {
-                        paketItemsHTML +=
-                            `<div class="pdf-paket-item"><span class="pdf-paket-num">${d.num}.</span><span class="pdf-paket-name">${d.name}</span><span class="pdf-paket-qty">${d.qty} Px</span></div>`;
+                        paketItemsHTML += `<div class="pdf-paket-item"><span class="pdf-paket-num">${d.num}.</span><span class="pdf-paket-name">${d.name}</span><span class="pdf-paket-qty">${d.qty} Px</span></div>`;
                     });
                 } else {
                     paketItemsHTML = '<div style="font-size:0.85rem;color:#a99584;font-style:italic;">Belum ada isi paket.</div>';
@@ -1389,22 +1280,17 @@
                     </div>
                 `;
 
-                // PAGE 2 — BARISTA + SECURITY
+                // Halaman 2: Barista + Security
                 const page2 = document.createElement('div');
                 page2.className = 'pdf-a4-page';
-                page2.style.cssText = 'width:210mm;height:297mm;background:#fff;page-break-after:always;overflow:hidden;padding:10mm 8mm;display:flex;flex-direction:column;';
+                page2.style.cssText = 'width:210mm;height:297mm;background:#fff;page-break-after:always;overflow:hidden;padding:10mm 8mm;display:flex;flex-direction:column;box-sizing:border-box;';
                 let baristaItemsHTML = '';
                 if (barangItems.length) {
-                    barangItems.forEach(it => {
-                        baristaItemsHTML +=
-                            `<div style="font-size:0.85rem;padding:2px 0;">✓ ${it}</div>`;
-                    });
+                    barangItems.forEach(it => { baristaItemsHTML += `<div style="font-size:0.85rem;padding:2px 0;">✓ ${it}</div>`; });
                 } else {
-                    baristaItemsHTML =
-                        '<div style="font-size:0.85rem;color:#a99584;font-style:italic;">Belum ada pesanan.</div>';
+                    baristaItemsHTML = '<div style="font-size:0.85rem;color:#a99584;font-style:italic;">Belum ada pesanan.</div>';
                 }
-                const kendaraanVal = sKendaraan.value === 'Lainnya' ? (sKendaraanLainnya.value ||
-                    'Lainnya') : (sKendaraan.value || '-');
+                const kendaraanVal = sKendaraan.value === 'Lainnya' ? (sKendaraanLainnya.value || 'Lainnya') : (sKendaraan.value || '-');
                 page2.innerHTML = `
                     <div class="pdf-page-header">
                         <h1>PAWON MBAH GITO</h1>
@@ -1436,16 +1322,16 @@
                     </div>
                 `;
 
-                // PAGE 3 — WAITERS (dengan checkbox)
+                // Halaman 3: Waiters
                 const page3 = document.createElement('div');
                 page3.className = 'pdf-a4-page';
-                page3.style.cssText = 'width:210mm;height:297mm;background:#fff;page-break-after:auto;overflow:hidden;padding:10mm 8mm;display:flex;flex-direction:column;';
+                page3.style.cssText = 'width:210mm;height:297mm;background:#fff;page-break-after:auto;overflow:hidden;padding:10mm 8mm;display:flex;flex-direction:column;box-sizing:border-box;';
                 let allWaitersItemsHTML = '';
                 const allItems = [];
                 barangItems.forEach(it => allItems.push({ type: 'Barista', name: it }));
                 paketDetail.forEach(d => allItems.push({ type: 'Kitchen', name: `${d.num}. ${d.name} (${d.qty} Px)` }));
                 if (allItems.length) {
-                    allItems.forEach((item, idx) => {
+                    allItems.forEach((item) => {
                         allWaitersItemsHTML += `
                             <div class="pdf-waiters-item">
                                 <span class="pdf-waiters-checkbox"></span>
@@ -1454,8 +1340,7 @@
                             </div>`;
                     });
                 } else {
-                    allWaitersItemsHTML =
-                        '<div style="font-size:0.85rem;color:#a99584;font-style:italic;">Belum ada pesanan.</div>';
+                    allWaitersItemsHTML = '<div style="font-size:0.85rem;color:#a99584;font-style:italic;">Belum ada pesanan.</div>';
                 }
                 const statusBadge = currentStatus === 'prepare' ?
                     '<span class="pdf-status-badge pdf-status-prepare">🟠 PREPARE</span>' :
@@ -1484,7 +1369,7 @@
                     </div>
                 `;
 
-                return { page1, page2, page3 };
+                return [page1, page2, page3];
             }
 
             function downloadPDF() {
@@ -1497,27 +1382,21 @@
                     return;
                 }
 
-                // Hapus container PDF lama jika ada
-                const old = document.getElementById('pdfExportContainer');
-                if (old) old.remove();
-
-                // Buat container PDF
+                // Buat container sementara yang terlihat untuk capture
                 const pdfContainer = document.createElement('div');
                 pdfContainer.id = 'pdfExportContainer';
                 pdfContainer.className = 'pdf-export-container';
-                pdfContainer.style.cssText = 'position:absolute;left:-10000px;top:0;width:210mm;pointer-events:none;z-index:-1;';
-
-                const { page1, page2, page3 } = buildPDFHTML();
-                pdfContainer.appendChild(page1);
-                pdfContainer.appendChild(page2);
-                pdfContainer.appendChild(page3);
+                // Tampilkan di area yang terlihat (fixed, z-index tinggi) agar html2canvas bisa capture
+                pdfContainer.style.cssText = 'position:fixed;top:0;left:0;width:210mm;z-index:99999;background:white;pointer-events:none;';
+                // Tambahkan halaman
+                const pages = buildPDFPages();
+                pages.forEach(page => pdfContainer.appendChild(page));
                 document.body.appendChild(pdfContainer);
 
                 const namaFile = (bNama.value.trim() || kNama.value.trim() || 'TanpaNama');
                 const opt = {
                     margin: 0,
-                    filename: 'Reservasi-Pawon-Mbah-Gito-' + namaFile + '-' + new Date().toISOString()
-                        .slice(0, 10) + '.pdf',
+                    filename: 'Reservasi-Pawon-Mbah-Gito-' + namaFile + '-' + new Date().toISOString().slice(0,10) + '.pdf',
                     image: { type: 'jpeg', quality: 1 },
                     html2canvas: {
                         scale: 2,
@@ -1533,7 +1412,7 @@
                 };
 
                 html2pdf().set(opt).from(pdfContainer).save().then(() => {
-                    // Bersihkan container setelah selesai
+                    // Hapus container setelah selesai
                     setTimeout(() => {
                         const el = document.getElementById('pdfExportContainer');
                         if (el) el.remove();
@@ -1552,8 +1431,7 @@
             btnPrint.addEventListener('click', printPage);
             btnPdf.addEventListener('click', downloadPDF);
             btnReset.addEventListener('click', () => { confirmOverlay.style.display = 'flex'; });
-            confirmYes.addEventListener('click', () => { resetData();
-                confirmOverlay.style.display = 'none'; });
+            confirmYes.addEventListener('click', () => { resetData(); confirmOverlay.style.display = 'none'; });
             confirmNo.addEventListener('click', () => { confirmOverlay.style.display = 'none'; });
 
             // ===== INISIALISASI =====
