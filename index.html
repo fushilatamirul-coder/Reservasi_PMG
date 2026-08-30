@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Reservasi - Pawon Mbah Gito</title>
 
-    <!-- html2pdf (termasuk html2canvas & jsPDF) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" defer>
-    </script>
+    <!-- html2canvas & jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
 
     <style>
-        /* ========== RESET & BASE ========== */
+        /* ===== RESET & BASE ===== */
         * {
             margin: 0;
             padding: 0;
@@ -28,20 +28,19 @@
             color: #3e2b1c;
         }
 
-        /* ========== HALAMAN A4 ON‑SCREEN (input) ========== */
+        /* ===== HALAMAN A4 ON‑SCREEN (untuk input) ===== */
         .a4-page {
             width: 210mm;
-            height: 297mm;
+            min-height: 297mm;
             background: #fffefc;
             margin: 0 auto 20px;
             padding: 8mm 6mm;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10);
             border-radius: 8px;
             border: 1px solid #d8c5b0;
-            position: relative;
-            overflow: hidden;
             display: flex;
             flex-direction: column;
+            overflow: visible; /* biarkan konten meluas jika font besar */
         }
 
         .page-header {
@@ -82,7 +81,7 @@
         .grid-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            grid-template-rows: auto auto;
+            grid-template-rows: auto;
             gap: 6px;
             flex: 1;
         }
@@ -111,18 +110,20 @@
         .waiters-title { color: #c96e2e; }
         .security-title { color: #a14f1e; }
 
+        /* ===== TANGGAL DI SETIAP KARTU : 24pt ===== */
         .card-date {
-            font-size: 0.95rem;
+            font-size: 24pt !important;
             font-weight: 600;
             color: #4a2e1a;
             background: #fdf3e7;
-            padding: 4px 12px;
+            padding: 8px 16px;
             border-radius: 20px;
             margin-bottom: 8px;
             display: inline-block;
             text-align: center;
             border: 1px solid #e5cbb0;
             letter-spacing: 0.3px;
+            line-height: 1.2;
         }
 
         .field-group {
@@ -321,44 +322,20 @@
         }
         .waiters-empty { color: #a99584; font-style: italic; }
 
+        /* ===== WAITERS : HILANGKAN STATUS TOGGLE ===== */
         .status-toggle {
-            display: flex;
-            gap: 4px;
-            margin-top: 4px;
+            display: none !important;
         }
-        .status-btn {
-            padding: 4px 6px;
-            border: none;
-            border-radius: 4px;
-            font-size: 0.65rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            flex: 1;
-            text-align: center;
-            letter-spacing: 0.2px;
-        }
-        .status-prepare {
-            background: #fde8d7;
-            color: #c0541e;
-            border: 1px solid #eaa474;
-        }
-        .status-selesai {
-            background: #e8f5e9;
-            color: #2e7d32;
-            border: 1px solid #a5d6a7;
-        }
-        .status-btn.active {
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
-            transform: translateY(-1px);
-        }
-        .status-prepare.active {
-            background: #fcd4b6;
-            border-color: #d2691e;
-        }
-        .status-selesai.active {
-            background: #c8e6c9;
-            border-color: #4caf50;
+
+        /* ===== KOTAK CENTANG UNTUK WAITERS DI LAYAR ===== */
+        .waiters-checkbox {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 1.5px solid #4a2e1a;
+            border-radius: 3px;
+            margin-right: 4px;
+            vertical-align: middle;
         }
 
         .select-input {
@@ -448,7 +425,7 @@
         .confirm-dialog p { color: #4a3321; margin-bottom: 14px; font-size: 0.85rem; }
         .confirm-buttons { display: flex; gap: 8px; justify-content: center; }
 
-        /* ========== STYLE KHUSUS PDF / PRINT ========== */
+        /* ===== KONTENER PDF / PRINT ===== */
         .pdf-export-container,
         .print-container {
             background: white;
@@ -482,7 +459,7 @@
             flex-shrink: 0;
         }
         .pdf-page-header h1 {
-            font-size: 24pt;
+            font-size: 1.8rem;
             font-weight: 700;
             letter-spacing: 1px;
             color: #8b3e1b;
@@ -490,14 +467,14 @@
             margin: 0;
         }
         .pdf-page-header p {
-            font-size: 12pt;
+            font-size: 0.7rem;
             letter-spacing: 3px;
             color: #b55a2a;
             font-weight: 500;
             margin-top: 2px;
         }
         .pdf-page-subtitle {
-            font-size: 20pt;
+            font-size: 1.1rem;
             font-weight: 600;
             text-align: center;
             color: #6b3f1f;
@@ -505,75 +482,126 @@
             padding-bottom: 3px;
             border-bottom: 2px solid #e0c9b0;
         }
+        .pdf-card {
+            background: #fffdf9;
+            border: 1.5px solid #c9a88c;
+            border-radius: 8px;
+            padding: 8px 10px;
+            box-shadow: none;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-height: 0;
+            box-sizing: border-box;
+        }
+        .pdf-card-full {
+            flex: 1;
+        }
+        .pdf-card-half {
+            flex: 1;
+            min-height: 0;
+        }
+        .pdf-field-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px 8px;
+            margin-bottom: 5px;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+        .pdf-field-label {
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            color: #7a5c42;
+            min-width: 45px;
+            font-size: 0.8rem;
+        }
+        .pdf-field-value {
+            font-weight: 500;
+            color: #3e2b1c;
+            font-size: 0.9rem;
+        }
+        .pdf-section-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #6b3f1f;
+            margin: 5px 0 3px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .pdf-divider {
+            border-top: 1px dashed #c9a88c;
+            margin: 5px 0;
+        }
+        .pdf-paket-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.9rem;
+            margin-bottom: 2px;
+        }
+        .pdf-paket-num {
+            font-weight: 600;
+            color: #8b3e1b;
+            min-width: 22px;
+            text-align: right;
+            font-size: 0.85rem;
+        }
+        .pdf-paket-name {
+            font-weight: 500;
+            color: #3e2b1c;
+            flex: 1;
+        }
+        .pdf-paket-qty {
+            font-weight: 600;
+            color: #4a2e1a;
+            min-width: 40px;
+            text-align: center;
+            background: #fdf3e7;
+            padding: 1px 6px;
+            border-radius: 10px;
+            border: 1px solid #e5cbb0;
+        }
+        .pdf-waiters-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            margin-bottom: 4px;
+            padding: 2px 4px;
+            border-bottom: 1px dotted #d0b39a;
+        }
+        .pdf-waiters-checkbox {
+            width: 16px;
+            height: 16px;
+            border: 1.5px solid #4a2e1a;
+            border-radius: 3px;
+            flex-shrink: 0;
+            display: inline-block;
+            cursor: pointer;
+            background: #fff;
+        }
+        .pdf-status-badge {
+            display: inline-block;
+            padding: 3px 12px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+        }
+        .pdf-status-prepare {
+            background: #fde8d7;
+            color: #c0541e;
+            border: 1px solid #eaa474;
+        }
+        .pdf-status-selesai {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #a5d6a7;
+        }
 
-        /* khusus Kitchen: semua text 32pt */
-        .pdf-page-kitchen .pdf-page-header h1 {
-            font-size: 32pt;
-        }
-        .pdf-page-kitchen .pdf-page-header p {
-            font-size: 18pt;
-        }
-        .pdf-page-kitchen .pdf-page-subtitle {
-            font-size: 28pt;
-        }
-        .pdf-page-kitchen .pdf-card,
-        .pdf-page-kitchen .pdf-card * {
-            font-size: 32pt;
-        }
-        .pdf-page-kitchen .pdf-field-label {
-            font-size: 32pt;
-        }
-        .pdf-page-kitchen .pdf-field-value {
-            font-size: 32pt;
-        }
-        .pdf-page-kitchen .pdf-section-title {
-            font-size: 32pt;
-        }
-        .pdf-page-kitchen .pdf-paket-item {
-            font-size: 32pt;
-        }
-        .pdf-page-kitchen .pdf-paket-num {
-            font-size: 32pt;
-        }
-        .pdf-page-kitchen .pdf-paket-name {
-            font-size: 32pt;
-        }
-        .pdf-page-kitchen .pdf-paket-qty {
-            font-size: 32pt;
-        }
-
-        /* khusus Waiters: 20pt */
-        .pdf-page-waiters .pdf-page-header h1 {
-            font-size: 24pt;
-        }
-        .pdf-page-waiters .pdf-page-header p {
-            font-size: 12pt;
-        }
-        .pdf-page-waiters .pdf-page-subtitle {
-            font-size: 20pt;
-        }
-        .pdf-page-waiters .pdf-card,
-        .pdf-page-waiters .pdf-card * {
-            font-size: 20pt;
-        }
-        .pdf-page-waiters .pdf-field-label {
-            font-size: 20pt;
-        }
-        .pdf-page-waiters .pdf-field-value {
-            font-size: 20pt;
-        }
-        .pdf-page-waiters .pdf-section-title {
-            font-size: 20pt;
-        }
-        .pdf-page-waiters .pdf-waiters-item {
-            font-size: 20pt;
-        }
-        .pdf-page-waiters .pdf-waiters-checkbox {
-            width: 18px;
-            height: 18px;
-        }
-
-        /* ========== PRINT MEDIA ========== */
+        /* ===== PRINT MEDIA ===== */
         @media print {
             body {
                 background: white !important;
@@ -610,11 +638,10 @@
             }
         }
 
-        /* ========== RESPONSIVE ========== */
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             .a4-page {
                 width: 100%;
-                height: auto;
                 padding: 6px 4px;
                 box-shadow: none;
                 border-radius: 6px;
@@ -677,62 +704,57 @@
                 </div>
             </div>
 
-            <!-- KITCHEN -->
-            <div class="card kitchen-card" id="cardKitchen">
-                <h2 class="card-title kitchen-title">🍳 KITCHEN</h2>
-                <div class="card-date">📅 <span class="card-date-value" id="dateKitchen">-</span></div>
-                <div class="field-group">
-                    <span class="field-label">Nama</span>
-                    <input type="text" id="kitchenNama" placeholder="Nama tamu" class="input-text" autocomplete="off">
+            <!-- KITCHEN (font 24pt) -->
+            <div class="card kitchen-card" id="cardKitchen" style="font-size:24pt !important;">
+                <h2 class="card-title kitchen-title" style="font-size:24pt;">🍳 KITCHEN</h2>
+                <div class="card-date" style="font-size:24pt;">📅 <span class="card-date-value" id="dateKitchen">-</span></div>
+                <div class="field-group" style="font-size:24pt;">
+                    <span class="field-label" style="font-size:24pt;">Nama</span>
+                    <input type="text" id="kitchenNama" placeholder="Nama tamu" class="input-text" style="font-size:24pt;" autocomplete="off">
                 </div>
-                <div class="field-group">
-                    <span class="field-label">Px</span>
-                    <input type="number" id="kitchenPx" placeholder="10" class="input-text input-text-sm" min="1" autocomplete="off">
-                    <span class="field-label" style="min-width:30px;">Jam</span>
-                    <input type="time" id="kitchenJam" class="input-text" autocomplete="off">
-                </div>
-                <div class="section-divider"></div>
-                <h3 class="sub-title">Pilihan Paket</h3>
-                <div class="radio-group">
-                    <label class="radio-item"><input type="radio" name="paket" value="Paket Alhamdulillah"> Paket Alhamdulillah</label>
-                    <label class="radio-item"><input type="radio" name="paket" value="Paket Syukur"> Paket Syukur</label>
-                    <label class="radio-item"><input type="radio" name="paket" value="Paket Bahagia"> Paket Bahagia</label>
-                    <label class="radio-item"><input type="radio" name="paket" value="Menu Alacarte"> Menu Alacarte</label>
+                <div class="field-group" style="font-size:24pt;">
+                    <span class="field-label" style="font-size:24pt;">Px</span>
+                    <input type="number" id="kitchenPx" placeholder="10" class="input-text input-text-sm" style="font-size:24pt; max-width:90px;" min="1" autocomplete="off">
+                    <span class="field-label" style="font-size:24pt; min-width:40px;">Jam</span>
+                    <input type="time" id="kitchenJam" class="input-text" style="font-size:24pt; max-width:140px;" autocomplete="off">
                 </div>
                 <div class="section-divider"></div>
-                <h3 class="sub-title">Isi Paket</h3>
-                <div class="paket-jumlah-px">
+                <h3 class="sub-title" style="font-size:24pt;">Pilihan Paket</h3>
+                <div class="radio-group" style="font-size:24pt;">
+                    <label class="radio-item" style="font-size:24pt;"><input type="radio" name="paket" value="Paket Alhamdulillah" style="width:22px;height:22px;"> Paket Alhamdulillah</label>
+                    <label class="radio-item" style="font-size:24pt;"><input type="radio" name="paket" value="Paket Syukur" style="width:22px;height:22px;"> Paket Syukur</label>
+                    <label class="radio-item" style="font-size:24pt;"><input type="radio" name="paket" value="Paket Bahagia" style="width:22px;height:22px;"> Paket Bahagia</label>
+                    <label class="radio-item" style="font-size:24pt;"><input type="radio" name="paket" value="Menu Alacarte" style="width:22px;height:22px;"> Menu Alacarte</label>
+                </div>
+                <div class="section-divider"></div>
+                <h3 class="sub-title" style="font-size:24pt;">Isi Paket</h3>
+                <div class="paket-jumlah-px" style="font-size:24pt;">
                     <span>Jumlah Px:</span>
-                    <input type="number" id="paketJumlahPx" class="input-text input-text-sm" min="1" placeholder="Auto" autocomplete="off">
-                    <span style="font-weight:400;font-size:0.75rem;color:#7a5c42;">(auto dari Px, bisa diedit)</span>
+                    <input type="number" id="paketJumlahPx" class="input-text input-text-sm" style="font-size:24pt; width:100px;" min="1" placeholder="Auto" autocomplete="off">
+                    <span style="font-weight:400;font-size:18pt;color:#7a5c42;">(auto dari Px, bisa diedit)</span>
                 </div>
-                <div class="paket-items-grid" id="paketItemsGrid">
-                    <!-- 10 item diisi oleh JS -->
+                <div class="paket-items-grid" id="paketItemsGrid" style="font-size:24pt;">
+                    <!-- 10 item diisi oleh JS dengan style font 24pt -->
                 </div>
             </div>
 
-            <!-- WAITERS -->
+            <!-- WAITERS (tanpa status, dengan checkbox) -->
             <div class="card waiters-card" id="cardWaiters">
                 <h2 class="card-title waiters-title">👨‍🍳 WAITERS</h2>
                 <div class="card-date">📅 <span class="card-date-value" id="dateWaiters">-</span></div>
-                <div class="waiters-auto-info">
+                <div class="waiters-auto-info" style="font-size:18pt;">
                     <div class="waiters-field"><span class="waiters-label">Nama :</span><span id="waitersNama" class="waiters-value">-</span></div>
                     <div class="waiters-field"><span class="waiters-label">Px :</span><span id="waitersPx" class="waiters-value">-</span></div>
                     <div class="waiters-field"><span class="waiters-label">Jam :</span><span id="waitersJam" class="waiters-value">-</span></div>
                 </div>
                 <div class="section-divider"></div>
-                <div class="waiters-detail">
-                    <h4 class="waiters-section-label">BARISTA</h4>
-                    <div id="waitersBaristaList" class="waiters-list"><span class="waiters-empty">Belum ada pesanan.</span></div>
-                    <h4 class="waiters-section-label">KITCHEN</h4>
-                    <div id="waitersKitchenList" class="waiters-list"><span class="waiters-empty">Belum ada pesanan.</span></div>
+                <div class="waiters-detail" style="font-size:18pt;">
+                    <h4 class="waiters-section-label" style="font-size:18pt;">BARISTA</h4>
+                    <div id="waitersBaristaList" class="waiters-list" style="font-size:18pt;"><span class="waiters-empty">Belum ada pesanan.</span></div>
+                    <h4 class="waiters-section-label" style="font-size:18pt;">KITCHEN</h4>
+                    <div id="waitersKitchenList" class="waiters-list" style="font-size:18pt;"><span class="waiters-empty">Belum ada pesanan.</span></div>
                 </div>
-                <div class="section-divider"></div>
-                <h4 class="waiters-section-label">STATUS</h4>
-                <div class="status-toggle" id="statusToggle">
-                    <button type="button" id="statusPrepareBtn" class="status-btn status-prepare active">🟠 PREPARE</button>
-                    <button type="button" id="statusSelesaiBtn" class="status-btn status-selesai">🟢 SELESAI</button>
-                </div>
+                <!-- Status toggle dihilangkan -->
             </div>
 
             <!-- SECURITY -->
@@ -793,6 +815,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+
             // ===== ELEMEN =====
             const bNama = document.getElementById('baristaNama');
             const bPx = document.getElementById('baristaPx');
@@ -825,10 +848,6 @@
             const wBaristaList = document.getElementById('waitersBaristaList');
             const wKitchenList = document.getElementById('waitersKitchenList');
 
-            const statusPrepare = document.getElementById('statusPrepareBtn');
-            const statusSelesai = document.getElementById('statusSelesaiBtn');
-            let currentStatus = 'prepare';
-
             const resNumberDisplay = document.getElementById('reservationNumberDisplay');
             let reservationNumber = 1;
             const dateElements = document.querySelectorAll('.card-date-value');
@@ -851,19 +870,24 @@
             for (let i = 1; i <= 10; i++) {
                 const div = document.createElement('div');
                 div.className = 'paket-item';
+                div.style.fontSize = '24pt'; // Font besar untuk Kitchen
                 const num = document.createElement('span');
                 num.className = 'item-number';
+                num.style.fontSize = '24pt';
                 num.textContent = i + '.';
                 const inp = document.createElement('input');
                 inp.type = 'text';
                 inp.id = 'paket' + i;
                 inp.className = 'paket-input';
+                inp.style.fontSize = '24pt';
                 inp.placeholder = 'Item ' + i;
                 inp.autocomplete = 'off';
                 const qty = document.createElement('input');
                 qty.type = 'number';
                 qty.id = 'paket' + i + 'Qty';
                 qty.className = 'input-qty';
+                qty.style.fontSize = '24pt';
+                qty.style.width = '60px';
                 qty.placeholder = '0';
                 qty.min = '0';
                 qty.value = '0';
@@ -946,7 +970,7 @@
             }
             attachSyncEvents();
 
-            // ===== UPDATE WAITERS ON‑SCREEN =====
+            // ===== UPDATE WAITERS ON‑SCREEN (dengan checkbox ikon) =====
             function updateWaiters() {
                 const nama = bNama.value.trim() || kNama.value.trim() || sNama.value.trim() || '-';
                 const px = bPx.value.trim() || kPx.value.trim() || sPx.value.trim() || '-';
@@ -964,9 +988,14 @@
                 if (bLainnyaCb.checked && bLainnyaText.value.trim()) items.push(bLainnyaText.value.trim());
                 wBaristaList.innerHTML = '';
                 if (items.length) {
-                    items.forEach(it => { const d = document.createElement('div'); d.textContent = '✓ ' + it; wBaristaList.appendChild(d); });
+                    items.forEach(it => {
+                        const d = document.createElement('div');
+                        d.style.fontSize = '18pt';
+                        d.innerHTML = `<span class="waiters-checkbox"></span> ${it}`;
+                        wBaristaList.appendChild(d);
+                    });
                 } else {
-                    wBaristaList.innerHTML = '<span class="waiters-empty">Belum ada pesanan.</span>';
+                    wBaristaList.innerHTML = '<span class="waiters-empty" style="font-size:18pt;">Belum ada pesanan.</span>';
                 }
 
                 const selected = document.querySelector('input[name="paket"]:checked');
@@ -975,23 +1004,30 @@
                 paketItems.forEach((item, idx) => {
                     const t = item.text.value.trim();
                     const q = item.qty.value.trim() || '0';
-                    if (t) detail.push((idx + 1) + '. ' + t + ' (' + q + ')');
+                    if (t) detail.push((idx + 1) + '. ' + t + ' (' + q + ' Px)');
                 });
                 wKitchenList.innerHTML = '';
                 if (paketNama !== '-') {
                     const hdr = document.createElement('div');
                     hdr.style.fontWeight = '600';
+                    hdr.style.fontSize = '18pt';
                     hdr.textContent = 'Paket: ' + paketNama;
                     wKitchenList.appendChild(hdr);
                     if (detail.length) {
-                        detail.forEach(line => { const d = document.createElement('div'); d.textContent = line; wKitchenList.appendChild(d); });
+                        detail.forEach(line => {
+                            const d = document.createElement('div');
+                            d.style.fontSize = '18pt';
+                            d.innerHTML = `<span class="waiters-checkbox"></span> ${line}`;
+                            wKitchenList.appendChild(d);
+                        });
                     } else {
                         const empty = document.createElement('div');
+                        empty.style.fontSize = '18pt';
                         empty.textContent = '(Belum ada isi)';
                         wKitchenList.appendChild(empty);
                     }
                 } else {
-                    wKitchenList.innerHTML = '<span class="waiters-empty">Belum ada pesanan.</span>';
+                    wKitchenList.innerHTML = '<span class="waiters-empty" style="font-size:18pt;">Belum ada pesanan.</span>';
                 }
             }
 
@@ -1027,16 +1063,6 @@
                 if (this.value !== 'Lainnya') sKendaraanLainnya.value = '';
             });
 
-            // ===== STATUS TOGGLE =====
-            function setStatus(st) {
-                currentStatus = st;
-                statusPrepare.classList.toggle('active', st === 'prepare');
-                statusSelesai.classList.toggle('active', st === 'selesai');
-            }
-            statusPrepare.addEventListener('click', () => setStatus('prepare'));
-            statusSelesai.addEventListener('click', () => setStatus('selesai'));
-            setStatus('prepare');
-
             // ===== SIMPAN =====
             function simpanData() {
                 const data = {
@@ -1056,8 +1082,7 @@
                     security: {
                         nama: sNama.value, px: sPx.value, jam: sJam.value,
                         kendaraan: sKendaraan.value, kendaraanLainnya: sKendaraanLainnya.value
-                    },
-                    status: currentStatus
+                    }
                 };
                 localStorage.setItem('pawonMbahGitoReservasi', JSON.stringify(data));
                 showNotif('Data reservasi disimpan.');
@@ -1104,7 +1129,6 @@
                     sKendaraan.value = data.security.kendaraan || '';
                     sKendaraanLainnya.value = data.security.kendaraanLainnya || '';
                     sLainnyaWrap.style.display = sKendaraan.value === 'Lainnya' ? 'block' : 'none';
-                    setStatus(data.status || 'prepare');
                     updateWaiters();
                     showNotif('Data dimuat.');
                 } catch (e) { showNotif('Gagal memuat data.'); }
@@ -1120,7 +1144,6 @@
                 sLainnyaWrap.style.display = 'none';
                 bLainnyaWrap.style.display = 'none';
                 paketJumlahPxInput.value = '';
-                setStatus('prepare');
                 reservationNumber++;
                 updateResNumber();
                 updateWaiters();
@@ -1166,86 +1189,86 @@
                     if (t) paketDetail.push({ num: idx + 1, name: t, qty: q });
                 });
 
-                // Halaman 1: Kitchen (dengan class pdf-page-kitchen)
+                // Halaman 1: Kitchen (font 24pt)
                 const page1 = document.createElement('div');
-                page1.className = 'pdf-a4-page pdf-page-kitchen';
+                page1.className = 'pdf-a4-page';
                 page1.style.cssText = 'width:210mm;height:297mm;background:#fff;page-break-after:always;overflow:hidden;padding:10mm 8mm;display:flex;flex-direction:column;box-sizing:border-box;';
                 let paketItemsHTML = '';
                 if (paketDetail.length) {
                     paketDetail.forEach(d => {
-                        paketItemsHTML += `<div class="pdf-paket-item"><span class="pdf-paket-num">${d.num}.</span><span class="pdf-paket-name">${d.name}</span><span class="pdf-paket-qty">${d.qty} Px</span></div>`;
+                        paketItemsHTML += `<div class="pdf-paket-item" style="font-size:24pt;"><span class="pdf-paket-num" style="font-size:24pt;">${d.num}.</span><span class="pdf-paket-name" style="font-size:24pt;">${d.name}</span><span class="pdf-paket-qty" style="font-size:24pt;">${d.qty} Px</span></div>`;
                     });
                 } else {
-                    paketItemsHTML = '<div style="font-size:32pt;color:#a99584;font-style:italic;">Belum ada isi paket.</div>';
+                    paketItemsHTML = '<div style="font-size:24pt;color:#a99584;font-style:italic;">Belum ada isi paket.</div>';
                 }
                 page1.innerHTML = `
                     <div class="pdf-page-header">
-                        <h1>PAWON MBAH GITO</h1>
-                        <p>KULINER NDESO</p>
+                        <h1 style="font-size:36pt;">PAWON MBAH GITO</h1>
+                        <p style="font-size:16pt;">KULINER NDESO</p>
                     </div>
-                    <div class="pdf-page-subtitle">🍳 KITCHEN</div>
-                    <div style="text-align:center;font-size:32pt;font-weight:600;color:#4a2e1a;background:#fdf3e7;padding:4px 12px;border-radius:20px;margin-bottom:8px;border:1px solid #e5cbb0;">
+                    <div class="pdf-page-subtitle" style="font-size:28pt;">🍳 KITCHEN</div>
+                    <div style="text-align:center;font-size:24pt;font-weight:600;color:#4a2e1a;background:#fdf3e7;padding:8px 16px;border-radius:20px;margin-bottom:8px;border:1px solid #e5cbb0;">
                         📅 ${dateElements[0]?.textContent || '-'} — Reservasi #${resNumberDisplay.textContent}
                     </div>
-                    <div class="pdf-card pdf-card-full" style="flex:1;border:1.5px solid #c9a88c;border-radius:8px;padding:10px 12px;">
-                        <div class="pdf-field-row"><span class="pdf-field-label">Nama</span><span class="pdf-field-value">: ${nama}</span></div>
-                        <div class="pdf-field-row"><span class="pdf-field-label">Px</span><span class="pdf-field-value">: ${px}</span></div>
-                        <div class="pdf-field-row"><span class="pdf-field-label">Jam</span><span class="pdf-field-value">: ${jam}</span></div>
+                    <div class="pdf-card pdf-card-full" style="flex:1;border:1.5px solid #c9a88c;border-radius:8px;padding:15px;font-size:24pt;">
+                        <div class="pdf-field-row" style="font-size:24pt;"><span class="pdf-field-label" style="font-size:24pt;">Nama</span><span class="pdf-field-value" style="font-size:24pt;">: ${nama}</span></div>
+                        <div class="pdf-field-row" style="font-size:24pt;"><span class="pdf-field-label" style="font-size:24pt;">Px</span><span class="pdf-field-value" style="font-size:24pt;">: ${px}</span></div>
+                        <div class="pdf-field-row" style="font-size:24pt;"><span class="pdf-field-label" style="font-size:24pt;">Jam</span><span class="pdf-field-value" style="font-size:24pt;">: ${jam}</span></div>
                         <div class="pdf-divider"></div>
-                        <div class="pdf-section-title">Pilihan Paket</div>
-                        <div style="font-size:32pt;font-weight:600;color:#8b3e1b;">${paketNama}</div>
+                        <div class="pdf-section-title" style="font-size:24pt;">Pilihan Paket</div>
+                        <div style="font-size:24pt;font-weight:600;color:#8b3e1b;">${paketNama}</div>
                         <div class="pdf-divider"></div>
-                        <div class="pdf-section-title">Isi Paket</div>
-                        <div style="font-size:32pt;font-weight:600;color:#4a2e1a;margin-bottom:4px;">Jumlah Px: ${jumlahPxPaket}</div>
-                        <div style="flex:1;overflow:hidden;font-size:32pt;">${paketItemsHTML}</div>
+                        <div class="pdf-section-title" style="font-size:24pt;">Isi Paket</div>
+                        <div style="font-size:24pt;font-weight:600;color:#4a2e1a;margin-bottom:8px;">Jumlah Px: ${jumlahPxPaket}</div>
+                        <div style="flex:1;overflow:hidden;">${paketItemsHTML}</div>
                     </div>
                 `;
 
-                // Halaman 2: Barista + Security (ukuran normal)
+                // Halaman 2: Barista + Security (font 18-20pt agar muat)
                 const page2 = document.createElement('div');
                 page2.className = 'pdf-a4-page';
                 page2.style.cssText = 'width:210mm;height:297mm;background:#fff;page-break-after:always;overflow:hidden;padding:10mm 8mm;display:flex;flex-direction:column;box-sizing:border-box;';
                 let baristaItemsHTML = '';
                 if (barangItems.length) {
-                    barangItems.forEach(it => { baristaItemsHTML += `<div style="font-size:12pt;padding:2px 0;">✓ ${it}</div>`; });
+                    barangItems.forEach(it => { baristaItemsHTML += `<div style="font-size:20pt;padding:2px 0;">✓ ${it}</div>`; });
                 } else {
-                    baristaItemsHTML = '<div style="font-size:12pt;color:#a99584;font-style:italic;">Belum ada pesanan.</div>';
+                    baristaItemsHTML = '<div style="font-size:20pt;color:#a99584;font-style:italic;">Belum ada pesanan.</div>';
                 }
                 const kendaraanVal = sKendaraan.value === 'Lainnya' ? (sKendaraanLainnya.value || 'Lainnya') : (sKendaraan.value || '-');
                 page2.innerHTML = `
                     <div class="pdf-page-header">
-                        <h1>PAWON MBAH GITO</h1>
-                        <p>KULINER NDESO</p>
+                        <h1 style="font-size:36pt;">PAWON MBAH GITO</h1>
+                        <p style="font-size:16pt;">KULINER NDESO</p>
                     </div>
-                    <div class="pdf-page-subtitle">☕ BARISTA &amp; 🛡 SECURITY</div>
-                    <div style="text-align:center;font-size:12pt;font-weight:600;color:#4a2e1a;background:#fdf3e7;padding:4px 12px;border-radius:20px;margin-bottom:8px;border:1px solid #e5cbb0;">
+                    <div class="pdf-page-subtitle" style="font-size:28pt;">☕ BARISTA &amp; 🛡 SECURITY</div>
+                    <div style="text-align:center;font-size:18pt;font-weight:600;color:#4a2e1a;background:#fdf3e7;padding:6px 12px;border-radius:20px;margin-bottom:8px;border:1px solid #e5cbb0;">
                         📅 ${dateElements[0]?.textContent || '-'} — Reservasi #${resNumberDisplay.textContent}
                     </div>
                     <div style="flex:1;display:flex;flex-direction:column;gap:6px;min-height:0;">
-                        <div class="pdf-card pdf-card-half" style="flex:1;min-height:0;border:1.5px solid #c9a88c;border-radius:8px;padding:8px 10px;display:flex;flex-direction:column;overflow:hidden;">
-                            <div style="font-size:14pt;font-weight:600;color:#b0572c;border-bottom:2px solid #e0c9b0;padding-bottom:3px;margin-bottom:4px;">☕ BARISTA</div>
-                            <div class="pdf-field-row"><span class="pdf-field-label">Nama</span><span class="pdf-field-value">: ${nama}</span></div>
-                            <div class="pdf-field-row"><span class="pdf-field-label">Px</span><span class="pdf-field-value">: ${px}</span></div>
-                            <div class="pdf-field-row"><span class="pdf-field-label">Jam</span><span class="pdf-field-value">: ${jam}</span></div>
+                        <div class="pdf-card pdf-card-half" style="flex:1;min-height:0;border:1.5px solid #c9a88c;border-radius:8px;padding:10px;display:flex;flex-direction:column;overflow:hidden;font-size:18pt;">
+                            <div style="font-size:22pt;font-weight:600;color:#b0572c;border-bottom:2px solid #e0c9b0;padding-bottom:3px;margin-bottom:4px;">☕ BARISTA</div>
+                            <div class="pdf-field-row" style="font-size:18pt;"><span class="pdf-field-label" style="font-size:18pt;">Nama</span><span class="pdf-field-value" style="font-size:18pt;">: ${nama}</span></div>
+                            <div class="pdf-field-row" style="font-size:18pt;"><span class="pdf-field-label" style="font-size:18pt;">Px</span><span class="pdf-field-value" style="font-size:18pt;">: ${px}</span></div>
+                            <div class="pdf-field-row" style="font-size:18pt;"><span class="pdf-field-label" style="font-size:18pt;">Jam</span><span class="pdf-field-value" style="font-size:18pt;">: ${jam}</span></div>
                             <div class="pdf-divider"></div>
-                            <div class="pdf-section-title">Jenis Pesanan</div>
-                            <div style="flex:1;overflow:hidden;font-size:12pt;">${baristaItemsHTML}</div>
+                            <div class="pdf-section-title" style="font-size:18pt;">Jenis Pesanan</div>
+                            <div style="flex:1;overflow:hidden;font-size:18pt;">${baristaItemsHTML}</div>
                         </div>
-                        <div class="pdf-card pdf-card-half" style="flex:1;min-height:0;border:1.5px solid #c9a88c;border-radius:8px;padding:8px 10px;display:flex;flex-direction:column;overflow:hidden;">
-                            <div style="font-size:14pt;font-weight:600;color:#a14f1e;border-bottom:2px solid #e0c9b0;padding-bottom:3px;margin-bottom:4px;">🛡 SECURITY</div>
-                            <div class="pdf-field-row"><span class="pdf-field-label">Nama</span><span class="pdf-field-value">: ${nama}</span></div>
-                            <div class="pdf-field-row"><span class="pdf-field-label">Px</span><span class="pdf-field-value">: ${px}</span></div>
-                            <div class="pdf-field-row"><span class="pdf-field-label">Jam</span><span class="pdf-field-value">: ${jam}</span></div>
+                        <div class="pdf-card pdf-card-half" style="flex:1;min-height:0;border:1.5px solid #c9a88c;border-radius:8px;padding:10px;display:flex;flex-direction:column;overflow:hidden;font-size:18pt;">
+                            <div style="font-size:22pt;font-weight:600;color:#a14f1e;border-bottom:2px solid #e0c9b0;padding-bottom:3px;margin-bottom:4px;">🛡 SECURITY</div>
+                            <div class="pdf-field-row" style="font-size:18pt;"><span class="pdf-field-label" style="font-size:18pt;">Nama</span><span class="pdf-field-value" style="font-size:18pt;">: ${nama}</span></div>
+                            <div class="pdf-field-row" style="font-size:18pt;"><span class="pdf-field-label" style="font-size:18pt;">Px</span><span class="pdf-field-value" style="font-size:18pt;">: ${px}</span></div>
+                            <div class="pdf-field-row" style="font-size:18pt;"><span class="pdf-field-label" style="font-size:18pt;">Jam</span><span class="pdf-field-value" style="font-size:18pt;">: ${jam}</span></div>
                             <div class="pdf-divider"></div>
-                            <div class="pdf-section-title">Jenis Kendaraan</div>
-                            <div style="font-size:12pt;font-weight:500;">${kendaraanVal}</div>
+                            <div class="pdf-section-title" style="font-size:18pt;">Jenis Kendaraan</div>
+                            <div style="font-size:18pt;font-weight:500;">${kendaraanVal}</div>
                         </div>
                     </div>
                 `;
 
-                // Halaman 3: Waiters (dengan class pdf-page-waiters)
+                // Halaman 3: Waiters (font 18pt dengan checkbox)
                 const page3 = document.createElement('div');
-                page3.className = 'pdf-a4-page pdf-page-waiters';
+                page3.className = 'pdf-a4-page';
                 page3.style.cssText = 'width:210mm;height:297mm;background:#fff;page-break-after:auto;overflow:hidden;padding:10mm 8mm;display:flex;flex-direction:column;box-sizing:border-box;';
                 let allWaitersItemsHTML = '';
                 const allItems = [];
@@ -1254,109 +1277,110 @@
                 if (allItems.length) {
                     allItems.forEach((item) => {
                         allWaitersItemsHTML += `
-                            <div class="pdf-waiters-item">
-                                <span class="pdf-waiters-checkbox"></span>
-                                <span style="flex:1;">${item.name}</span>
-                                <span style="font-size:12pt;font-weight:600;color:#7a5c42;text-transform:uppercase;">${item.type}</span>
+                            <div class="pdf-waiters-item" style="font-size:18pt;">
+                                <span class="pdf-waiters-checkbox" style="width:24px;height:24px;border:2px solid #4a2e1a;border-radius:4px;"></span>
+                                <span style="flex:1;font-size:18pt;">${item.name}</span>
+                                <span style="font-size:16pt;font-weight:600;color:#7a5c42;text-transform:uppercase;">${item.type}</span>
                             </div>`;
                     });
                 } else {
-                    allWaitersItemsHTML = '<div style="font-size:20pt;color:#a99584;font-style:italic;">Belum ada pesanan.</div>';
+                    allWaitersItemsHTML = '<div style="font-size:18pt;color:#a99584;font-style:italic;">Belum ada pesanan.</div>';
                 }
-                const statusBadge = currentStatus === 'prepare' ?
-                    '<span class="pdf-status-badge pdf-status-prepare">🟠 PREPARE</span>' :
-                    '<span class="pdf-status-badge pdf-status-selesai">🟢 SELESAI</span>';
                 page3.innerHTML = `
                     <div class="pdf-page-header">
-                        <h1>PAWON MBAH GITO</h1>
-                        <p>KULINER NDESO</p>
+                        <h1 style="font-size:36pt;">PAWON MBAH GITO</h1>
+                        <p style="font-size:16pt;">KULINER NDESO</p>
                     </div>
-                    <div class="pdf-page-subtitle">👨‍🍳 WAITERS</div>
-                    <div style="text-align:center;font-size:20pt;font-weight:600;color:#4a2e1a;background:#fdf3e7;padding:4px 12px;border-radius:20px;margin-bottom:8px;border:1px solid #e5cbb0;">
+                    <div class="pdf-page-subtitle" style="font-size:28pt;">👨‍🍳 WAITERS</div>
+                    <div style="text-align:center;font-size:18pt;font-weight:600;color:#4a2e1a;background:#fdf3e7;padding:6px 12px;border-radius:20px;margin-bottom:8px;border:1px solid #e5cbb0;">
                         📅 ${dateElements[0]?.textContent || '-'} — Reservasi #${resNumberDisplay.textContent}
                     </div>
-                    <div class="pdf-card pdf-card-full" style="flex:1;border:1.5px solid #c9a88c;border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;overflow:hidden;">
-                        <div class="pdf-field-row"><span class="pdf-field-label">Nama</span><span class="pdf-field-value">: ${nama}</span></div>
-                        <div class="pdf-field-row"><span class="pdf-field-label">Px</span><span class="pdf-field-value">: ${px}</span></div>
-                        <div class="pdf-field-row"><span class="pdf-field-label">Jam</span><span class="pdf-field-value">: ${jam}</span></div>
+                    <div class="pdf-card pdf-card-full" style="flex:1;border:1.5px solid #c9a88c;border-radius:8px;padding:12px;display:flex;flex-direction:column;overflow:hidden;font-size:18pt;">
+                        <div class="pdf-field-row" style="font-size:18pt;"><span class="pdf-field-label" style="font-size:18pt;">Nama</span><span class="pdf-field-value" style="font-size:18pt;">: ${nama}</span></div>
+                        <div class="pdf-field-row" style="font-size:18pt;"><span class="pdf-field-label" style="font-size:18pt;">Px</span><span class="pdf-field-value" style="font-size:18pt;">: ${px}</span></div>
+                        <div class="pdf-field-row" style="font-size:18pt;"><span class="pdf-field-label" style="font-size:18pt;">Jam</span><span class="pdf-field-value" style="font-size:18pt;">: ${jam}</span></div>
                         <div class="pdf-divider"></div>
-                        <div class="pdf-section-title">Daftar Item</div>
-                        <div style="flex:1;overflow:hidden;font-size:20pt;">${allWaitersItemsHTML}</div>
-                        <div class="pdf-divider"></div>
-                        <div style="display:flex;justify-content:space-between;align-items:center;">
-                            <span class="pdf-section-title" style="margin:0;">Status</span>
-                            ${statusBadge}
-                        </div>
+                        <div class="pdf-section-title" style="font-size:18pt;">Daftar Item</div>
+                        <div style="flex:1;overflow:hidden;font-size:18pt;">${allWaitersItemsHTML}</div>
                     </div>
                 `;
 
                 return [page1, page2, page3];
             }
 
-            // ===== DOWNLOAD PDF (html2pdf - perbaikan) =====
-            function downloadPDF() {
+            // ===== DOWNLOAD PDF (html2canvas per halaman) =====
+            async function downloadPDF() {
                 if (!validateData()) {
                     showNotif('Data reservasi belum lengkap (Nama, Px, Jam).');
                     return;
                 }
-                if (typeof html2pdf === 'undefined') {
-                    showNotif('Library html2pdf belum termuat. Coba muat ulang halaman.');
+                if (typeof html2canvas === 'undefined' || typeof jspdf === 'undefined') {
+                    showNotif('Library belum termuat. Coba muat ulang halaman.');
                     return;
                 }
 
-                // Buat container PDF sementara (tidak display:none, tapi off-screen)
-                const pdfContainer = document.createElement('div');
-                pdfContainer.id = 'pdfExportContainer';
-                pdfContainer.className = 'pdf-export-container';
-                pdfContainer.style.cssText = 'position:absolute;left:-10000px;top:0;width:210mm;background:white;';
                 const pages = buildPDFPages();
-                pages.forEach(page => pdfContainer.appendChild(page));
-                document.body.appendChild(pdfContainer);
-
-                const opt = {
-                    margin: 0,
-                    filename: 'Reservasi-Pawon-Mbah-Gito-' + (bNama.value.trim() || 'TanpaNama') + '-' + new Date().toISOString().slice(0,10) + '.pdf',
-                    image: { type: 'jpeg', quality: 1 },
-                    html2canvas: {
-                        scale: 2,
-                        useCORS: true,
-                        logging: false,
-                        windowWidth: 210 * 3.7795, // pastikan lebar A4
-                        windowHeight: 297 * 3.7795,
-                    },
-                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true },
-                    pagebreak: { mode: ['css', 'legacy'] }
-                };
-
-                html2pdf().set(opt).from(pdfContainer).save().then(() => {
-                    // Hapus container setelah selesai
-                    setTimeout(() => {
-                        const el = document.getElementById('pdfExportContainer');
-                        if (el) el.remove();
-                    }, 1000);
-                }).catch((err) => {
-                    console.error(err);
-                    const el = document.getElementById('pdfExportContainer');
-                    if (el) el.remove();
-                    showNotif('Gagal generate PDF. Silakan coba lagi.');
+                const pdf = new jspdf.jsPDF({
+                    orientation: 'portrait',
+                    unit: 'mm',
+                    format: 'a4',
+                    compress: true
                 });
+
+                try {
+                    for (let i = 0; i < pages.length; i++) {
+                        const pageEl = pages[i];
+                        // Buat container sementara di luar layar tapi tetap dirender
+                        const tempContainer = document.createElement('div');
+                        tempContainer.style.cssText = 'position:absolute;left:-10000px;top:0;width:210mm;height:297mm;overflow:hidden;background:white;';
+                        tempContainer.appendChild(pageEl);
+                        document.body.appendChild(tempContainer);
+
+                        // Tunggu sejenak agar render sempurna
+                        await new Promise(resolve => setTimeout(resolve, 100));
+
+                        const canvas = await html2canvas(tempContainer, {
+                            scale: 2,
+                            useCORS: true,
+                            logging: false,
+                            width: 210 * 3.7795,  // konversi mm ke px (approx)
+                            height: 297 * 3.7795,
+                            windowWidth: document.documentElement.offsetWidth,
+                            windowHeight: document.documentElement.offsetHeight
+                        });
+
+                        const imgData = canvas.toDataURL('image/jpeg', 1.0);
+                        if (i > 0) pdf.addPage();
+                        pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297, undefined, 'FAST');
+
+                        // Bersihkan
+                        tempContainer.remove();
+                    }
+                    pdf.save('Reservasi-Pawon-Mbah-Gito-' + (bNama.value.trim() || 'TanpaNama') + '-' + new Date().toISOString().slice(0,10) + '.pdf');
+                } catch (error) {
+                    console.error(error);
+                    showNotif('Gagal generate PDF. Silakan coba lagi.');
+                }
             }
 
             // ===== PRINT =====
             function printPage() {
+                // Buat container print baru
                 const old = document.getElementById('printContainer');
                 if (old) old.remove();
 
                 const printContainer = document.createElement('div');
                 printContainer.id = 'printContainer';
                 printContainer.className = 'print-container';
-                printContainer.style.display = 'none'; // hanya tampil saat print
+                printContainer.style.display = 'none'; // akan ditampilkan hanya saat print
+
                 const pages = buildPDFPages();
                 pages.forEach(page => printContainer.appendChild(page));
                 document.body.appendChild(printContainer);
 
                 window.print();
 
+                // Hapus container setelah beberapa saat (setelah print dialog selesai)
                 setTimeout(() => {
                     const pc = document.getElementById('printContainer');
                     if (pc) pc.remove();
@@ -1381,4 +1405,3 @@
     </script>
 </body>
 </html>
-```
